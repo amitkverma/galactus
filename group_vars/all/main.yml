@@ -1,0 +1,29 @@
+# State of default package
+apt_package_state: present 
+apt_cache_valid_time: 3600
+
+# ssh compatible check variables
+sshd_host_keys:
+  - /etc/ssh/ssh_host_ed25519_key
+  - /etc/ssh/ssh_host_rsa_key
+sshd_kex_algorithms_default:
+  - curve25519-sha256@libssh.org
+  - diffie-hellman-group-exchange-sha256
+sshd_kex_algorithms_extra: []
+sshd_ciphers_default:
+  - chacha20-poly1305@openssh.com
+  - aes256-gcm@openssh.com
+  - aes128-gcm@openssh.com
+  - aes256-ctr
+  - aes192-ctr
+  - aes128-ctr
+sshd_ciphers_extra: []
+sshd_macs_default:
+  - hmac-sha2-512-etm@openssh.com
+  - hmac-sha2-256-etm@openssh.com
+  - hmac-ripemd160-etm@openssh.com
+  - umac-128-etm@openssh.com
+  - hmac-sha2-512
+  - hmac-sha2-256
+  - hmac-ripemd160
+sshd_macs_extra: []

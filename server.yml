@@ -1,0 +1,19 @@
+---
+  - import_playbook: variable-check.yml
+    vars:
+      playbook: server.yml
+
+  - hosts: web
+    connection: ssh
+    become: yes
+    become_user: root
+    gather_facts: false
+    pre_tasks: 
+      - name: Install python2 for Ansible
+        raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+        register: output
+        changed_when: output.stdout != ""
+      - name: Gathering Facts
+        setup:
+    roles:
+      - common
