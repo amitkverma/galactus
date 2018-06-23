@@ -3,10 +3,14 @@
     vars:
       playbook: server.yml
 
+  - name: Test Connection and Determine Remote User
+    hosts: web
+    gather_facts: false
+    roles:
+      - { role: connection, tags: [connection, always] }
+
   - hosts: web
-    connection: ssh
     become: yes
-    become_user: root
     gather_facts: false
     pre_tasks: 
       - name: Install python2 for Ansible
