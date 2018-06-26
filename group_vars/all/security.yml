@@ -1,0 +1,11 @@
+ferm_input_list:
+  - type: dport_accept
+    dport: [ssh]
+    saddr: "{{ ip_whitelist }}"
+  - type: dport_limit
+    dport: [ssh]
+    seconds: 300
+    hits: 20
+
+sshd_permit_root_login: true
+sshd_password_authentication: false

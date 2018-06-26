@@ -20,4 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - common
+      - { role: security/ferm, tags: [ferm] }

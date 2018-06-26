@@ -1,6 +1,7 @@
 # State of default package
 apt_package_state: present 
 apt_cache_valid_time: 3600
+apt_security_package_state: latest
 
 # ssh compatible check variables
 sshd_host_keys:
@@ -27,3 +28,7 @@ sshd_macs_default:
   - hmac-sha2-256
   - hmac-ripemd160
 sshd_macs_extra: []
+
+# Security
+ip_whitelist: 
+  - "{{ (env == 'development') | ternary(ansible_default_ipv4.gateway, ipify_public_ip | default('')) }}"
