@@ -32,3 +32,10 @@ sshd_macs_extra: []
 # Security
 ip_whitelist: 
   - "{{ (env == 'development') | ternary(ansible_default_ipv4.gateway, ipify_public_ip | default('')) }}"
+
+# fail2ban
+fail2ban_services:
+  - name: ssh
+    port: ssh
+    filter: sshd
+    logpath: /var/log/auth.log

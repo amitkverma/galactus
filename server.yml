@@ -20,4 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: security/ferm, tags: [ferm] }
+      - { role: security/fail2ban, tags: [fail2ban] }

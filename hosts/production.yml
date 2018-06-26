@@ -5,7 +5,7 @@ all:
     ansible_connection: ssh
 web: 
   hosts:
-    104.43.128.203:
+    40.113.236.133:
   vars:
-    ansible_ssh_user: striker
+    ansible_ssh_user: server2
     ansible_ssh_pass: amit@17031993
