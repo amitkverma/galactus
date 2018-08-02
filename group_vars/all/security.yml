@@ -7,5 +7,6 @@ ferm_input_list:
     seconds: 300
     hits: 20
 
-sshd_permit_root_login: true
+# If sshd_permit_root_login: false, admin_user must be in 'users' (`group_vars/all/users.yml`) with sudo group
+sshd_permit_root_login: false
 sshd_password_authentication: false
