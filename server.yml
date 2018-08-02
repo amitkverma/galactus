@@ -20,5 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: extra/swapfile, tags: [swapfile] }
-      - { role: security/fail2ban, tags: [fail2ban] }
+      - { role: security/sshd, tags: [sshd] }
