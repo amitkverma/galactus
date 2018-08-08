@@ -20,4 +20,5 @@
       - name: Gathering Facts
         setup:
     roles:
+      - { role: common }
       - { role: security/ntp, tags: [users] }
