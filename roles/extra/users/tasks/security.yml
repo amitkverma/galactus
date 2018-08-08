@@ -11,6 +11,14 @@
 - name: Enable PAM
   lineinfile: dest={{ sshd_config }} regexp="^#?UsePAM" line="UsePAM yes"
 
+- name: Deny default users
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: EOF
+    line: 'DenyUsers {{ deny_default_user }}'
+    state: present
+  when: deny_default_user is defined
+
 - name: restart ssh
   service:
     name: ssh

@@ -20,4 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: extra/users, tags: [users] }
