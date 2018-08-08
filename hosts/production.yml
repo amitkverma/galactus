@@ -3,8 +3,13 @@
 all:
   vars:
     ansible_connection: ssh
+    netdata_uuid: '4035023a-a53c-4053-93e0-f7b00f103490'
+    netdata_master_ip: '165.227.240.248'
 web: 
   hosts:
     35.154.2.224:
   vars:
     ansible_ssh_user: ubuntu
+    server_name: 'tmp'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']

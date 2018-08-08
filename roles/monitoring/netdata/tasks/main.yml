@@ -1,0 +1,41 @@
+---
+- name: Gather variables for each operating system
+  include_vars: "{{ item }}"
+  with_items: "{{ ansible_os_family | lower }}.yml"
+  tags:
+    - always
+
+- name: update the apt cache
+  apt:
+    update_cache: true
+    cache_valid_time: 86400
+  when: ansible_os_family == "Debian"
+
+- name: "EPEL repo"
+  package:
+    name: epel-release
+    state: present
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution != "Fedora"
+
+- include: install_script.yml
+  when: netdata_install_method == "script"
+
+- name: Enable netdata service and ensure it is started
+  systemd:
+    name: netdata
+    state: started
+    enabled: true
+
+- import_tasks: slave.yml
+  when: netdata_mode == 'slave'
+  tags: [netdata, slave]
+
+- import_tasks: master.yml
+  when: netdata_mode == 'master'
+  tags: [netdata, master]
+
+- import_tasks: application_monitor.yml
+  tags: [netdata, application_monitor]
+
