@@ -32,3 +32,10 @@
   when: netdata_mode == 'slave'
   tags: [netdata, slave]
 
+- import_tasks: master.yml
+  when: netdata_mode == 'master'
+  tags: [netdata, master]
+
+- import_tasks: application_monitor.yml
+  tags: [netdata, application_monitor]
+

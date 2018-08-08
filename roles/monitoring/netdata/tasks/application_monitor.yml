@@ -1,0 +1,13 @@
+---
+- name: Add Nginx Monitoring in netdata
+  blockinfile: 
+    path: /etc/netdata/python.d/nginx.conf
+    block: |
+      job_name:
+        name: nginx 
+        update_every: 1
+        priority: 60000
+        retries: 60
+        autodetection_retry: 0
+  when: "'nginx' in netdata_monitor_application"
+  notify: restart netdata

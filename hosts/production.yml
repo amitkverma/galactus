@@ -12,3 +12,4 @@ web:
     ansible_ssh_user: ubuntu
     server_name: 'tmp'
     netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
