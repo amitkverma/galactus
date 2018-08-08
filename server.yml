@@ -20,4 +20,5 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: security/sshd, tags: [sshd] }
+      - { role: extra/users, tags: [users] }
+      - { role: security/ufw, tags: [users] }
