@@ -21,4 +21,5 @@
         setup:
     roles:
       - { role: common }
-      - { role: security/ntp, tags: [users] }
+      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: security/ufw, tags: [ufw] }
