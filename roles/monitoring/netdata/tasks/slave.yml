@@ -1,0 +1,12 @@
+- name: Replace netdata config for slave
+  template:
+    src: "slave/netdata.d.j2"
+    dest: /etc/netdata/netdata.conf
+    mode: 0644
+
+- name: Replace netdata stream config for slave
+  template:
+    src: "slave/stream.d.j2"
+    dest: /etc/netdata/stream.conf
+    mode: 0644
+  notify: restart netdata

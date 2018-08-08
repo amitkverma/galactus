@@ -20,6 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: common }
       - { role: monitoring/netdata, tags: [netdata] }
-      - { role: security/ufw, tags: [ufw] }
