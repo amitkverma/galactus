@@ -10,3 +10,9 @@ ferm_input_list:
 # If sshd_permit_root_login: false, admin_user must be in 'users' (`group_vars/all/users.yml`) with sudo group
 sshd_permit_root_login: false
 sshd_password_authentication: false
+
+main_user_shell: "/bin/bash"
+sshd_config: /etc/ssh/sshd_config
+sshd: ssh
+
+firewall_open_ports: [80, 443]

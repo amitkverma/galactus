@@ -5,6 +5,6 @@ all:
     ansible_connection: ssh
 web: 
   hosts:
-    13.232.185.124:
+    35.154.2.224:
   vars:
     ansible_ssh_user: ubuntu
