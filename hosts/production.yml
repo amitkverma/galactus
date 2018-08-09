@@ -6,7 +6,7 @@ all:
     netdata_uuid: '4035023a-a53c-4053-93e0-f7b00f103490'
     netdata_master_ip: '165.227.240.248'
     deny_default_user: 'ubuntu'
-    prod_consul_datacenter: 'Mumbai'
+    prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
     consul_server_ip: '139.59.24.34'
 web: 
@@ -22,7 +22,7 @@ consul_server:
   hosts:
     139.59.24.34:
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: cerberus
     server_name: 'consul-sd'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']
