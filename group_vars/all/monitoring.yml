@@ -1,8 +1,8 @@
 ---
-consul_server_nodes:
-  - '159.65.150.230'
-consul_domain: test
-consul_datacenter: test
+consul_server_nodes: 
+  - '{{ consul_server_ip }}'
+consul_domain: '{{ prod_consul_domain }}'
+consul_datacenter: '{{ prod_consul_datacenter }}'
 
 ## ACL for discovery synchronization between servers
 consul_acl_configuration_list:

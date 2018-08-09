@@ -3,7 +3,7 @@ consul_version: 1.1.0
 
 consul_user: consul
 consul_group: consul
-consul_nodename: "{{ inventory_hostname }}"
+consul_nodename: '{{ server_name }}'
 
 consul_force_install: false
 
@@ -31,10 +31,6 @@ consul_dns_port: 8600
 consul_configuration_template_path: consul.json.j2
 consul_logrotate_template_path: logrotate.j2
 consul_service_template_path: consul.service.j2
-# Consul nodes behaviour #
-consul_agent: true
-consul_server: false
-consul_ui: false
 
 # ACLs #
 consul_acl: true
@@ -56,11 +52,3 @@ consul_acl_agent_token: agent
   #       policy: write
   #     - service: ""
   #       policy: read
-
-# Services #
-consul_agent_services: true
-consul_services_register: # Example:
-    - name: web
-      port: 80
-      http: "http://localhost:80"
-      interval: "60s"

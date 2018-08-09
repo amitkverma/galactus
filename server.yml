@@ -9,7 +9,7 @@
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: web
+  - hosts: consul_client
     become: yes
     gather_facts: false
     pre_tasks: 

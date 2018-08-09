@@ -1,0 +1,12 @@
+# Consul nodes behaviour #
+consul_agent: true
+consul_server: false
+consul_ui: false
+
+# Services #
+consul_agent_services: true
+consul_services_register:
+    - name: web
+      port: 80
+      http: "http://localhost:80"
+      interval: "60s"

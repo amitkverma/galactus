@@ -1,4 +1,14 @@
 ---
+- name: Gather variables for consul setup type
+  include_vars: "{{ item }}"
+  with_items: "{{ consul_mode | lower }}.yml"
+  tags:
+    - always
+
+- name: Check Vars
+  debug:
+    msg: " server_name {{ server_name }}"
+
 - name: Consul | Check
   import_tasks: check.yml
   tags:
