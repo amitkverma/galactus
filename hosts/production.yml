@@ -7,9 +7,9 @@ all:
     netdata_master_ip: '165.227.240.248'
 web: 
   hosts:
-    35.154.22.84:
+    159.65.157.127:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: root
     server_name: 'tmp'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']

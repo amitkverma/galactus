@@ -20,4 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: extra/users, tags: [users] }
+      - { role: monitoring/consul, tags: [consul] }
