@@ -8,7 +8,7 @@ all:
     deny_default_user: 'ubuntu'
     prod_consul_datacenter: 'Mumbai'
     prod_consul_domain: 'charcoaleats'
-    consul_server_ip: '142.93.112.151'
+    consul_server_ip: '139.59.24.34'
 web: 
   hosts:
     139.59.30.213:
@@ -20,14 +20,14 @@ web:
 
 consul_server:
   hosts:
-    142.93.112.151:
+    139.59.24.34:
   vars:
     ansible_ssh_user: root
-    server_name: 'master'
+    server_name: 'consul-sd'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']
-    deny_default_user: 'ubuntu'
     consul_mode: 'server'
+    firewall_open_ports: [80,8500,8600,19999]
 
 consul_client:
   hosts:

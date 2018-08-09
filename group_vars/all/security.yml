@@ -15,4 +15,4 @@ main_user_shell: "/bin/bash"
 sshd_config: /etc/ssh/sshd_config
 sshd: ssh
 
-firewall_open_ports: [80, 443,19999]
+firewall_open_ports: [80,8500,8600,19999]
