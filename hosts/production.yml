@@ -7,7 +7,7 @@ all:
     netdata_master_ip: '165.227.240.248'
 web: 
   hosts:
-    159.65.157.127:
+    139.59.30.213:
   vars:
     ansible_ssh_user: root
     server_name: 'tmp'
