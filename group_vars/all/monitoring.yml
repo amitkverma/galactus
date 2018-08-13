@@ -10,6 +10,8 @@ consul_acl_configuration_list:
     token_type: client
     token: "{{ consul_acl_agent_token }}"
     rules:
+      - key: ""
+        policy: write
       - node: ""
         policy: write
       - service: ""

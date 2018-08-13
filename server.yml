@@ -4,13 +4,15 @@
       playbook: server.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: web
+    hosts: consul_client
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: consul_server
+  - hosts: consul_client
     become: yes
+    become_method: su
+    become_user: root
     gather_facts: false
     pre_tasks: 
       - name: Install python2 for Ansible
@@ -20,12 +22,5 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: common, tags: [common] }
       - { role: monitoring/consul, tags: [consul] }
-      - { role: monitoring/netdata, tags: [netdata] }
-      - { role: extra/swapfile, tags: [swapfile] }
-      - { role: extra/users, tags: [users] }
-      - { role: security/fail2ban, tags: [fail2ban] }
-      - { role: security/ntp, tags: [ntp] }
-      - { role: security/ufw, tags: [ufw] }
 

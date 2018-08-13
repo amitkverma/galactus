@@ -8,7 +8,7 @@ all:
     deny_default_user: 'ubuntu'
     prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
-    consul_server_ip: '139.59.24.34'
+    consul_server_ip: '139.59.17.171'
 web: 
   hosts:
     139.59.30.213:
@@ -20,23 +20,22 @@ web:
 
 consul_server:
   hosts:
-    139.59.24.34:
+    139.59.17.171:
   vars:
-    ansible_ssh_user: cerberus
+    ansible_ssh_user: dranzer
     server_name: 'consul-sd'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']
     consul_mode: 'server'
-    firewall_open_ports: [80,8500,8600,19999]
+    firewall_open_ports: [80,8300,8301,8500,8600,19999]
 
 consul_client:
   hosts:
-    142.93.112.191:
+    178.128.72.107:
   vars:
     ansible_ssh_user: root
-    server_name: 'slave 3'
+    server_name: 'netdata-server'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']
-    deny_default_user: 'ubuntu'
     consul_mode: 'client'
 
