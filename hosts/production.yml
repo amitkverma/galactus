@@ -5,12 +5,37 @@ all:
     ansible_connection: ssh
     netdata_uuid: '4035023a-a53c-4053-93e0-f7b00f103490'
     netdata_master_ip: '165.227.240.248'
+    deny_default_user: 'ubuntu'
+    prod_consul_datacenter: 'DO-BLR'
+    prod_consul_domain: 'charcoaleats'
+    consul_server_ip: '139.59.17.171'
 web: 
   hosts:
-    35.154.22.84:
+    139.59.30.213:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: root
     server_name: 'tmp'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']
-    deny_default_user: 'ubuntu'
+
+consul_server:
+  hosts:
+    139.59.17.171:
+  vars:
+    ansible_ssh_user: dranzer
+    server_name: 'consul-sd'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'server'
+    firewall_open_ports: [80,8300,8301,8500,8600,19999]
+
+consul_client:
+  hosts:
+    178.128.72.107:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'netdata-server'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'client'
+

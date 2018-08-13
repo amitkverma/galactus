@@ -1,0 +1,16 @@
+# Consul nodes behaviour #
+consul_agent: true
+consul_server: false
+consul_ui: false
+
+# Services #
+consul_agent_services: true
+consul_services_register:
+    - name: netdata-web
+      port: 80
+      http: "http://localhost:80"
+      interval: "60s"
+    - name: netdata-app
+      port: 19999
+      http: "http://localhost:19999"
+      interval: "60s"

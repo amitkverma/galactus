@@ -51,8 +51,8 @@
   with_items: 
     - '{{ users }}'
 
-- import_tasks: connection-warnings.yml
-  tags: [connection-tests, sshd]
+# - import_tasks: connection-warnings.yml
+#   tags: [connection-tests, sshd]
 
 - import_tasks: security.yml
   tags: [sshd, security]

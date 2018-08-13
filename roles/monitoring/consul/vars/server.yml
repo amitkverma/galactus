@@ -1,0 +1,7 @@
+# Consul nodes behaviour #
+consul_agent: true
+consul_server: true
+consul_ui: true
+
+# Services #
+consul_agent_services: false
