@@ -1,0 +1,2 @@
+mail_dir: /etc/mail
+mail__auth_permission: 600
