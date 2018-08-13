@@ -22,5 +22,5 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: extra/sendmail, tags: [sendmail] }
+      - { role: monitoring/monit, tags: [monit] }
 
