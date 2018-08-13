@@ -11,7 +11,7 @@ all:
     consul_server_ip: '139.59.17.171'
 web: 
   hosts:
-    206.189.137.25:
+    206.189.137.129:
   vars:
     ansible_ssh_user: root
     server_name: 'tmp'

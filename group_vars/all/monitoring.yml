@@ -27,3 +27,36 @@ consul_acl_configuration_list:
         policy: read
       - service: ""
         policy: read
+
+# Monit
+monit_mail_enabled: true
+monit_mailserver_host: smtp.gmail.com
+monit_mailserver_port: 587
+monit_mailserver_user: alert@charcoaleats.com
+monit_mailserver_password: amit@17031993
+monit_mailserver_ssl_version: tlsv1
+monit_mailserver_timeout: 30
+monit_alert_addresses:
+  - amit@charcoaleats.com
+monit_alert_mail_from: alert@charcoaleats.com
+monit_alert_mail_subject: alert
+monit_alert_mail_message: |+
+  $EVENT Service $SERVICE
+              Date:        $DATE
+              Action:      $ACTION
+              Host:        $HOST
+              Description: $DESCRIPTION
+              IP: $ADDRESS
+        Your faithful employee,
+        Monit
+
+monit_services:
+  - name: nginx
+    type: process
+    target: /var/run/nginx.pid
+    start: /usr/sbin/service nginx start
+    stop: /usr/sbin/service nginx stop
+    restart: /usr/sbin/service nginx restart
+    rules:
+      - "if failed port 80 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"
