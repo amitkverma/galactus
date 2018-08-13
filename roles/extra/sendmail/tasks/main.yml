@@ -1,0 +1,52 @@
+---
+  - name: Install sendmail client
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - sendmail
+      - mailutils
+
+  - name: Adding auth file
+    template:
+      src: authinfo.j2
+      dest: "{{ mail_dir }}/authinfo"
+      mode: 0600
+
+  - name: Create Auth database file
+    shell: >
+       makemap hash /etc/mail/authinfo.db < /etc/mail/authinfo 
+
+  - name: Adding sendmail config
+    template:
+      src: sendmail.mc.j2
+      dest: "{{ mail_dir }}/sendmail.mc"
+      mode: 0666
+
+  - name: Compile config file
+    shell: >
+       m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
+
+  - name: Remove auth file
+    file:
+      state: absent
+      path: "{{ mail_dir }}/authinfo"
+
+  - name: Add localdomain in hosts
+    lineinfile:
+      dest: /etc/hosts
+      regexp: '127.0.0.1 localhost'
+      line: '127.0.0.1 localhost localhost.localdomain {{ ansible_hostname }}'
+      state: present
+
+  - name: remove local in hosts
+    lineinfile:
+      dest: /etc/hosts
+      regexp: '127.0.1.1.*'
+      state: absent
+
+  - name: restart sendmail
+    systemd:
+      name: sendmail
+      state: restarted
+

@@ -39,3 +39,7 @@ fail2ban_services:
     port: ssh
     filter: sshd
     logpath: /var/log/auth.log
+
+# Mail Configs
+mail_email: alert@charcoaleats.com
+mail_pass: amit@17031993
