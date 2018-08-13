@@ -22,5 +22,5 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: monitoring/monit, tags: [monit] }
+      - { role: webservers/nginx, tags: [nginx] }
 
