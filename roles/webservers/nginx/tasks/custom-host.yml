@@ -1,0 +1,22 @@
+---
+- name: Remove default nginx vhost config file (if configured).
+  file:
+    path: "{{ nginx_default_vhost_path }}"
+    state: absent
+  when: nginx_remove_default_vhost
+  notify: restart nginx
+
+- name: Ensure nginx_vhost_path exists.
+  file:
+    path: "{{ nginx_vhost_path }}"
+    state: directory
+  notify: reload nginx
+
+- name: Copy htpasswd file to nginx
+  template:
+    src: "{{ nginx_custom_vhost }}.j2"
+    dest: "{{ nginx_vhost_path }}/{{ nginx_custom_vhost }}"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+  when: nginx_custom_vhost is defined
