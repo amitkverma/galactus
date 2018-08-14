@@ -1,0 +1,22 @@
+---
+- name: Deepstream | Install supervisor
+  apt:
+    pkg: "{{ item }}"
+  with_items: 
+    - supervisor
+
+- name: Deepstream | Add deepstream to supervisor's watch
+  template:
+    src: "deepstream.conf.j2"
+    dest: "/etc/supervisor/conf.d/deepstream.conf"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+    force: yes
+
+- name: Deepstream | Read deepstream config file
+  command: "supervisorctl reread"
+
+- name: Deepstream | Read deepstream config file
+  command: "supervisorctl update"
+

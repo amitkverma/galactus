@@ -9,3 +9,18 @@
   tags:
     - install
   when: deepstream_installed_version.rc != 0
+
+- name: Deepstream | Add deepstream to supervisor's watch
+  template:
+    src: "config.yml.j2"
+    dest: "/etc/deepstream/config.yml"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+    force: yes
+  notify: restart deepstream  
+
+- name: Deepstream | Install process manager
+  import_tasks: supervisor.yml
+  tags:
+    - install

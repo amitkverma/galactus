@@ -1,0 +1,6 @@
+[program:deepstream_daemon]
+command=deepstream start
+autostart=true
+autorestart=unexpected
+stderr_logfile=/var/log/deepstream/deepstream.err.log
+stdout_logfile=/var/log/deepstream/deepstream.out.log

@@ -1,2 +1,4 @@
 deepstream_user: deepstream
 deepstream_group: deepstream
+root_group: root
+deepstream_websocket_port: 5757
