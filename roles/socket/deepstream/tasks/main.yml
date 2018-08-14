@@ -1,0 +1,11 @@
+---
+- name: Deepstream | Check
+  import_tasks: check.yml
+  tags:
+    - check
+
+- name: Deepstream | Install
+  import_tasks: install.yml
+  tags:
+    - install
+  when: deepstream_installed_version.rc != 0

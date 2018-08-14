@@ -1,0 +1,25 @@
+---
+  - import_playbook: variable-check.yml
+    vars:
+      playbook: server.yml
+
+  - name: Test Connection and Determine Remote User
+    hosts: web
+    gather_facts: false
+    roles:
+      - { role: connection, tags: [connection, always] }
+
+  - hosts: web
+    become: yes
+    become_user: root
+    gather_facts: false
+    pre_tasks: 
+      - name: Install python2 for Ansible
+        raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+        register: output
+        changed_when: output.stdout != ""
+      - name: Gathering Facts
+        setup:
+    roles:
+      - { role: socket/deepstream, tags: [deepstream] }
+

@@ -1,0 +1,12 @@
+---
+
+- name: Deepstream | Check Deepstream version
+  command: deepstream --version
+  changed_when: false
+  ignore_errors: true
+  register: deepstream_installed_version
+  check_mode: no
+
+- name: Deepstream | Set deepstream_installed_version fact
+  set_fact:
+    deepstream_installed_version: "{{ deepstream_installed_version }}"

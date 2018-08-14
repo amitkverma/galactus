@@ -1,0 +1,31 @@
+---
+- name: Deepstream | Ensure Deepstream group
+  group:
+    name: "{{ deepstream_group }}"
+
+- name: Deepstream | Ensure Deepstream user
+  user:
+    name: "{{ deepstream_user }}"
+    group: "{{ deepstream_group }}"
+    createhome: no
+
+- name: Deepstream | Add deepstream repo in package sources
+  shell: >
+    source /etc/lsb-release && echo "deb http://dl.bintray.com/deepstreamio/deb ${DISTRIB_CODENAME} main" | sudo tee -a /etc/apt/sources.list
+  args:
+    executable: /bin/bash
+
+- name: Deepstream | download signed key for deepstream distribution
+  shell: >
+      apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61
+  args:
+    executable: /bin/bash
+
+- name: Deepstream | Install dependencies
+  apt:
+    pkg: "{{ item }}"
+    update_cache: true
+    cache_valid_time: 600
+  with_items: 
+    - deepstream.io
+    - supervisor

@@ -1,6 +1,5 @@
 nginx_auth_user: monitor
 nginx_auth_password: $apr1$6bFdWfCI$nz90UFLAKNPs3KSE9vilf0
 
-nginx_custom_vhost: netdata
 nginx_custom_vhost_enable: true
 nginx_remove_default_vhost: true

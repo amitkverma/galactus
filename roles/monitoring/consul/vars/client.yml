@@ -6,11 +6,11 @@ consul_ui: false
 # Services #
 consul_agent_services: true
 consul_services_register:
-    - name: netdata-web
+    - name: web
       port: 80
-      http: "http://localhost:80"
+      http: "http://localhost:80/healthcheck"
       interval: "60s"
-    - name: netdata-app
+    - name: netdata
       port: 19999
       http: "http://localhost:19999"
       interval: "60s"

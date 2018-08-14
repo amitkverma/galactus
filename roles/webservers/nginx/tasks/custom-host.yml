@@ -19,4 +19,6 @@
     owner: root
     group: "{{ root_group }}"
     mode: 0644
+    force: yes
   when: nginx_custom_vhost is defined
+  notify: restart nginx

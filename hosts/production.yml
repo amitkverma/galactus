@@ -3,15 +3,15 @@
 all:
   vars:
     ansible_connection: ssh
-    netdata_uuid: '4035023a-a53c-4053-93e0-f7b00f103490'
-    netdata_master_ip: '165.227.240.248'
+    netdata_uuid: '2c288770-9fa7-11e8-9a86-ab3f9df0a5a8'
+    netdata_master_ip: '139.59.50.202' # Netdata floating IP
     deny_default_user: 'ubuntu'
     prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
-    consul_server_ip: '139.59.17.171'
+    consul_server_ip: '159.89.163.216' # Consul Private IP
 web: 
   hosts:
-    206.189.137.129:
+    206.189.131.39:
   vars:
     ansible_ssh_user: root
     server_name: 'tmp'
@@ -20,22 +20,36 @@ web:
 
 consul_server:
   hosts:
-    139.59.17.171:
+    159.89.163.216:
   vars:
-    ansible_ssh_user: dranzer
+    ansible_ssh_user: root
     server_name: 'consul-sd'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']
     consul_mode: 'server'
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
+    nginx_custom_vhost: consul
 
-consul_client:
+netdata_server:
   hosts:
-    178.128.72.107:
+    159.65.152.64:
   vars:
     ansible_ssh_user: root
     server_name: 'netdata-server'
-    netdata_mode: 'slave'
+    netdata_mode: 'master'
     netdata_monitor_application: ['nginx']
     consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999]
+    nginx_custom_vhost: netdata
+
+
+#consul_client:
+#  hosts:
+#    178.128.72.107:
+#  vars:
+#    ansible_ssh_user: root
+#    server_name: 'netdata-server'
+#    netdata_mode: 'slave'
+#    netdata_monitor_application: ['nginx']
+#    consul_mode: 'client'
 
