@@ -1,0 +1,3 @@
+---
+- name: Deepstream | Add redis msg plugin in deepstream
+  command: "deepstream install msg redis"

@@ -2,3 +2,5 @@ deepstream_user: deepstream
 deepstream_group: deepstream
 root_group: root
 deepstream_websocket_port: 5757
+is_redis_cache_plugin_used: false
+is_redis_msg_plugin_used: false

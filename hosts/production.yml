@@ -9,6 +9,12 @@ all:
     prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
     consul_server_ip: '159.89.163.216' # Consul Private IP
+    redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
+    redis_deepstream_port: 6363
+    redis_deepstream_server: '206.189.131.66'
+    deepstream_websocket_port: 5757
+    deepstream_websocket_port_lb: 5758
+    deepstream_http_port: 8787
 web: 
   hosts:
     206.189.131.39:
@@ -42,6 +48,44 @@ netdata_server:
     firewall_open_ports: [80,8300,8301,19999]
     nginx_custom_vhost: netdata
 
+redis_server:
+  hosts:
+    206.189.131.66:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'redis-deepstream'
+    netdata_mode: 'client'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999, 6363]
+    nginx_custom_vhost: netdata
+    redis_port: '{{ redis_deepstream_port }}'
+
+deepstream_server:
+  hosts:
+    139.59.78.87:
+        server_name: 'deepstream-server-1'
+  vars:
+    ansible_ssh_user: root
+    netdata_mode: 'client'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999, 6363]
+    nginx_custom_vhost: netdata
+    is_redis_msg_plugin_used: true
+
+deepstream_nginx_lb:
+  hosts:
+    139.59.58.165:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'deepstream-lb'
+    netdata_mode: 'client'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999, 6363]
+    nginx_custom_vhost: deepstream
+    deepstream_server: ['206.189.131.39','206.189.131.49']
 
 #consul_client:
 #  hosts:
