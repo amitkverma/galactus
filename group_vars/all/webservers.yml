@@ -3,3 +3,6 @@ nginx_auth_password: $apr1$6bFdWfCI$nz90UFLAKNPs3KSE9vilf0
 
 nginx_custom_vhost_enable: true
 nginx_remove_default_vhost: true
+
+nodejs_npm_global_packages:
+ - name: pm2

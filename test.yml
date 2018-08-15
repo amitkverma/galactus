@@ -4,12 +4,12 @@
       playbook: server.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: web
+    hosts: nodejs_server
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: web
+  - hosts: nodejs_server
     become: yes
     become_user: root
     gather_facts: false
@@ -21,5 +21,5 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: socket/deepstream, tags: [deepstream] }
+      - { role: webservers/nodejs, tags: [nodejs] }
 

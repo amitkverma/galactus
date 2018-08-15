@@ -9,6 +9,7 @@ all:
     prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
     consul_server_ip: '159.89.163.216' # Consul Private IP
+    #nodejs_install_npm_user: scylla
 web: 
   hosts:
     206.189.131.39:
@@ -41,6 +42,19 @@ netdata_server:
     consul_mode: 'client'
     firewall_open_ports: [80,8300,8301,19999]
     nginx_custom_vhost: netdata
+
+nodejs_server:
+  hosts:
+    139.59.78.87:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'netdata-server'
+    netdata_mode: 'master'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999]
+    nginx_custom_vhost: netdata
+
 
 
 #consul_client:
