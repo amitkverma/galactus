@@ -101,19 +101,33 @@ logger:
 #   path: ./my-custom-logger
 
 # Plugin Configuration
-# plugins:
+plugins:
 
-#   message:
-#     name: redis
-#     options:
-#       host: ${REDIS_HOST}
-#       port: 6379
+{% if is_redis_msg_plugin_used %}
+  message:
+    name: redis
+    options:
+      host: {{ redis_deepstream_server }}
+      port: {{ redis_deepstream_port }}
+    redisOptions:
+      password: {{ redis_password }}
 
-#   cache:
-#     name: redis
-#     options:
-#       host: ${REDIS_HOST}
-#       port: 6379
+{% endif %}
+
+
+
+{% if is_redis_cache_plugin_used %}
+
+  cache:
+    name: redis
+    options:
+      host: {{ redis_deepstream_server }}
+      port: {{ redis_deepstream_port }}
+    redisOptions:
+      password: {{ redis_password }}
+
+{% endif %}
+
 
 #   storage:
 #     name: rethinkdb

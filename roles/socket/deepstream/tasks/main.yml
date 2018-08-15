@@ -10,6 +10,13 @@
     - install
   when: deepstream_installed_version.rc != 0
 
+- name: Deepstream | Add redis plugin
+  import_tasks: redis.yml
+  tags:
+    - install
+  when: is_redis_msg_plugin_used
+  notify: restart deepstream  
+
 - name: Deepstream | Add deepstream to supervisor's watch
   template:
     src: "config.yml.j2"
@@ -24,3 +31,4 @@
   import_tasks: supervisor.yml
   tags:
     - install
+
