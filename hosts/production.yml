@@ -9,16 +9,13 @@ all:
     prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
     consul_server_ip: '159.89.163.216' # Consul Private IP
-<<<<<<< HEAD
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
     redis_deepstream_port: 6363
     redis_deepstream_server: '206.189.131.66'
     deepstream_websocket_port: 5757
     deepstream_websocket_port_lb: 5758
     deepstream_http_port: 8787
-=======
     pm2_user: root
->>>>>>> feature-adding-nodejs
 web: 
   hosts:
     206.189.131.39:

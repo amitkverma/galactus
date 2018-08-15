@@ -1,0 +1,22 @@
+---
+- name: git-deploy | add ssh key
+  template:
+    src: "id_rsa.deploy"
+    dest: "{{ user_home_path }}/.ssh/id_rsa.deploy"
+    owner: root
+    group: "root"
+    mode: 0600
+
+- name: git-deploy | Configure ssh to use ansible key
+  template:
+    src: "ssh_config.j2"
+    dest: "/root/.ssh/config"
+    owner: root
+    group: "root"
+    mode: 0644
+
+- name: git-deploy |  clone a private repository
+  git: 
+    repo: "{{ api_server_repo }}"
+    key_file: /root/.ssh/id_rsa.deploy
+    dest: /var/apps
