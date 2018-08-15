@@ -63,10 +63,8 @@ redis_server:
 
 deepstream_server:
   hosts:
-    206.189.131.39:
+    139.59.78.87:
         server_name: 'deepstream-server-1'
-    206.189.131.49:
-        server_name: 'deepstream-server-2'
   vars:
     ansible_ssh_user: root
     netdata_mode: 'client'
