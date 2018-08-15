@@ -9,7 +9,7 @@ all:
     prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
     consul_server_ip: '159.89.163.216' # Consul Private IP
-    #nodejs_install_npm_user: scylla
+    pm2_user: root
 web: 
   hosts:
     206.189.131.39:

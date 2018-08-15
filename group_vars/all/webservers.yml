@@ -5,4 +5,6 @@ nginx_custom_vhost_enable: true
 nginx_remove_default_vhost: true
 
 nodejs_npm_global_packages:
- - name: pm2
+ - name: express
+
+should_install_pm2_on_nodejs: true
