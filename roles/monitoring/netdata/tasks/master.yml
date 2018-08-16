@@ -4,3 +4,11 @@
     dest: /etc/netdata/stream.conf
     mode: 0644
   notify: restart netdata
+
+- name: Replace netdata health alarm config for master
+  template:
+    src: "master/health_alarm_notify.conf.j2"
+    dest: /etc/netdata/health_alarm_notify.conf
+    mode: 0644
+  when: is_netdata_alarm_enable
+  notify: restart netdata

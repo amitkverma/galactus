@@ -5,6 +5,7 @@ netdata_install_method: "script"
 netdata_registry: ""
 netdata_notifications: true
 
+is_netdata_alarm_enable: true
 netdata_alert_sender_mail: alert@charcoaleats.com
 sendmail_path: /usr/sbin/sendmail
 netdata_alert_email_recipient: amit@charcoaleats.com|critical
