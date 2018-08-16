@@ -15,6 +15,13 @@
     group: "root"
     mode: 0644
 
+- name: git-deploy |  Ensure apps directory present
+  file:
+    path: /var/apps
+    state: directory
+    owner: "{{ deploy_user_group }}"
+    group: "{{ deploy_user_group }}"
+
 - name: git-deploy |  clone a private repository
   git: 
     repo: "{{ api_server_repo }}"

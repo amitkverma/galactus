@@ -87,6 +87,7 @@ deepstream_nginx_lb:
     firewall_open_ports: [80,8300,8301,19999, 6363]
     nginx_custom_vhost: deepstream
     deepstream_server: ['206.189.131.39','206.189.131.49']
+
 nodejs_server:
   hosts:
     139.59.78.87:

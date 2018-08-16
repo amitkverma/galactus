@@ -43,3 +43,5 @@ fail2ban_services:
 # Mail Configs
 mail_email: alert@charcoaleats.com
 mail_pass: amit@17031993
+
+deploy_user_group: www-data
