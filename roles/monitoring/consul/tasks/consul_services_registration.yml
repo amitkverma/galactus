@@ -22,7 +22,7 @@
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: 0777
-  when: health_check_script_enabled
+  when: health_check_script_enabled is defined
 
 # Temporary, until consul state=absent is fixed
 - name: Consul | De-register services

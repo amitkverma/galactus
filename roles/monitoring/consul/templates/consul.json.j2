@@ -18,7 +18,7 @@
   },
   "server": {{ "true" if consul_server else "false" }},
   "enable_syslog": {{ "true" if consul_syslog else "false" }},
-  "enable_script_checks": {{ "true" if health_check_script_enabled else "false" }},
+  "enable_script_checks": {{ "true" if health_check_script_enabled is defined else "false" }},
   "retry_join": [{% for host in consul_server_nodes %}"{{ host }}"{% if not loop.last %}, {% endif %}{% endfor %}],
   "rejoin_after_leave": true,
 {% if consul_server %}

@@ -1,0 +1,80 @@
+global
+    log /dev/log    local0
+    log /dev/log    local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+    # Default SSL material locations
+    ca-base /etc/ssl/certs
+    crt-base /etc/ssl/private
+
+    # Default ciphers to use on SSL-enabled listening sockets.
+    # For more information, see ciphers(1SSL). This list is from:
+    #  https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+    ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
+    ssl-default-bind-options no-sslv3
+
+defaults
+    mode http
+    log global
+    option httplog
+    option  http-server-close
+    option  dontlognull
+    option  redispatch
+    option  contstats
+    retries 3
+    backlog 10000
+    timeout client          25s
+    timeout connect          5s
+    timeout server          25s
+    # timeout tunnel available in ALOHA 5.5 or HAProxy 1.5-dev10 and higher
+    timeout tunnel        3600s
+    timeout http-keep-alive  1s
+    timeout http-request    15s
+    timeout queue           30s
+    timeout tarpit          60s
+    default-server inter 3s rise 2 fall 3
+    option forwardfor
+
+frontend ft_web
+    bind {{ deepstream_websocket_ip_lb }}:{{ deepstream_websocket_port_lb }} name http {% if haproxy_ssl_enable %} ssl crt /etc/ssl/charcoaleats.pem {% endif %}
+
+    maxconn 60000
+    log 127.0.0.1 local0
+
+    ## routing based on Host header
+    acl host_ws hdr_beg(Host) -i ws.
+    use_backend backend-websocket if host_ws
+    
+    ## routing based on websocket protocol header
+    # acl is_websocket path_beg /socket.io
+    acl hdr_connection_upgrade hdr(Connection)  -i upgrade
+    acl hdr_upgrade_websocket  hdr(Upgrade)     -i websocket
+    use_backend backend-websocket
+
+backend backend-websocket                                                    
+    balance source
+    stick-table type ip size 200k expire 30m
+    stick on src
+    ## (don't forget to update the list each time you publish new applications)
+    http-check expect status 101
+{% for backend in deepstream_server %}
+    server {{ backend.name }} {{ backend.host }}:{{ deepstream_websocket_port }} maxconn 30000 weight 10 cookie {{ backend.name }} check
+{% endfor %}
+
+listen stats
+    bind :{{ haproxy_stat_auth_post }}
+    stats {{ haproxy_stat_auth_status }}
+    stats uri /haproxy_stats
+    stats hide-version
+    stats auth {{ haproxy_stat_auth_user }}:{{ haproxy_stat_auth_pwd }}
+
+listen health_check_http_url
+    bind :60000
+    mode http
+    monitor-uri /health_check
+    option      dontlognull

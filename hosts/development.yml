@@ -11,9 +11,10 @@ all:
     consul_server_ip: '139.59.79.222' # Consul Private IP
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
     redis_deepstream_port: 6363
-    redis_deepstream_server: '206.189.131.66'
+    redis_deepstream_server: '206.189.131.49'
     deepstream_websocket_port: 5757
-    deepstream_websocket_port_lb: 5758
+    deepstream_websocket_port_lb: 443
+    deepstream_websocket_ip_lb: 139.59.38.105
     deepstream_http_port: 8787
     pm2_user: root
 web: 
@@ -80,18 +81,24 @@ deepstream_server:
     is_redis_msg_plugin_used: true
     monitor_application_name: 'deepstream'
 
-deepstream_nginx_lb:
+deepstream_haproxy_lb:
   hosts:
-    139.59.58.165:
+    139.59.38.105:
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: cerberus
     server_name: 'deepstream-lb'
     netdata_mode: 'client'
-    netdata_monitor_application: ['redis']
+    netdata_monitor_application: ['haproxy']
     consul_mode: 'client'
-    firewall_open_ports: [80,8300,8301,19999, 6363]
-    nginx_custom_vhost: deepstream
-    deepstream_server: ['206.189.131.39','206.189.131.49']
+    firewall_open_ports: [443,8300,8301,19999,5757]
+    haproxy_custom_vhost: deepstream
+    deepstream_server:
+      - name: 'deepstream_s1'
+        host: '139.59.72.45'
+      - name: 'deepstream_s2'
+        host: '139.59.44.112'
+    haproxy_ssl_enable: true
+    monitor_application_name: 'haproxy'
 
 nodejs_server:
   hosts:

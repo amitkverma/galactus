@@ -13,7 +13,7 @@ all:
     redis_deepstream_port: 6363
     redis_deepstream_server: '206.189.131.66'
     deepstream_websocket_port: 5757
-    deepstream_websocket_port_lb: 5758
+    deepstream_websocket_port_lb: 443
     deepstream_http_port: 8787
     pm2_user: root
 web: 

@@ -1,0 +1,12 @@
+---
+consul_services_register:
+    - name: haproxy
+      tag: ['loadbalancer', 'deepstream-lb']
+      port: 60000
+      http: "http://localhost:60000/health_check"
+      interval: "60s"
+    - name: netdata
+      tag: ['client', 'deepstream-lb']
+      port: 19999
+      http: "http://localhost:19999"
+      interval: "60s"

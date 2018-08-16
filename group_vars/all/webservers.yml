@@ -8,3 +8,8 @@ nodejs_npm_global_packages:
  - name: express
 
 should_install_pm2_on_nodejs: true
+
+haproxy_stat_auth_status: enable
+haproxy_stat_auth_post: 18999
+haproxy_stat_auth_user: 'cerberus'
+haproxy_stat_auth_pwd: '473d67d08db4314ef0366d2504e37e9f44168abe'
