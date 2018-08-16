@@ -1,0 +1,114 @@
+# Add each host to the [production] group and to a "type" group such as [web] or [db].
+# List each machine only once per [group], even if it will host multiple sites.
+all:
+  vars:
+    ansible_connection: ssh
+    netdata_uuid: '996fdb5e-a122-11e8-8383-1fe1ff03e34c'
+    netdata_master_ip: '178.128.72.107' # Netdata floating IP
+    deny_default_user: 'ubuntu'
+    prod_consul_datacenter: 'DO-BLR'
+    prod_consul_domain: 'charcoaleats'
+    consul_server_ip: '139.59.79.222' # Consul Private IP
+    redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
+    redis_deepstream_port: 6363
+    redis_deepstream_server: '206.189.131.66'
+    deepstream_websocket_port: 5757
+    deepstream_websocket_port_lb: 5758
+    deepstream_http_port: 8787
+    pm2_user: root
+web: 
+  hosts:
+    206.189.131.39:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'tmp'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
+
+consul_server:
+  hosts:
+    139.59.79.222:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'consul-sd'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'server'
+    firewall_open_ports: [80,8300,8301,8500,8600,19999]
+    nginx_custom_vhost: consul
+
+netdata_server:
+  hosts:
+    159.65.152.64:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'netdata-server'
+    netdata_mode: 'master'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999]
+    nginx_custom_vhost: netdata
+
+redis_server:
+  hosts:
+    206.189.131.66:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'redis-deepstream'
+    netdata_mode: 'client'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999, 6363]
+    nginx_custom_vhost: netdata
+    redis_port: '{{ redis_deepstream_port }}'
+
+deepstream_server:
+  hosts:
+    139.59.78.87:
+        server_name: 'deepstream-server-1'
+  vars:
+    ansible_ssh_user: root
+    netdata_mode: 'client'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999, 6363]
+    nginx_custom_vhost: netdata
+    is_redis_msg_plugin_used: true
+
+deepstream_nginx_lb:
+  hosts:
+    139.59.58.165:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'deepstream-lb'
+    netdata_mode: 'client'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999, 6363]
+    nginx_custom_vhost: deepstream
+    deepstream_server: ['206.189.131.39','206.189.131.49']
+
+nodejs_server:
+  hosts:
+    139.59.78.87:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'netdata-server'
+    netdata_mode: 'master'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999]
+    nginx_custom_vhost: netdata
+
+
+
+#consul_client:
+#  hosts:
+#    178.128.72.107:
+#  vars:
+#    ansible_ssh_user: root
+#    server_name: 'netdata-server'
+#    netdata_mode: 'slave'
+#    netdata_monitor_application: ['nginx']
+#    consul_mode: 'client'
+

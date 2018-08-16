@@ -4,3 +4,7 @@ netdata_install_method: "script"
 # netdata_registry: "http://your-registry-server.comp.tld:19999"
 netdata_registry: ""
 netdata_notifications: true
+
+netdata_alert_sender_mail: alert@charcoaleats.com
+sendmail_path: /usr/sbin/sendmail
+netdata_alert_email_recipient: amit@charcoaleats.com|critical
