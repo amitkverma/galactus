@@ -41,7 +41,7 @@ defaults
     option forwardfor
 
 frontend ft_web
-    bind {{ deepstream_websocket_ip_lb }}:{{ deepstream_websocket_port_lb }} name http {% if haproxy_ssl_enable %} ssl crt /etc/ssl/charcoaleats.pem {% endif %}
+    bind :{{ deepstream_websocket_port_lb }} name http {% if haproxy_ssl_enable %} ssl crt /etc/ssl/charcoaleats.pem {% endif %}
 
     maxconn 60000
     log 127.0.0.1 local0

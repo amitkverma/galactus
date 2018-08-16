@@ -37,6 +37,7 @@
   wait_for:
     port: "{{ consul_http_port }}"
     timeout: 120
+  when: consul_mode == 'server'
 
 - name: Consul | Create ACL
   consul_acl:
