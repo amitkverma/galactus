@@ -50,13 +50,12 @@ monit_alert_mail_message: |+
         Your faithful employee,
         Monit
 
-monit_services:
-  - name: nginx
-    type: process
-    target: /var/run/nginx.pid
-    start: /usr/sbin/service nginx start
-    stop: /usr/sbin/service nginx stop
-    restart: /usr/sbin/service nginx restart
-    rules:
-      - "if failed port 80 protocol http then restart"
-      - "if 5 restarts within 5 cycles then timeout"
+  # - name: nginx
+  #   type: process
+  #   target: /var/run/nginx.pid
+  #   start: /usr/sbin/service nginx start
+  #   stop: /usr/sbin/service nginx stop
+  #   restart: /usr/sbin/service nginx restart
+  #   rules:
+  #     - "if failed port 80 protocol http then restart"
+  #     - "if 5 restarts within 5 cycles then timeout"

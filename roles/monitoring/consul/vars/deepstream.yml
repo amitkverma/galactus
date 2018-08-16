@@ -1,0 +1,10 @@
+---
+consul_services_register:
+    - name: deepstream
+      port: 5757
+      http: "http://localhost:5757/health-check"
+      interval: "60s"
+    - name: netdata
+      port: 19999
+      http: "http://localhost:19999"
+      interval: "60s"

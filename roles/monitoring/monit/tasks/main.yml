@@ -1,4 +1,10 @@
 ---
+- name: Gather variables for monit setup type
+  include_vars: "{{ item }}"
+  with_items: "{{ monitor_application_name | lower }}.yml"
+  tags:
+    - always
+
 - include: debian/pkg.yml
   tags: monit_pkg
   when: ansible_os_family == "Debian"

@@ -5,6 +5,12 @@
   tags:
     - always
 
+- name: Gather variables for monitor setup type
+  include_vars: "{{ item }}"
+  with_items: "{{ monitor_application_name | lower }}.yml"
+  tags:
+    - always
+
 - name: Check Vars
   debug:
     msg: " server_name {{ server_name }}"
