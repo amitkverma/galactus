@@ -15,6 +15,15 @@
   with_items:
     - "{{ consul_services_register }}"
 
+- name: Consul | Transfer health check file to server
+  template:
+    src: redis_health_check.sh.j2
+    dest: "/var/redis_health_check.sh"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0777
+  when: health_check_script_enabled
+
 # Temporary, until consul state=absent is fixed
 - name: Consul | De-register services
   uri:

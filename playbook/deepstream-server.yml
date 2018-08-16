@@ -4,12 +4,12 @@
       playbook: server.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: redis_msg_bus
+    hosts: deepstream_server
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: redis_msg_bus
+  - hosts: deepstream_server
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -21,7 +21,7 @@
         setup:
     roles:
       - { role: common, tags: [common] }
-      - { role: cache/redis, tags: [redis] }
+      - { role: socket/deepstream, tags: [deepstream] }
       - { role: monitoring/consul, tags: [consul] }
       - { role: monitoring/netdata, tags: [netdata] }
       - { role: monitoring/monit, tags: [monit] }

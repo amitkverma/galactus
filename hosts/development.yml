@@ -49,18 +49,20 @@ netdata_server:
     firewall_open_ports: [80,8300,8301,19999]
     nginx_custom_vhost: netdata
 
-redis_server:
+redis_msg_bus:
   hosts:
-    206.189.131.66:
+    206.189.131.49:
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: cerberus
     server_name: 'redis-deepstream'
     netdata_mode: 'client'
     netdata_monitor_application: ['redis']
     consul_mode: 'client'
-    firewall_open_ports: [80,8300,8301,19999, 6363]
+    firewall_open_ports: [8300,8301,19999, 6363]
     nginx_custom_vhost: netdata
     redis_port: '{{ redis_deepstream_port }}'
+    monitor_application_name: 'redis_msg_bus'
+    health_check_script_enabled: true
 
 deepstream_server:
   hosts:
