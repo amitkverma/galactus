@@ -1,5 +1,6 @@
 {{ ansible_managed | comment }}
 
-Host gitlab.com
-IdentityFile /root/.ssh/id_rsa.deploy
+Host {{ git_host }}
+IdentityFile {{ user_home_path }}/.ssh/id_rsa.deploy
 IdentitiesOnly yes
+StrictHostKeyChecking=no

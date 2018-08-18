@@ -1,13 +1,13 @@
 ---
 monit_services:
-  - name: haproxy
+  - name: pm2
     type: process_by_name
-    target: haproxy
-    start: /usr/sbin/service haproxy start 
-    stop: /usr/sbin/service haproxy stop 
-    restart: /usr/sbin/service haproxy restart 
+    target: pm2
+    start: /usr/sbin/service pm2 start 
+    stop: /usr/sbin/service pm2 stop 
+    restart: /usr/bin/service pm2 restart 
     rules:
-      - "if failed port {{ deepstream_websocket_port_lb }} protocol http then restart"
+      - "if failed port {{ nodejs_application_port }} protocol http then restart"
       - "if 5 restarts within 5 cycles then timeout"
   - name: netdata
     type: process

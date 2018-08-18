@@ -1,0 +1,12 @@
+---
+consul_services_register:
+    - name: nodejs
+      tags: ['application-server', 'nodejs']
+      port: 8888
+      http: "http://localhost:8888/health_check"
+      interval: "60s"
+    - name: netdata
+      tags: ['application-server', 'netdata']
+      port: 19999
+      http: "http://localhost:19999"
+      interval: "60s"

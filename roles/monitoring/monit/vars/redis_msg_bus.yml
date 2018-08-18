@@ -3,9 +3,9 @@ monit_services:
   - name: redis
     type: process_by_name
     target: redis
-    start: /usr/bin/service redis start 
-    stop: /usr/bin/service redis stop 
-    restart: /usr/bin/service redis restart 
+    start: /usr/sbin/service redis start 
+    stop: /usr/sbin/service redis stop 
+    restart: /usr/sbin/service redis restart 
     rules:
       - "if failed port {{ redis_deepstream_port }} protocol http then restart"
       - "if 5 restarts within 5 cycles then timeout"

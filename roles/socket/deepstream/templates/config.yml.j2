@@ -79,8 +79,20 @@ logInvalidAuthData: true
 maxMessageSize: 1048576
 
 #Authentication
+
+{% if deepstream_auth_enable is not defined %}
 auth:
   type: none
+{% endif %}
+
+{% if deepstream_auth_enable is defined %}
+auth:
+   type: http
+   options:
+     endpointUrl: {{ deepstream_auth_url  }}
+     permittedStatusCodes: [ 200 ]
+     requestTimeout: 2000
+{% endif %}
 
 #   # reading users and passwords from a file
 #   type: file
@@ -118,9 +130,9 @@ permission:
 
 # Timeouts (in milliseconds)
 # Timeout for client RPC acknownledgement
-rpcAckTimeout: 1000
+rpcAckTimeout: 60000
 # Timeout for actual RPC provider response
-rpcTimeout: 10000
+rpcTimeout: 60000
 # Maximum time permitted to fetch from cache
 cacheRetrievalTimeout: 1000
 # Maximum time permitted to fetch from storage

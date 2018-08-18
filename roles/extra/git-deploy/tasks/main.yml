@@ -5,12 +5,12 @@
     dest: "{{ user_home_path }}/.ssh/id_rsa.deploy"
     owner: root
     group: "root"
-    mode: 0600
+    mode: 0644
 
 - name: git-deploy | Configure ssh to use ansible key
   template:
     src: "ssh_config.j2"
-    dest: "/root/.ssh/config"
+    dest: "{{ user_home_path }}/.ssh/config"
     owner: root
     group: "root"
     mode: 0644
@@ -19,11 +19,6 @@
   file:
     path: /var/apps
     state: directory
-    owner: "{{ deploy_user_group }}"
+    owner: "{{ node_application_user }}"
     group: "{{ deploy_user_group }}"
-
-- name: git-deploy |  clone a private repository
-  git: 
-    repo: "{{ api_server_repo }}"
-    key_file: /root/.ssh/id_rsa.deploy
-    dest: /var/apps
+    mode: 0777

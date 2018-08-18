@@ -1,10 +1,15 @@
 ---
 consul_services_register:
     - name: redis
+      tags: ['redis','message-bus', '{{ inventory_hostname }}']
       port: "{{ redis_deepstream_port }}"
       script: "/var/redis_health_check.sh"
       interval: "60s"
     - name: netdata
-      port: 19999
-      http: "http://localhost:19999"
+      tags: ['application','monitoring', '{{ inventory_hostname }}']
+      script: "ps -eo pid,cmd,etime |  grep /usr/sbin/netdata | grep -v 'grep'"
+      interval: "60s"
+    - name: monit
+      tags: ['application','watchdog', '{{ inventory_hostname }}']
+      script: "ps -eo pid,cmd,etime |  grep /usr/bin/monit | grep -v 'grep'"
       interval: "60s"

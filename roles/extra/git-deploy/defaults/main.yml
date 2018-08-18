@@ -1,2 +1,2 @@
-user_home_path: /root
+user_home_path: /home/{{ node_application_user }}
 api_server_repo: git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-dashboard-api.git

@@ -14,9 +14,10 @@ all:
     redis_deepstream_server: '13.232.230.45'
     deepstream_websocket_port: 5757
     deepstream_websocket_port_lb: 443
-    deepstream_websocket_ip_lb: 13.126.165.43
     deepstream_http_port: 8787
     pm2_user: root
+    deepstream_auth_url: https://test.charcoaleats.com/dashboard/open/live/authenticateUser
+    git_host: git@gitlab.charcoalbiryani.com
 web: 
   hosts:
     206.189.131.39:
@@ -53,9 +54,10 @@ netdata_server:
 redis_msg_bus:
   hosts:
     13.232.230.45:
+      consul_ip: '172.31.17.8'
   vars:
     ansible_ssh_user: dranzer
-    server_name: 'redis-msg-bug'
+    server_name: 'redis-msg-bus'
     netdata_mode: 'slave'
     netdata_monitor_application: ['redis']
     consul_mode: 'client'
@@ -64,7 +66,6 @@ redis_msg_bus:
     redis_port: '{{ redis_deepstream_port }}'
     monitor_application_name: 'redis_msg_bus'
     health_check_script_enabled: true
-    consul_ip: '172.31.17.8'
 
 deepstream_server:
   hosts:
@@ -75,21 +76,23 @@ deepstream_server:
         server_name: 'deepstream-node-2'
         consul_ip: '172.31.1.7'
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: dranzer
     netdata_mode: 'slave'
     netdata_monitor_application: []
     consul_mode: 'client'
     firewall_open_ports: [5757,8300,8301,19999,6363]
     is_redis_msg_plugin_used: true
     monitor_application_name: 'deepstream'
+    deepstream_auth_enable: true
+    health_check_script_enabled: true
 
 deepstream_haproxy_lb:
   hosts:
-    13.126.165.43:
-        consul_ip: '172.31.22.199'
+    13.232.122.32:
+        consul_ip: '172.31.22.29'
   vars:
-    ansible_ssh_user: dranzer
-    server_name: 'deepstream-lb'
+    ansible_ssh_user: ubuntu
+    server_name: 'deepstream-loadbalancer'
     netdata_mode: 'slave'
     netdata_monitor_application: ['haproxy']
     consul_mode: 'client'
@@ -102,57 +105,4 @@ deepstream_haproxy_lb:
         host: '13.126.180.86'
     haproxy_ssl_enable: true
     monitor_application_name: 'haproxy'
-
-
-
-redis_server:
-  hosts:
-    206.189.131.66:
-  vars:
-    ansible_ssh_user: root
-    server_name: 'redis-deepstream'
-    netdata_mode: 'client'
-    netdata_monitor_application: ['redis']
-    consul_mode: 'client'
-    firewall_open_ports: [80,8300,8301,19999, 6363]
-    nginx_custom_vhost: netdata
-    redis_port: '{{ redis_deepstream_port }}'
-
-
-deepstream_nginx_lb:
-  hosts:
-    139.59.58.165:
-  vars:
-    ansible_ssh_user: root
-    server_name: 'deepstream-lb'
-    netdata_mode: 'client'
-    netdata_monitor_application: ['redis']
-    consul_mode: 'client'
-    firewall_open_ports: [80,8300,8301,19999, 6363]
-    nginx_custom_vhost: deepstream
-    deepstream_server: ['206.189.131.39','206.189.131.49']
-
-nodejs_server:
-  hosts:
-    139.59.78.87:
-  vars:
-    ansible_ssh_user: root
-    server_name: 'netdata-server'
-    netdata_mode: 'master'
-    netdata_monitor_application: ['nginx']
-    consul_mode: 'client'
-    firewall_open_ports: [80,8300,8301,19999]
-    nginx_custom_vhost: netdata
-
-
-
-#consul_client:
-#  hosts:
-#    178.128.72.107:
-#  vars:
-#    ansible_ssh_user: root
-#    server_name: 'netdata-server'
-#    netdata_mode: 'slave'
-#    netdata_monitor_application: ['nginx']
-#    consul_mode: 'client'
-
+    health_check_script_enabled: true

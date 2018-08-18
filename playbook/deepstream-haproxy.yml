@@ -28,7 +28,6 @@
       - { role: extra/swapfile, tags: [swapfile] }
       - { role: security/fail2ban, tags: [fail2ban] }
       - { role: security/ntp, tags: [ntp] }
-      - { role: security/ufw, tags: [ufw] }
       - { role: extra/sendmail, tags: [sendmail] }
       - { role: extra/users, tags: [users] }
 

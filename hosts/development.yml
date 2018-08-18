@@ -3,7 +3,7 @@
 all:
   vars:
     ansible_connection: ssh
-    netdata_uuid: '996fdb5e-a122-11e8-8383-1fe1ff03e34c'
+    netdata_uuid: '4035023a-a53c-4053-93e0-f7b00f103490'
     netdata_master_ip: '178.128.72.107' # Netdata floating IP
     deny_default_user: 'ubuntu'
     prod_consul_datacenter: 'DO-BLR'
@@ -17,6 +17,11 @@ all:
     deepstream_websocket_ip_lb: 139.59.38.105
     deepstream_http_port: 8787
     pm2_user: root
+    nodejs_application_port: 8888
+    node_application_user: scylla
+    deepstream_auth_url: https://www.charcoaleats.com/dashboard/open/live/authenticateUser
+    git_host: gitlab.charcoalbiryani.com
+    nodejs_install_npm_user: root
 web: 
   hosts:
     206.189.131.39:
@@ -56,7 +61,7 @@ redis_msg_bus:
   vars:
     ansible_ssh_user: cerberus
     server_name: 'redis-deepstream'
-    netdata_mode: 'client'
+    netdata_mode: 'slave'
     netdata_monitor_application: ['redis']
     consul_mode: 'client'
     firewall_open_ports: [8300,8301,19999, 6363]
@@ -73,13 +78,14 @@ deepstream_server:
         server_name: 'deepstream-server-2'
   vars:
     ansible_ssh_user: cerberus
-    netdata_mode: 'client'
+    netdata_mode: 'slave'
     netdata_monitor_application: ['redis']
     consul_mode: 'client'
     firewall_open_ports: [5757,8300,8301,19999,6363]
     nginx_custom_vhost: netdata
     is_redis_msg_plugin_used: true
     monitor_application_name: 'deepstream'
+    deepstream_auth_enable: true
 
 deepstream_haproxy_lb:
   hosts:
@@ -87,7 +93,7 @@ deepstream_haproxy_lb:
   vars:
     ansible_ssh_user: cerberus
     server_name: 'deepstream-lb'
-    netdata_mode: 'client'
+    netdata_mode: 'slave'
     netdata_monitor_application: ['haproxy']
     consul_mode: 'client'
     firewall_open_ports: [443,8300,8301,19999,5757]
@@ -102,15 +108,17 @@ deepstream_haproxy_lb:
 
 nodejs_server:
   hosts:
-    139.59.78.87:
+    159.65.146.183:
+      server_name: 'test-application-server-1'
+    139.59.80.118:
+      server_name: 'test-application-server-2'
   vars:
-    ansible_ssh_user: root
-    server_name: 'netdata-server'
-    netdata_mode: 'master'
-    netdata_monitor_application: ['nginx']
+    ansible_ssh_user: cerberus
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nodejs']
     consul_mode: 'client'
-    firewall_open_ports: [80,8300,8301,19999]
-    nginx_custom_vhost: netdata
+    firewall_open_ports: [8888,8300,8301,19999]
+    monitor_application_name: 'nodejs'
 
 
 
