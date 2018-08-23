@@ -1,0 +1,68 @@
+global
+    log /dev/log    local0
+    log /dev/log    local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+    # Default SSL material locations
+    ca-base /etc/ssl/certs
+    crt-base /etc/ssl/private
+
+    # Default ciphers to use on SSL-enabled listening sockets.
+    # For more information, see ciphers(1SSL). This list is from:
+    #  https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+    ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
+    ssl-default-bind-options no-sslv3
+
+defaults
+    mode http
+    log global
+    option httplog
+    option  http-server-close
+    option  dontlognull
+    option  redispatch
+    option  contstats
+    retries 3
+    backlog 10000
+    timeout client          25s
+    timeout connect          5s
+    timeout server          25s
+    # timeout tunnel available in ALOHA 5.5 or HAProxy 1.5-dev10 and higher
+    timeout tunnel        3600s
+    timeout http-keep-alive  1s
+    timeout http-request    15s
+    timeout queue           30s
+    timeout tarpit          60s
+    default-server inter 3s rise 2 fall 3
+    option forwardfor
+
+frontend haproxynode
+    bind *:443 {% if haproxy_ssl_enable %} ssl crt /etc/ssl/charcoaleats.pem {% endif %}
+    mode http
+    default_backend backendnodes
+
+backend backendnodes
+    balance roundrobin
+    option forwardfor
+    http-request set-header X-Forwarded-Port %[dst_port]
+    http-request add-header X-Forwarded-Proto https if { ssl_fc }
+{% for backend in node_server %}
+    server {{ backend.name }} {{ backend.host }}:{{ nodejs_api_port }}  check
+{% endfor %}
+
+listen stats
+    bind :{{ haproxy_stat_auth_post }}
+    stats {{ haproxy_stat_auth_status }}
+    stats uri /haproxy_stats
+    stats hide-version
+    stats auth {{ haproxy_stat_auth_user }}:{{ haproxy_stat_auth_pwd }}
+
+listen health_check_http_url
+    bind :60000
+    mode http
+    monitor-uri /health_check
+    option      dontlognull

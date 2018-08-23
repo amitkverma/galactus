@@ -18,10 +18,10 @@ all:
     pm2_user: root
     nodejs_application_port: 8888
     node_application_user: scylla
-    deepstream_auth_url: http://preprod.charcoaleats.com/dashboard/open/live/authenticateUser
+    deepstream_auth_url: https://www.charcoaleats.com/dashboard/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
-    env_host_name: preprod.charcoaleats.com
+    env_host_name: www.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
     admin_user: dranzer
@@ -135,7 +135,7 @@ nodejs_server:
       server_name: 'worker-server'
       consul_ip: '172.31.24.177'
     13.232.130.25:
-      server_name: 'application-server-4'
+      server_name: 'application-server-3'
       consul_ip: '172.31.4.148'
   vars:
     ansible_ssh_user: ubuntu
@@ -144,4 +144,30 @@ nodejs_server:
     consul_mode: 'client'
     firewall_open_ports: [8888,8300,8301,19999]
     monitor_application_name: 'nodejs'
+    health_check_script_enabled: true
+
+api_haproxy_lb:
+  hosts:
+    13.232.243.145:
+      server_name: 'lb-api-primary'
+      consul_ip: '172.31.10.115'
+    13.232.196.152:
+      server_name: 'lb-api-backup'
+      consul_ip: '172.31.27.91'
+  vars:
+    ansible_ssh_user: ubuntu
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['haproxy']
+    consul_mode: 'client'
+    firewall_open_ports: [443,8300,8301,19999]
+    haproxy_custom_vhost: api
+    node_server:
+      - name: 'node_s1'
+        host: '35.154.42.33'
+      - name: 'node_s2'
+        host: '13.232.108.119'
+      - name: 'node_s3'
+        host: '13.232.130.25'
+    haproxy_ssl_enable: true
+    monitor_application_name: 'haproxy'
     health_check_script_enabled: true

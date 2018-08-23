@@ -19,17 +19,30 @@ all:
     pm2_user: root
     nodejs_application_port: 8888
     node_application_user: scylla
-    deepstream_auth_url: https://test.charcoaleats.com/dashboard/open/live/authenticateUser
+    deepstream_auth_url: https://preprod.charcoaleats.com/dashboard/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
-web: 
-  hosts:
-    206.189.131.39:
-  vars:
-    ansible_ssh_user: root
-    server_name: 'tmp'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx']
+    env_host_name: preprod.charcoaleats.com
+    nodejs_cpo_port: 8001
+    nodejs_api_port: 8888
+    admin_user: driger
+    users:
+      - name: "driger" # Ansible User
+        groups:
+          - sudo
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/driger.pub') }}"
+      - name: "dragoon" # Admin User 
+        groups:
+          - sudo
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/dragoon.pub') }}"
+      - name: "scylla" # Deploy User
+        groups:
+          - www
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/scylla.pub') }}"
+
 
 consul_server:
   hosts:
@@ -108,12 +121,12 @@ deepstream_haproxy_lb:
 
 nodejs_server:
   hosts:
-    159.65.146.183:
+    206.189.141.180:
       server_name: 'test-application-server-1'
-    139.59.80.118:
+    139.59.22.217:
       server_name: 'test-application-server-2'
   vars:
-    ansible_ssh_user: cerberus
+    ansible_ssh_user: root
     netdata_mode: 'slave'
     netdata_monitor_application: ['nodejs']
     consul_mode: 'client'

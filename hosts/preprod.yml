@@ -17,7 +17,7 @@ all:
     pm2_user: root
     nodejs_application_port: 8888
     node_application_user: scylla
-    deepstream_auth_url: http://preprod.charcoaleats.com/dashboard/open/live/authenticateUser
+    deepstream_auth_url: https://preprod.charcoaleats.com/dashboard/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
     env_host_name: preprod.charcoaleats.com
@@ -56,15 +56,18 @@ deepstream_server:
     is_redis_msg_plugin_used: false
     monitor_application_name: 'deepstream'
     deepstream_auth_enable: true
+    health_check_script_enabled: true
 
 nodejs_server:
   hosts:
-    159.89.172.11:
+    159.89.164.174:
       server_name: 'preprod-application-server-1'
-    206.189.135.113:
+    159.89.164.176:
       server_name: 'preprod-application-server-2'
+    159.89.172.95:
+      server_name: 'preprod-application-server-3'
   vars:
-    ansible_ssh_user: driger
+    ansible_ssh_user: root
     netdata_mode: 'slave'
     netdata_monitor_application: ['nodejs']
     consul_mode: 'client'
@@ -74,7 +77,7 @@ nodejs_server:
 
 application_haproxy_lb:
   hosts:
-    139.59.85.244:
+    139.59.19.37:
   vars:
     ansible_ssh_user: root
     server_name: 'application-loadbalancer'
@@ -87,6 +90,7 @@ application_haproxy_lb:
     nginx_ssl_enable: true
     nodejs_server: 
       - name: 'preprod-application-server-1'
-        host: '159.89.171.192'
+        host: '159.89.172.11'
       - name: 'preprod-application-server-2'
-        host: '159.89.171.234'
+        host: '206.189.135.113'
+    health_check_script_enabled: true
