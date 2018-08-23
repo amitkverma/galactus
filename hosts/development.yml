@@ -19,7 +19,7 @@ all:
     pm2_user: root
     nodejs_application_port: 8888
     node_application_user: scylla
-    deepstream_auth_url: https://www.charcoaleats.com/dashboard/open/live/authenticateUser
+    deepstream_auth_url: https://test.charcoaleats.com/dashboard/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
 web: 

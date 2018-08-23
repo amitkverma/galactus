@@ -16,16 +16,32 @@ all:
     deepstream_websocket_port_lb: 443
     deepstream_http_port: 8787
     pm2_user: root
-    deepstream_auth_url: https://test.charcoaleats.com/dashboard/open/live/authenticateUser
-    git_host: git@gitlab.charcoalbiryani.com
-web: 
-  hosts:
-    206.189.131.39:
-  vars:
-    ansible_ssh_user: root
-    server_name: 'tmp'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx']
+    nodejs_application_port: 8888
+    node_application_user: scylla
+    deepstream_auth_url: http://preprod.charcoaleats.com/dashboard/open/live/authenticateUser
+    git_host: gitlab.charcoalbiryani.com
+    nodejs_install_npm_user: root
+    env_host_name: preprod.charcoaleats.com
+    nodejs_cpo_port: 8001
+    nodejs_api_port: 8888
+    admin_user: dranzer
+    users:
+      - name: "dranzer" # Ansible User
+        groups:
+          - sudo
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/dranzer.pub') }}"
+      - name: "cerberus" # Admin User 
+        groups:
+          - sudo
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/cerberus.pub') }}"
+      - name: "scylla" # Deploy User
+        groups:
+          - www
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/scylla.pub') }}"
+
 
 consul_server:
   hosts:
@@ -105,4 +121,27 @@ deepstream_haproxy_lb:
         host: '13.126.180.86'
     haproxy_ssl_enable: true
     monitor_application_name: 'haproxy'
+    health_check_script_enabled: true
+
+nodejs_server:
+  hosts:
+    35.154.42.33:
+      server_name: 'application-server-1'
+      consul_ip: '172.31.30.230'
+    13.232.108.119:
+      server_name: 'application-server-2'
+      consul_ip: '172.31.27.168'
+    13.232.125.183:
+      server_name: 'worker-server'
+      consul_ip: '172.31.24.177'
+    13.232.130.25:
+      server_name: 'application-server-4'
+      consul_ip: '172.31.4.148'
+  vars:
+    ansible_ssh_user: ubuntu
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nodejs']
+    consul_mode: 'client'
+    firewall_open_ports: [8888,8300,8301,19999]
+    monitor_application_name: 'nodejs'
     health_check_script_enabled: true

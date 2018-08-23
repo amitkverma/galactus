@@ -1,0 +1,138 @@
+upstream dashboard {
+    {% for server in nodejs_server %}
+        server {{ server.host }}:{{ nodejs_api_port }};
+    {% endfor %}
+}
+upstream cpo {
+    {% for server in nodejs_server %}
+        server {{ server.host }}:{{ nodejs_cpo_port }};
+    {% endfor %}
+}
+server {
+        listen 80;
+
+        server_name {{ env_host_name }};
+
+        location / {
+             root /var/www/charcoal-website/htdocs;
+             index index.html;
+        }
+        location /dashboard {
+            proxy_pass http://dashboard;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+        location /cpo {
+            proxy_pass http://cpo;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    	location /applications/callcenter {
+        	alias /var/www/callcenter-angular2/;
+        	index index.html;
+      	}        
+    	location /applications/outletDashboard {
+        	alias /var/www/charcoal-outlet-dashboard/;
+        	index index.html;
+      	}  
+        location  /applications/charcoalAdmin {
+             alias /var/www/charcoal-admin-dashboard;
+             index index.html;
+        }        
+        location /applications/digitalsignage {
+            alias /var/www/digital-signage;
+            index index.html;
+        }    
+        location  /applications/charcoalPurchaseOrder {
+             alias /var/www/charcoal-purchase-order;
+             index index.html;
+        }
+        location /authentication/ {
+                alias  /var/www/authentication/;
+                index index.html;
+        } 
+        location /paymentSodexo/ {
+            alias  /var/www/paymentSodexo/;
+            index index.html;
+        } 
+        location /health-check {
+        	access_log off;
+        	return 200 "healthy\n";
+    	} 
+}
+
+server {
+        listen 443;
+        server_name  {{ env_host_name }};
+
+        ssl on;
+        ssl_certificate /etc/ssl/charcoaleats.crt;
+        ssl_certificate_key /etc/ssl/charcoaleats.key;
+
+        #enables all versions of TLS, but not SSLv2 or 3 which are weak and now deprecated.
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+
+        location / {
+             root /var/www/charcoal-website/htdocs;
+             index index.html;
+        }
+        location /dashboard {
+            proxy_pass http://dashboard;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+        location /cpo {
+            proxy_pass http://cpo;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    	location /applications/callcenter {
+        	alias /var/www/callcenter-angular2/;
+        	index index.html;
+      	}        
+    	location /applications/outletDashboard {
+        	alias /var/www/charcoal-outlet-dashboard/;
+        	index index.html;
+      	}  
+        location  /applications/charcoalAdmin {
+             alias /var/www/charcoal-admin-dashboard;
+             index index.html;
+        }        
+        location /applications/digitalsignage {
+            alias /var/www/digital-signage;
+            index index.html;
+        }    
+        location  /applications/charcoalPurchaseOrder {
+             alias /var/www/charcoal-purchase-order;
+             index index.html;
+        }
+        location /authentication/ {
+                alias  /var/www/authentication/;
+                index index.html;
+        } 
+        location /paymentSodexo/ {
+            alias  /var/www/paymentSodexo/;
+            index index.html;
+        } 
+        location /health-check {
+        	access_log off;
+        	return 200 "healthy\n";
+    	} 
+
+        
+}
+
+         

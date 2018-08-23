@@ -1,9 +1,9 @@
 ---
 consul_services_register:
-    - name: nodejs
-      tags: ['loadbalancer', 'nodejs' , '{{ inventory_hostname }}']
-      port: '{{ nodejs_api_port }}'
-      http: "http://localhost:{{ nodejs_api_port }}/health_check"
+    - name: nginx
+      tags: ['loadbalancer', 'nginx' , '{{ inventory_hostname }}']
+      port: '{{ nodejs_cpo_port }}'
+      http: "http://localhost:{{ nodejs_cpo_port }}/health-check"
       interval: "60s"
     - name: netdata
       tags: ['application','monitoring', '{{ inventory_hostname }}']

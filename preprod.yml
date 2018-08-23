@@ -4,12 +4,12 @@
       playbook: server.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: application_haproxy_lb
+    hosts: nodejs_server
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: application_haproxy_lb
+  - hosts: nodejs_server
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -21,14 +21,15 @@
         setup:
     roles:
       - { role: common, tags: [common] }
-      - { role: webservers/nginx, tags: [nginx] }
+      - { role: extra/users, tags: [users] }
+      - { role: webservers/nodejs, tags: [nodejs] }
+      - { role: extra/git-deploy, tags: [nodejs] }
+      - { role: monitoring/consul, tags: [consul] }
       - { role: monitoring/netdata, tags: [netdata] }
       - { role: monitoring/monit, tags: [monit] }
-      # - { role: monitoring/consul, tags: [consul] }
       - { role: extra/swapfile, tags: [swapfile] }
-      - { role: extra/users, tags: [users] }
-      - { role: extra/sendmail, tags: [sendmail] }
       - { role: security/fail2ban, tags: [fail2ban] }
       - { role: security/ntp, tags: [ntp] }
       - { role: security/ufw, tags: [ufw] }
+      - { role: extra/sendmail, tags: [sendmail] }
 

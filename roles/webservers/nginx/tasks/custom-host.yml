@@ -1,4 +1,18 @@
 ---
+- name: Copy crt file pem to server
+  copy:
+    src: "../../../../pub_keys/charcoaleats.crt"
+    dest: /etc/ssl/charcoaleats.crt
+    mode: 0640
+  when: nginx_ssl_enable
+
+- name: Copy key file pem to server
+  copy:
+    src: "../../../../pub_keys/charcoaleats.key"
+    dest: /etc/ssl/charcoaleats.key
+    mode: 0640
+  when: nginx_ssl_enable
+
 - name: Remove default nginx vhost config file (if configured).
   file:
     path: "{{ nginx_default_vhost_path }}"

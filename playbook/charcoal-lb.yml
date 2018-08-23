@@ -22,9 +22,9 @@
     roles:
       - { role: common, tags: [common] }
       - { role: webservers/nginx, tags: [nginx] }
+      - { role: monitoring/consul, tags: [consul] }
       - { role: monitoring/netdata, tags: [netdata] }
       - { role: monitoring/monit, tags: [monit] }
-      # - { role: monitoring/consul, tags: [consul] }
       - { role: extra/swapfile, tags: [swapfile] }
       - { role: extra/users, tags: [users] }
       - { role: extra/sendmail, tags: [sendmail] }
