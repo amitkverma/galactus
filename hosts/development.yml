@@ -85,20 +85,17 @@ redis_msg_bus:
 
 deepstream_server:
   hosts:
-    139.59.72.45:
-        server_name: 'deepstream-server-1'
-    139.59.44.112:
-        server_name: 'deepstream-server-2'
+    139.59.76.183:
   vars:
-    ansible_ssh_user: cerberus
+    ansible_ssh_user: root
     netdata_mode: 'slave'
     netdata_monitor_application: ['redis']
     consul_mode: 'client'
     firewall_open_ports: [5757,8300,8301,19999,6363]
     nginx_custom_vhost: netdata
-    is_redis_msg_plugin_used: true
+    is_redis_msg_plugin_used: false
     monitor_application_name: 'deepstream'
-    deepstream_auth_enable: true
+    deepstream_auth_enable: false
 
 deepstream_haproxy_lb:
   hosts:

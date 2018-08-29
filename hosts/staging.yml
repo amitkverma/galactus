@@ -1,11 +1,76 @@
-# Add each host to the [staging] group and to a "type" group such as [web] or [db].
-# List each machine only once per [group], even if it will host multiple sites.
 all:
   vars:
     ansible_connection: ssh
-web: 
+    netdata_uuid: '4035023a-a53c-4053-93e0-f7b00f103490'
+    netdata_master_ip: '178.128.72.107' # Netdata floating IP
+    deny_default_user: 'ubuntu'
+    prod_consul_datacenter: 'DO-BLR'
+    prod_consul_domain: 'charcoaleats'
+    consul_server_ip: '139.59.79.222' # Consul Private IP
+    redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
+    redis_deepstream_port: 6363
+    redis_deepstream_server: '159.89.172.11'
+    deepstream_websocket_port_lb: 443
+    deepstream_websocket_ip_lb: 159.89.163.173
+    deepstream_http_port: 8787
+    deepstream_websocket_port: 5757
+    pm2_user: root
+    nodejs_application_port: 8888
+    node_application_user: scylla
+    deepstream_auth_url: https://staging.charcoaleats.com/dashboard/open/live/authenticateUser
+    git_host: gitlab.charcoalbiryani.com
+    nodejs_install_npm_user: root
+    env_host_name: staging.charcoaleats.com
+    nodejs_cpo_port: 8001
+    nodejs_api_port: 8888
+    admin_user: driger
+    users:
+      - name: "driger" # Ansible User
+        groups:
+          - sudo
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/driger.pub') }}"
+      - name: "dragoon" # Admin User 
+        groups:
+          - sudo
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/dragoon.pub') }}"
+      - name: "scylla" # Deploy User
+        groups:
+          - www
+        keys:
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/scylla.pub') }}"
+
+
+deepstream_server:
   hosts:
-    52.176.92.50:
+    159.65.159.32:
   vars:
-    ansible_ssh_user: striker
-    ansible_ssh_pass: amit@17031993
+    ansible_ssh_user: root
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [5757,8300,8301,19999,6363]
+    nginx_custom_vhost: netdata
+    is_redis_msg_plugin_used: false
+    monitor_application_name: 'deepstream'
+    deepstream_auth_enable: true
+
+
+nodejs_server:
+  hosts:
+    159.65.159.165:
+      server_name: 'application-server-1'
+    159.89.164.81:
+      server_name: 'application-server-2'
+  vars:
+    ansible_ssh_user: root
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nodejs']
+    consul_mode: 'client'
+    firewall_open_ports: [8888,8300,8301,19999]
+    monitor_application_name: 'nodejs'
+    health_check_script_enabled: true
+
+
+

@@ -18,7 +18,7 @@ all:
     pm2_user: root
     nodejs_application_port: 8888
     node_application_user: scylla
-    deepstream_auth_url: https://www.charcoaleats.com/dashboard/open/live/authenticateUser
+    deepstream_auth_url: https://api.charcoaleats.com/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
     env_host_name: www.charcoaleats.com
@@ -85,10 +85,10 @@ redis_msg_bus:
 
 deepstream_server:
   hosts:
-    13.232.160.237:
+    13.232.17.35:
         server_name: 'deepstream-node-1'
         consul_ip: '172.31.22.244'
-    13.126.180.86:
+    13.127.75.195:
         server_name: 'deepstream-node-2'
         consul_ip: '172.31.1.7'
   vars:
@@ -104,10 +104,10 @@ deepstream_server:
 
 deepstream_haproxy_lb:
   hosts:
-    13.232.122.32:
+    13.126.165.43:
         consul_ip: '172.31.22.29'
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: dranzer
     server_name: 'deepstream-loadbalancer'
     netdata_mode: 'slave'
     netdata_monitor_application: ['haproxy']
@@ -116,9 +116,9 @@ deepstream_haproxy_lb:
     haproxy_custom_vhost: deepstream
     deepstream_server:
       - name: 'deepstream_s1'
-        host: '13.232.160.237'
+        host: '13.232.17.35'
       - name: 'deepstream_s2'
-        host: '13.126.180.86'
+        host: '13.127.75.195'
     haproxy_ssl_enable: true
     monitor_application_name: 'haproxy'
     health_check_script_enabled: true
@@ -138,7 +138,7 @@ nodejs_server:
       server_name: 'application-server-3'
       consul_ip: '172.31.4.148'
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: dranzer
     netdata_mode: 'slave'
     netdata_monitor_application: ['nodejs']
     consul_mode: 'client'

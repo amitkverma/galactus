@@ -9,15 +9,15 @@ all:
     consul_server_ip: '139.59.79.222' # Consul Private IP
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
     redis_deepstream_port: 6363
-    redis_deepstream_server: '206.189.131.49'
+    redis_deepstream_server: '159.89.172.11'
     deepstream_websocket_port_lb: 443
-    deepstream_websocket_ip_lb: 139.59.38.105
+    deepstream_websocket_ip_lb: 159.89.163.173
     deepstream_http_port: 8787
     deepstream_websocket_port: 5757
     pm2_user: root
     nodejs_application_port: 8888
     node_application_user: scylla
-    deepstream_auth_url: https://preprod.charcoaleats.com/dashboard/open/live/authenticateUser
+    deepstream_auth_url: https://preprod-api.charcoaleats.com/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
     env_host_name: preprod.charcoaleats.com
@@ -42,30 +42,66 @@ all:
           - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/scylla.pub') }}"
 
 
-deepstream_server:
+redis_msg_bus:
   hosts:
-    159.89.171.187:
-        server_name: 'preprod-deepstream-server'
+    159.89.172.11:
   vars:
     ansible_ssh_user: root
+    server_name: 'preprod-redis-msg-bus'
     netdata_mode: 'slave'
     netdata_monitor_application: ['redis']
     consul_mode: 'client'
-    firewall_open_ports: [5757,8300,8301,19999,6363]
+    firewall_open_ports: [8300,8301,19999,6363]
     nginx_custom_vhost: netdata
-    is_redis_msg_plugin_used: false
+    redis_port: '{{ redis_deepstream_port }}'
+    monitor_application_name: 'redis_msg_bus'
+    health_check_script_enabled: true
+
+
+deepstream_server:
+  hosts:
+    159.89.163.34:
+        server_name: 'preprod-deepstream-node-1'
+    159.89.163.37:
+        server_name: 'preprod-deepstream-node-2'
+  vars:
+    ansible_ssh_user: driger
+    netdata_mode: 'slave'
+    netdata_monitor_application: []
+    consul_mode: 'client'
+    firewall_open_ports: [5757,8300,8301,19999,6363]
+    is_redis_msg_plugin_used: true
     monitor_application_name: 'deepstream'
     deepstream_auth_enable: true
     health_check_script_enabled: true
 
+deepstream_haproxy_lb:
+  hosts:
+    159.89.163.173:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'preprod-deepstream-loadbalancer'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['haproxy']
+    consul_mode: 'client'
+    firewall_open_ports: [443,8300,8301,19999,5757]
+    haproxy_custom_vhost: deepstream
+    deepstream_server:
+      - name: 'deepstream_s1'
+        host: '159.89.163.34'
+      - name: 'deepstream_s2'
+        host: ' 159.89.163.37'
+    haproxy_ssl_enable: true
+    monitor_application_name: 'haproxy'
+    health_check_script_enabled: true
+
+
 nodejs_server:
   hosts:
-    159.89.164.174:
-      server_name: 'preprod-application-server-1'
-    159.89.164.176:
-      server_name: 'preprod-application-server-2'
-    159.89.172.95:
-      server_name: 'preprod-application-server-3'
+    159.89.167.79:
+      server_name: 'application-server-1'
+    159.89.171.196:
+      server_name: 'application-server-2'
   vars:
     ansible_ssh_user: root
     netdata_mode: 'slave'
@@ -75,12 +111,32 @@ nodejs_server:
     monitor_application_name: 'nodejs'
     health_check_script_enabled: true
 
-application_haproxy_lb:
+api_haproxy_lb:
   hosts:
-    139.59.19.37:
+    159.89.167.2:
+      server_name: 'lb-api-primary'
   vars:
     ansible_ssh_user: root
-    server_name: 'application-loadbalancer'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['haproxy']
+    consul_mode: 'client'
+    firewall_open_ports: [443,8300,8301,19999]
+    haproxy_custom_vhost: api
+    node_server:
+      - name: 'node_s1'
+        host: '159.89.167.79'
+      - name: 'node_s2'
+        host: '159.89.171.196'
+    haproxy_ssl_enable: true
+    monitor_application_name: 'haproxy'
+    health_check_script_enabled: true
+
+webserver_lb:
+  hosts:
+    139.59.21.115:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'webserver_lb'
     netdata_mode: 'slave'
     netdata_monitor_application: ['nginx']
     consul_mode: 'client'
@@ -90,7 +146,7 @@ application_haproxy_lb:
     nginx_ssl_enable: true
     nodejs_server: 
       - name: 'preprod-application-server-1'
-        host: '159.89.172.11'
+        host: '159.89.167.79'
       - name: 'preprod-application-server-2'
-        host: '206.189.135.113'
+        host: '159.89.171.196'
     health_check_script_enabled: true

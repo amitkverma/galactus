@@ -1,15 +1,15 @@
 ---
   - import_playbook: variable-check.yml
     vars:
-      playbook: server.yml
+      playbook: preprod.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: nodejs_server
+    hosts: webserver_lb
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: nodejs_server
+  - hosts: webserver_lb
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -20,17 +20,14 @@
       - name: Gathering Facts
         setup:
     roles:
-      # - { role: common, tags: [common] }
+      - { role: common, tags: [common] }
+      - { role: webservers/nginx, tags: [nginx] }
+      - { role: monitoring/consul, tags: [consul] }
+      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: monitoring/monit, tags: [monit] }
+      - { role: extra/swapfile, tags: [swapfile] }
       - { role: extra/users, tags: [users] }
-      - { role: webservers/nodejs, tags: [nodejs] }
-      - { role: extra/git-deploy, tags: [nodejs] }
-      # - { role: monitoring/consul, tags: [consul] }
-      # - { role: monitoring/netdata, tags: [netdata] }
-      # - { role: monitoring/monit, tags: [monit] }
-      # - { role: extra/swapfile, tags: [swapfile] }
-      # - { role: security/fail2ban, tags: [fail2ban] }
-      # - { role: security/ntp, tags: [ntp] }
-      # - { role: security/ufw, tags: [ufw] }
-      # - { role: extra/sendmail, tags: [sendmail] }
-      # - { role: extra/users, tags: [users] }
+      - { role: extra/sendmail, tags: [sendmail] }
+      - { role: security/fail2ban, tags: [fail2ban] }
+      - { role: security/ntp, tags: [ntp] }
 
