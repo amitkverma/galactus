@@ -17,10 +17,10 @@ all:
     pm2_user: root
     nodejs_application_port: 8888
     node_application_user: scylla
-    deepstream_auth_url: https://dev.charcoaleats.com/dashboard/open/live/authenticateUser
+    deepstream_auth_url: https://test.charcoaleats.com/dashboard/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
-    env_host_name: dev.charcoaleats.com
+    env_host_name: test.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
     admin_user: driger
@@ -44,7 +44,7 @@ all:
 
 deepstream_server:
   hosts:
-    206.189.142.62:
+    206.189.129.206:
   vars:
     ansible_ssh_user: root
     netdata_mode: 'slave'
@@ -59,10 +59,10 @@ deepstream_server:
 
 nodejs_server:
   hosts:
-    206.189.142.78:
-      server_name: 'dev-application-server-1'
-    206.189.129.80:
-      server_name: 'dev-application-server-2'
+    206.189.129.208:
+      server_name: 'test-application-server-1'
+    206.189.129.205:
+      server_name: 'test-application-server-2'
   vars:
     ansible_ssh_user: root
     netdata_mode: 'slave'
