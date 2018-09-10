@@ -72,5 +72,3 @@ nodejs_server:
     monitor_application_name: 'nodejs'
     health_check_script_enabled: true
 
-
-

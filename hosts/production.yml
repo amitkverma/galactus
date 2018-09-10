@@ -171,3 +171,32 @@ api_haproxy_lb:
     haproxy_ssl_enable: true
     monitor_application_name: 'haproxy'
     health_check_script_enabled: true
+
+contly_server:
+  hosts:
+    139.59.21.36:
+      server_name: 'countly-server'
+  vars:
+    ansible_ssh_user: root
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nodejs']
+    consul_mode: 'client'
+    firewall_open_ports: [22, 443,80]
+    monitor_application_name: 'nodejs'
+    health_check_script_enabled: true
+
+
+elk_stack_server:
+  hosts:
+    206.189.138.104:
+      server_name: 'elk_stack-server'
+  vars:
+    ansible_ssh_user: cerberus
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'client'
+    firewall_open_ports: [22,80,443, 9200, 9300,5044,8200]
+    monitor_application_name: 'nodejs'
+    health_check_script_enabled: true
+    nginx_custom_vhost: elk
+    nginx_ssl_enable: true
