@@ -4,12 +4,12 @@
       playbook: server.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: deepstream_haproxy_lb
+    hosts: api_haproxy_lb
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: deepstream_haproxy_lb
+  - hosts: api_haproxy_lb
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -20,14 +20,5 @@
       - name: Gathering Facts
         setup:
     roles:
-      # - { role: common, tags: [common] }
       - { role: webservers/haproxy, tags: [haproxy] }
-      # - { role: monitoring/consul, tags: [consul] }
-      # - { role: monitoring/netdata, tags: [netdata] }
-      # - { role: monitoring/monit, tags: [monit] }
-      # - { role: extra/swapfile, tags: [swapfile] }
-      # - { role: security/fail2ban, tags: [fail2ban] }
-      # - { role: security/ntp, tags: [ntp] }
-      # - { role: extra/sendmail, tags: [sendmail] }
-      # - { role: extra/users, tags: [users] }
 

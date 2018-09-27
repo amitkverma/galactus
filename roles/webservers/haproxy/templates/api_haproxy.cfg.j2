@@ -28,9 +28,10 @@ defaults
     option  contstats
     retries 3
     backlog 10000
-    timeout client          500s
-    timeout connect          500s
-    timeout server          500s
+    timeout client         10m
+    timeout connect        20s
+    timeout server         10m
+    timeout check          20s
     # timeout tunnel available in ALOHA 5.5 or HAProxy 1.5-dev10 and higher
     timeout tunnel        3600s
     timeout http-keep-alive  500s
