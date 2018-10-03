@@ -53,15 +53,12 @@ plugins:
       password: {{ redis_password }}
 {% endif %}
 {% if is_redis_cache_plugin_used %}
-
   cache:
     name: redis
     options:
       host: {{ redis_deepstream_server }}
       port: {{ redis_deepstream_port }}
-    redisOptions:
       password: {{ redis_password }}
-
 {% endif %}
 
 # Storage options

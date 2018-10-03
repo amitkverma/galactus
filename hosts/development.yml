@@ -72,3 +72,19 @@ nodejs_server:
     monitor_application_name: 'nodejs'
     health_check_script_enabled: true
 
+
+redis_cache:
+  hosts:
+    139.59.41.9:
+    206.189.134.69:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'preprod-redis-msg-bus'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [8300,8301,19999,6363]
+    nginx_custom_vhost: netdata
+    redis_port: '{{ redis_deepstream_port }}'
+    monitor_application_name: 'redis_msg_bus'
+    health_check_script_enabled: true
