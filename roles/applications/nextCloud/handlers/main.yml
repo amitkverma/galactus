@@ -1,0 +1,46 @@
+---
+# handlers file for nextcloud
+- name: restart mysql
+  service:
+    name: mysql
+    state: restarted
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+
+- name: start php-fpm
+  service:
+    name: php{{ php_ver }}-fpm
+    state: started
+
+- name: reload php-fpm
+  service:
+    name: php{{ php_ver }}-fpm
+    state: reloaded
+
+- name: start apache
+  service:
+    name: apache2
+    state: started
+
+- name: restart apache
+  service:
+    name: apache2
+    state: restarted
+
+- name: reload apache
+  service:
+    name: apache2
+    state: reloaded
+
+- name: start redis
+  service:
+    name: redis-server
+    state: started

@@ -200,3 +200,18 @@ elk_stack_server:
     health_check_script_enabled: true
     nginx_custom_vhost: elk
     nginx_ssl_enable: true
+
+nextCloud:
+  hosts:
+    142.93.218.187:
+  vars:
+    ansible_ssh_user: root
+    nextcloud_trusted_domain:
+      - "files.charcoaleats.com"
+    nextcloud_websrv: "nginx"
+    nextcloud_admin_pwd: "charcoal007"
+    nextcloud_db_pwd: "f7f01ff233e206f578cfece290ab5225ee0d049b"
+    nextcloud_tls_cert_method: "signed"
+    nextcloud_tls_src_cert: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.crt"
+    nextcloud_tls_src_cert_key: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.key"
+    nextcloud_mysql_root_pwd: "af3cc85dead57bd6b63aee0b6f13f7491c40980b"
