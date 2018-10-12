@@ -88,3 +88,10 @@ redis_cache:
     redis_port: '{{ redis_deepstream_port }}'
     monitor_application_name: 'redis_msg_bus'
     health_check_script_enabled: true
+
+elk_stack_server:
+  hosts:
+    139.59.64.86:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'elk-stack'
