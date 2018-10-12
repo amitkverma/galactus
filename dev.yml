@@ -20,12 +20,7 @@
       - name: Gathering Facts
         setup:
     roles:
-      # - { role: common, tags: [common] }
-      # - { role: extra/swapfile, tags: [swapfile] }
-      # - { role: extra/users, tags: [users] }
-      # - { role: security/fail2ban, tags: [fail2ban] }
-      # - { role: security/ntp, tags: [ntp] }
-      # # - { role: extra/sendmail, tags: [sendmail] }
-      - { role: webservers/nginx, tags: [nginx] }
-      # - { role: security/ufw, tags: [ufw] }
-
+      - { role: elk-stack/java }
+      - { role: elk-stack/elasticsearch }
+      - { role: elk-stack/kibana }
+      - { role: elk-stack/metricbeat }
