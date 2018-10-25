@@ -4,12 +4,12 @@
       playbook: dev.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: elk_stack_server
+    hosts: mysql_test
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: elk_stack_server
+  - hosts: mysql_test
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -20,7 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: elk-stack/java }
-      - { role: elk-stack/elasticsearch }
-      - { role: elk-stack/kibana }
-      - { role: elk-stack/metricbeat }
+      - { role: database/mysql }

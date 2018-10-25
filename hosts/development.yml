@@ -95,3 +95,11 @@ elk_stack_server:
   vars:
     ansible_ssh_user: root
     server_name: 'elk-stack'
+
+
+mysql_test: 
+  hosts:
+    159.65.146.200:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'mysql'

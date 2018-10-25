@@ -7,3 +7,4 @@ ansible-playbook -i ./hosts/preprod.yml  preprod.yml   -e "env=preprod" --privat
 `https://github.com/mrlesmithjr`
 
 Ansible Utility : https://github.com/avinetworks/devops/tree/master/ansible
+https://github.com/do-community/do-blueprint-mysqlgrouprepl
