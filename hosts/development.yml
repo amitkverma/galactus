@@ -24,6 +24,9 @@ all:
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
     admin_user: driger
+    mysql_replication_master: '206.189.141.169'
+    mysql_replication_db: healthcheck
+    mysql_master_read_only_user: {  name: readOnlyCharcoal, password: amitkverma  }
     users:
       - name: "driger" # Ansible User
         groups:
@@ -97,9 +100,28 @@ elk_stack_server:
     server_name: 'elk-stack'
 
 
-mysql_test: 
+mysql_master: 
   hosts:
-    159.65.146.200:
+    206.189.141.169:
   vars:
     ansible_ssh_user: root
     server_name: 'mysql'
+    mysql_bind_address: '{{ mysql_replication_master }}'
+    mysql_server_id: 1
+    mysql_replication_role: 'master'
+    mysql_replication_user: { name: slave_user, host: '%', password: amitkverma }
+
+
+mysql_slave: 
+  hosts:
+    139.59.80.225:
+      server_name: 'slave1'
+      mysql_server_id: 11
+    206.189.143.129:
+      server_name: 'slave2'
+      mysql_server_id: 12
+  vars:
+    ansible_ssh_user: root
+    server_name: 'mysql'
+    mysql_replication_role: 'slave'
+    mysql_replication_user: { name: slave_user, host: '{{ mysql_replication_master }}', password: amitkverma }

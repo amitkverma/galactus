@@ -1,0 +1,20 @@
+---
+- name: Take Database Dump from master
+  mysql_db: 
+    name: "{{ mysql_replication_db }}" 
+    login_host: "{{ mysql_replication_master }}" 
+    login_user: "{{ mysql_master_read_only_user.name }}" 
+    login_password: "{{ mysql_master_read_only_user.password }}"
+    state: dump 
+    target: /tmp/{{mysql_replication_db}}.sql
+
+- name: Update Database Dump on Slave
+  mysql_db: 
+    name: "{{ mysql_replication_db }}" 
+    state: import 
+    target: /tmp/{{mysql_replication_db}}.sql
+
+- name: Remove Dump
+  file:
+    state: absent
+    path: /tmp/{{mysql_replication_db}}.sql

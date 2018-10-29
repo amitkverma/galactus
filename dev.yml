@@ -4,12 +4,12 @@
       playbook: dev.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: mysql_test
+    hosts: mysql_slave
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: mysql_test
+  - hosts: mysql_slave
     become: yes
     gather_facts: false
     pre_tasks: 

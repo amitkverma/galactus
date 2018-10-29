@@ -22,5 +22,8 @@
 - include_tasks: configure.yml
 - include_tasks: secure-installation.yml
 - include_tasks: databases.yml
+  when: mysql_replication_role == 'master'
 - include_tasks: users.yml
+- include_tasks: mysql-dump.yml
+  when: mysql_replication_role == 'slave'
 - include_tasks: replication.yml
