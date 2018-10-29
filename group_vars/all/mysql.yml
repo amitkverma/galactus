@@ -10,13 +10,6 @@ mysql_root_home: /root
 mysql_root_username: root
 mysql_root_password: amitkverma
 
-# MySQL connection settings.
-mysql_port: "3306"
-mysql_bind_address: '0.0.0.0'
-mysql_skip_name_resolve: no
-mysql_datadir: /var/lib/mysql
-mysql_sql_mode: ''
-
 # Slow query log settings.
 mysql_slow_query_log_enabled: yes
 mysql_slow_query_time: "2"
@@ -42,13 +35,18 @@ mysql_users:
     host: "%"
     password: Striker_axel01
     priv: "healthcheck.*:ALL"
+  - name: "{{ mysql_master_read_only_user.name }}"
+    host: "%"
+    password: "{{ mysql_master_read_only_user.password }}"
+    priv: "{{ mysql_replication_db }}.*:SELECT,LOCK TABLES,SHOW VIEW,EVENT,TRIGGER"
 
 # Replication settings (replication is only enabled if master/user have values).
-mysql_server_id: "1"
+# Defined at server level
+# mysql_server_id: "1"
+# mysql_replication_role: ''
+# mysql_replication_master: ''
+
 mysql_max_binlog_size: "100M"
 mysql_binlog_format: "ROW"
 mysql_expire_logs_days: "10"
-mysql_replication_role: ''
-mysql_replication_master: ''
 # Same keys as `mysql_users` above.
-mysql_replication_user: []
