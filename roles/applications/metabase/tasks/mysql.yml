@@ -1,0 +1,33 @@
+---
+ - name: Install mysql server
+   apt:
+    name: mysql-server
+    state: present
+ - name: Install mysql client
+   apt:
+    name: libmysqlclient-dev
+    state: present
+ - name: Install python libs
+   apt:
+    name: python-pip
+    state: present
+ - name: Install python mysql client
+   pip:
+    name: MySQL-python
+ - name: Create a new database with name 'metabase'
+   mysql_db:
+    name: metabase
+    encoding: utf8
+    state: present
+ - name: Create user for metabase
+   mysql_user:
+    name: metabase
+    password: "{{ metabase_db_pass }}"
+    host: '%'
+    priv: '*.*:ALL'
+    state: present
+ - name: Restart mysql
+   systemd:
+    name: mysql
+    state: restarted
+    enabled: True

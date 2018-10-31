@@ -4,12 +4,12 @@
       playbook: dev.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: mysql_slave
+    hosts: metabase
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: mysql_slave
+  - hosts: metabase
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -20,4 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: database/mysql }
+      - { role: applications/metabase }

@@ -1,0 +1,16 @@
+[Unit]
+Description=Metabase - Data visualization platform
+After=network.target remote-fs.target
+
+[Service]
+EnvironmentFile=/etc/default/metabase
+ExecStart=/usr/bin/java -jar {{ metabase_root_dir }}/metabase.jar
+ExecStop=/bin/true
+Restart=always
+Type=simple
+User={{ metabase_user }}
+Group={{ metabase_group }}
+StartLimitBurst=50
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+---
+
+- include: mysql.yml
+  tags: [metabase, mysql]
+
+- include: install.yml
+  tags: [metabase]
+
+- include: config.yml
+  tags: [metabase, config]
+
+- include: service.yml
+  tags: [metabase, service]
