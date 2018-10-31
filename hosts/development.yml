@@ -125,3 +125,11 @@ mysql_slave:
     server_name: 'mysql'
     mysql_replication_role: 'slave'
     mysql_replication_user: { name: slave_user, host: '{{ mysql_replication_master }}', password: amitkverma }
+
+
+teleport_server:
+  hosts:
+    139.59.60.111:
+    139.59.59.152:
+  vars:
+    ansible_ssh_user: root
