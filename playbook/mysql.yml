@@ -1,0 +1,35 @@
+---
+  - import_playbook: variable-check.yml
+    vars:
+      playbook: dev.yml
+
+  - name: Test Connection and Determine Remote User
+    hosts: mysql_server
+    gather_facts: false
+    roles:
+      - { role: connection, tags: [connection, always] }
+
+  - hosts: mysql_server
+    become: yes
+    gather_facts: false
+    pre_tasks: 
+      - name: Install python2 for Ansible
+        raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+        register: output
+        changed_when: output.stdout != ""
+      - name: Gathering Facts
+        setup:
+    roles:
+      - { role: database/mysql }
+
+
+# Inventory Exp. 
+# mysql_server:
+#   hosts:
+#     206.189.137.76:
+#   vars:
+#     ansible_ssh_user: root
+#     server_name: 'mysql'
+
+
+
