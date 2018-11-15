@@ -82,3 +82,5 @@ mysql_innodb_file_format: "barracuda"
 mysql_config_include_files: []
 #  - src: path/relative/to/playbook/file.cnf
 #  - { src: path/relative/to/playbook/anotherfile.cnf, force: yes }
+mysql_server_id: 1
+mysql_replication_role: ""
