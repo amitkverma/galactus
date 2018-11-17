@@ -82,5 +82,17 @@ mysql_innodb_file_format: "barracuda"
 mysql_config_include_files: []
 #  - src: path/relative/to/playbook/file.cnf
 #  - { src: path/relative/to/playbook/anotherfile.cnf, force: yes }
+# Replication settings (replication is only enabled if master/user have values).
 mysql_server_id: 1
 mysql_replication_role: ""
+mysql_replication_master: ""
+
+# Mysql Group Replication Configuration
+mysql_upstream_package: false
+mysql_group_replication: false
+mysql_group_replication_multi_primary: false
+mysql_proxysql_backend_config: false
+mysql_load_test_data: false
+mysql_repl_require_ssl: false
+mysql_private_networking: false
+mysql_group_replication_uuid: ''

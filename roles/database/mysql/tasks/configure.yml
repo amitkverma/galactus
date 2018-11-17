@@ -13,7 +13,20 @@
     group: root
     mode: 0644
     force: "{{ overwrite_global_mycnf }}"
-  notify: restart mysql
+  when: not mysql_group_replication
+
+- name: Copy my.cnf global MySQL configuration.
+  template:
+    src: group-replication.cnf.j2
+    dest: "{{ mysql_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+    force: "{{ overwrite_global_mycnf }}"
+  when: mysql_group_replication
+
+- name: Restart mysql server
+  service: "name={{ mysql_daemon }} state=restarted"
 
 - name: Verify mysql include directory exists.
   file:

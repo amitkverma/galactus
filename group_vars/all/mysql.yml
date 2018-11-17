@@ -44,13 +44,10 @@ mysql_users:
     password: "{{ mysql_master_read_only_user.password }}"
     priv: "{{ mysql_replication_db }}.*:SELECT,LOCK TABLES,SHOW VIEW,EVENT,TRIGGER"
 
-# Replication settings (replication is only enabled if master/user have values).
-# Defined at server level
-# mysql_server_id: "1"
-# mysql_replication_role: ''
-# mysql_replication_master: ''
-
 mysql_max_binlog_size: "100M"
 mysql_binlog_format: "ROW"
 mysql_expire_logs_days: "10"
-# Same keys as `mysql_users` above.
+
+# Group Replication 
+mysql_group_repl_user: repl
+mysql_group_repl_pass: amitkverma
