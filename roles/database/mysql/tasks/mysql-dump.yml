@@ -7,14 +7,17 @@
     login_password: "{{ mysql_master_read_only_user.password }}"
     state: dump 
     target: /tmp/{{mysql_replication_db}}.sql
+  tags: ['dump']
 
 - name: Update Database Dump on Slave
   mysql_db: 
     name: "{{ mysql_replication_db }}" 
     state: import 
     target: /tmp/{{mysql_replication_db}}.sql
+  tags: ['dump']
 
 - name: Remove Dump
   file:
     state: absent
     path: /tmp/{{mysql_replication_db}}.sql
+  tags: ['dump']

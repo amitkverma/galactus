@@ -4,6 +4,7 @@
   register: mysql_cli_version
   changed_when: false
   check_mode: false
+  tags: ['configuration']
 
 - name: Copy my.cnf global MySQL configuration.
   template:
@@ -14,6 +15,7 @@
     mode: 0644
     force: "{{ overwrite_global_mycnf }}"
   when: not mysql_group_replication
+  tags: ['configuration']
 
 - name: Copy my.cnf global MySQL configuration.
   template:
@@ -24,9 +26,11 @@
     mode: 0644
     force: "{{ overwrite_global_mycnf }}"
   when: mysql_group_replication
+  tags: ['configuration']
 
 - name: Restart mysql server
   service: "name={{ mysql_daemon }} state=restarted"
+  tags: ['configuration']
 
 - name: Verify mysql include directory exists.
   file:
@@ -36,6 +40,7 @@
     group: root
     mode: 0755
   when: mysql_config_include_files | length
+  tags: ['configuration']
 
 - name: Copy my.cnf override files into include directory.
   template:
@@ -47,6 +52,7 @@
     force: "{{ item.force | default(False) }}"
   with_items: "{{ mysql_config_include_files }}"
   notify: restart mysql
+  tags: ['configuration']
 
 - name: Create slow query log file (if configured).
   command: "touch {{ mysql_slow_query_log_file }}"
@@ -54,6 +60,7 @@
     creates: "{{ mysql_slow_query_log_file }}"
     warn: false
   when: mysql_slow_query_log_enabled
+  tags: ['configuration']
 
 - name: Create datadir if it does not exist
   file:
@@ -63,6 +70,7 @@
     group: mysql
     mode: 0755
     setype: mysqld_db_t
+  tags: ['configuration']
 
 - name: Set ownership on slow query log file (if configured).
   file:
@@ -72,6 +80,7 @@
     group: "{{ mysql_log_file_group }}"
     mode: 0640
   when: mysql_slow_query_log_enabled
+  tags: ['configuration']
 
 - name: Create error log file (if configured).
   command: "touch {{ mysql_log_error }}"
@@ -79,6 +88,7 @@
     creates: "{{ mysql_log_error }}"
     warn: false
   when: mysql_log == "" and mysql_log_error != ""
+  tags: ['configuration']
 
 - name: Set ownership on error log file (if configured).
   file:
@@ -88,7 +98,9 @@
     group: "{{ mysql_log_file_group }}"
     mode: 0640
   when: mysql_log == "" and mysql_log_error != ""
+  tags: ['configuration']
 
 - name: Ensure MySQL is started and enabled on boot.
   service: "name={{ mysql_daemon }} state=started enabled={{ mysql_enabled_on_startup }}"
   register: mysql_service_configuration
+  tags: ['configuration']

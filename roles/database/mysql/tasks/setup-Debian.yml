@@ -2,17 +2,21 @@
 - name: Check if MySQL is already installed.
   stat: path=/etc/init.d/mysql
   register: mysql_installed
+  tags: ['installation']
 
 - name: Update apt cache if MySQL is not yet installed.
   apt: update_cache=yes
   when: mysql_installed.stat.exists == false
+  tags: ['installation']
 
 - name: Determine required MySQL Python libraries.
   set_fact:
     deb_mysql_python_package: "{% if 'python3' in ansible_python_interpreter|default('') %}python3-mysqldb{% else %}python-mysqldb{% endif %}"
+  tags: ['installation']
 
 - name: Ensure MySQL Python libraries are installed.
   apt: "name={{ deb_mysql_python_package }} state=present"
+  tags: ['installation']
 
 - name: Ensure upstream MySQL repositories installed
   apt_repository:
@@ -25,6 +29,7 @@
     - "deb http://repo.mysql.com/apt/ubuntu/ xenial mysql-tools"
     - "deb-src http://repo.mysql.com/apt/ubuntu/ xenial mysql-5.7"
   when: mysql_group_replication
+  tags: ['installation']
 
 - name: Ensure upstream MySQL repository GPG key installed
   apt_key:
@@ -32,16 +37,19 @@
     id: A4A9406876FCBD3C456770C88C718D3B5072E1F5
     state: present
   when: mysql_group_replication
+  tags: ['installation']
 
 - name: Ensure MySQL packages are installed.
   apt: "name={{ mysql_packages }} state=present force=yes"
   register: deb_mysql_install_packages
+  tags: ['installation']
 
 # Because Ubuntu starts MySQL as part of the install process, we need to stop
 # mysql and remove the logfiles in case the user set a custom log file size.
 - name: Ensure MySQL is stopped after initial install.
   service: "name={{ mysql_daemon }} state=stopped"
   when: mysql_installed.stat.exists == false
+  tags: ['installation']
 
 - name: Delete innodb log files created by apt package after initial install.
   file: path={{ mysql_datadir }}/{{item}} state=absent
@@ -49,3 +57,4 @@
     - "ib_logfile0"
     - "ib_logfile1"
   when: mysql_installed.stat.exists == false
+  tags: ['installation']

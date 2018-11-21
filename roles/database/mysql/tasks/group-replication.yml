@@ -2,11 +2,13 @@
 
   - name: Set server id for all servers
     command: mysql  -u root -NBe "SET GLOBAL server_id = {{ play_hosts.index(inventory_hostname) + 1 }}"
+    tags: ['cluster']
 
   - name: Check if repl user exist
     command: mysql -u root -NBe "SELECT * FROM mysql.user WHERE user = '{{ mysql_group_repl_user }}'"
     register: mysql_repl_user_check
     changed_when: false
+    tags: ['cluster']
 
   - name: Configure Replication User
     shell: >
@@ -17,11 +19,13 @@
        FLUSH PRIVILEGES;
        SET SQL_LOG_BIN=1;'
     when: mysql_repl_user_check.stdout_lines|length == 0
+    tags: ['cluster']
 
   - name: Check if repl user after creating
     command: mysql -u root -NBe "SELECT * FROM mysql.user WHERE user = '{{ mysql_group_repl_user }}'"
     register: mysql_repl_user_check_after
     changed_when: false
+    tags: ['cluster']
 
   - name: Check if group replication is already enabled
     shell: >
@@ -31,28 +35,33 @@
     failed_when: false
     changed_when: false
     register: group_replication_running
+    tags: ['cluster']
 
   - name: Set group replication recovery channel to use our new replication user
     shell: >
       mysql -u root -NBe 
       "CHANGE MASTER TO MASTER_USER='{{ mysql_group_repl_user }}', MASTER_PASSWORD='{{ mysql_group_repl_pass }}' FOR CHANNEL 'group_replication_recovery';"
     when: "'ON' not in group_replication_running.stdout"
+    tags: ['cluster']
 
   - name: Check if group replication plugin installed
     command: mysql -NBe "select * from mysql.plugin where name='group_replication';"
     register: mysql_repl_plugin_check
     changed_when: false
+    tags: ['cluster']
 
   - name: Install group replication plugin
     shell: >
       mysql -u root -NBe 
       "INSTALL PLUGIN group_replication SONAME 'group_replication.so'"
     when: mysql_repl_plugin_check.stdout_lines|length <= 0
+    tags: ['cluster']
 
   - name: Check if group replication plugin installed already
     command: mysql -NBe "select * from mysql.plugin where name='group_replication';"
     register: mysql_repl_plugin_check_already
     changed_when: false
+    tags: ['cluster']
 
   - name: Set Group replication on primary server
     shell: >
@@ -63,7 +72,11 @@
     when: 
       - inventory_hostname == ansible_play_hosts[0]
       - mysql_repl_plugin_check_already.stdout_lines|length > 0 
+    tags: ['cluster']
 
   - name: Start replication group in other server
     command: mysql -u root -NBe "START GROUP_REPLICATION;"
-    when: inventory_hostname != ansible_play_hosts[0]
+    when: 
+      - inventory_hostname != ansible_play_hosts[0]
+      - mysql_repl_plugin_check_already.stdout_lines|length > 0 
+    tags: ['cluster']
