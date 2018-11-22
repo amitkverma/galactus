@@ -1,7 +1,7 @@
 ---
-  - import_playbook: variable-check.yml
+  - import_playbook: ../variable-check.yml
     vars:
-      playbook: dev.yml
+      playbook: mysql-group-replication.yml
 
   - name: Test Connection and Determine Remote User
     hosts: mysql_replication
@@ -20,4 +20,4 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: applications/metabase }
+      - { role: database/mysql }
