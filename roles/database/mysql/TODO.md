@@ -1,7 +1,8 @@
 # Things to be done
 - [x] Mysql Single Private Server
-- [ ] Mysql Master-Slave Setup
-- [ ] Mysql Master-Master Setup using group replication
+- [x] Mysql Master-Slave Setup
+- [x] Mysql Master-Master Setup using group replication
+- [ ] Add ProxySql as reverse proxy for mysql server
 - [ ] Mysql Master-Master-Slave Topology 
 - [ ] Mysql Import database
 - [ ] Backup - Nightly on S3 and Live
@@ -11,3 +12,4 @@
 - [ ] Database set should be selected dynamicaly
 - [ ] Password should be saved in vault
 - [ ] Define Replication section in `mysql.yml` 
+- [ ] Adding New Member or Making live faulty node require restart of mysql

@@ -133,13 +133,12 @@ mysql_slave:
 
 mysql_replication: 
   hosts:
-    139.59.26.84:
-      server_name: 'slave1'
-    139.59.22.247:
-      server_name: 'slave2'
-    139.59.21.252:
+    52.193.209.202:
+    13.231.151.214:
+    3.112.44.28:
+    52.194.226.131:
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: ubuntu
     server_name: 'mysql'
     mysql_group_replication: true
     mysql_group_replication_uuid: "a89aee1a-ea52-11e8-88d0-3611b45eb584"
