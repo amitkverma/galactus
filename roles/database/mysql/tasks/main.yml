@@ -54,10 +54,9 @@
   when: mysql_group_replication
   tags: ['cluster']
 - include_tasks: databases.yml
-  when: mysql_replication_role == 'master'
+  when: mysql_replication_role != 'slave'
   tags: [database']
 - include_tasks: users.yml
-  when: not mysql_group_replication
   tags: ['users']
 - include_tasks: mysql-dump.yml
   when: mysql_replication_role == 'slave'

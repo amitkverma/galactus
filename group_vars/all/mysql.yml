@@ -24,17 +24,21 @@ mysql_log: ""
 # mysql_syslog_tag: mysql
 
 # Relication Configuration
-mysql_replication_db: healthcheck
+mysql_replication_db: playground
 mysql_master_read_only_user: {  name: readOnlyCharcoal, password: amitkverma  }
-
+mysql_admin_user: { name: mysqlSqlAdmin, password: amitkverma }
 # Databases.
 mysql_databases: 
-  - name: healthcheck
+  - name: playground
     collation: utf8_general_ci
     encoding: utf8
 
 # Users.
 mysql_users: 
+  - name: "{{  mysql_admin_user.name }}"
+    host: "%"
+    password: "{{ mysql_admin_user.password }}"
+    priv: "*.*:ALL,GRANT"
   - name: charcoaleats
     host: "%"
     password: Striker_axel01
