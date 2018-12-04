@@ -139,14 +139,3 @@ mysql_replication:
     server_name: 'mysql'
     mysql_group_replication: true
     mysql_group_replication_uuid: "a89aee1a-ea52-11e8-88d0-3611b45eb584"
-
-mysql_replication_test: 
-  hosts:
-    52.193.241.28:
-    54.199.219.25:
-    3.112.43.221:
-  vars:
-    ansible_ssh_user: ubuntu
-    server_name: 'mysql'
-    mysql_group_replication: true
-    mysql_group_replication_uuid: "a89aee1a-ea52-11e8-88d0-3611b45eb583"
