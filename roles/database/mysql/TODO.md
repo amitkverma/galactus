@@ -13,3 +13,7 @@
 - [ ] Password should be saved in vault
 - [ ] Define Replication section in `mysql.yml` 
 - [ ] Adding New Member or Making live faulty node require restart of mysql
+
+# Notes
+- [ ] Require a admin user for ansible user `mysql_admin_user` to create slave replication user at master
+- [ ] Replication user ( `mysql_replication_user` ) `host` should allow only ip range in which slaves are located

@@ -6,3 +6,7 @@
     `ansible-playbook -i ./hosts/development.yml  ./playbook/mysql-group-replication.yml    -e "env=dev" --private-key=~/Dropbox/Keys/test.pem`
 4. if you need to add new server to replication
     `ansible-playbook -i ./hosts/development.yml  ./playbook/mysql-group-replication.yml    -e "env=dev" --private-key=~/Dropbox/Keys/test.pem`
+5. if you need to add new slave server in replication group
+    `ansible-playbook -i ./hosts/development.yml  ./playbook/mysql-mater-slave.yml    -e "env=dev" --private-key=~/Dropbox/Keys/test.pem`
+6. if one or more slaves are not working in replication group
+    `ansible-playbook -i ./hosts/development.yml  ./playbook/mysql-mater-slave.yml    -e "env=dev" --private-key=~/Dropbox/Keys/test.pem`

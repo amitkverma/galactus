@@ -9,6 +9,13 @@
     target: /tmp/{{mysql_replication_db}}.sql
   tags: ['dump']
 
+- name: Reset Slave if it is already configured
+  shell: >
+    mysql -u root -NBe
+    'RESET MASTER;'
+  when: enable_mysql_slave_replication is defined
+  tags: ['slave']
+
 - name: Update Database Dump on Slave
   mysql_db: 
     name: "{{ mysql_replication_db }}" 
