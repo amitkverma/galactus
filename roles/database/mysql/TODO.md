@@ -2,8 +2,8 @@
 - [x] Mysql Single Private Server
 - [x] Mysql Master-Slave Setup
 - [x] Mysql Master-Master Setup using group replication
-- [ ] Add ProxySql as reverse proxy for mysql server
-- [ ] Mysql Master-Master-Slave Topology 
+- [x] Add ProxySql as reverse proxy for mysql server
+- [x] Mysql Master-Master-Slave Topology 
 - [ ] Mysql Import database
 - [ ] Backup - Nightly on S3 and Live
 - [ ] Edge Cases of replication setup
