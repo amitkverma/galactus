@@ -53,6 +53,9 @@
 - include_tasks: group-replication.yml
   when: mysql_group_replication
   tags: ['cluster']
+- include_tasks: proxysql_backend.yml
+  when: mysql_proxysql_backend_config
+  tags: ['proxysql']
 - include_tasks: databases.yml
   when: mysql_replication_role != 'slave'
   tags: [database']
