@@ -161,3 +161,24 @@ proxysql_server:
     shared_multi_primary: true
     shared_require_ssl: false
     shared_private_networking: true
+
+teleport_auth_proxy:
+  hosts:
+    13.231.154.6:
+  vars:
+    ansible_ssh_user: ubuntu
+    teleport_ssh_enabled: false
+    teleport_auth_tokens_node:
+      - "4035023a-a53c-4053-93e0-f7b00f103495"
+
+teleport_nodes:
+  hosts:
+    52.194.215.51:
+  vars:
+    ansible_ssh_user: ubuntu
+    teleport_ssh_enabled: true
+    teleport_auth_enabled: false
+    teleport_proxy_enabled: false
+    teleport_auth_servers:
+      - "13.231.154.6"
+    teleport_auth_token: "4035023a-a53c-4053-93e0-f7b00f103495"
