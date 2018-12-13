@@ -23,30 +23,41 @@ mysql_log: ""
 # mysql_log_error: /var/log/mysql/mysql.err
 # mysql_syslog_tag: mysql
 
+# Relication Configuration
+mysql_replication_db: "{{ shared_mysql_database }}"
+mysql_master_read_only_user: {  name: readOnlyCharcoal, password: amitkverma  }
+mysql_admin_user: { name: mysqlSqlAdmin, password: amitkverma }
 # Databases.
 mysql_databases: 
-  - name: healthcheck
+  - name: "{{ shared_mysql_database }}"
     collation: utf8_general_ci
     encoding: utf8
 
 # Users.
 mysql_users: 
-  - name: charcoaleats
+  - name: "{{  mysql_admin_user.name }}"
     host: "%"
-    password: Striker_axel01
-    priv: "healthcheck.*:ALL"
+    password: "{{ mysql_admin_user.password }}"
+    priv: "*.*:ALL,GRANT"
   - name: "{{ mysql_master_read_only_user.name }}"
     host: "%"
     password: "{{ mysql_master_read_only_user.password }}"
     priv: "{{ mysql_replication_db }}.*:SELECT,LOCK TABLES,SHOW VIEW,EVENT,TRIGGER"
 
-# Replication settings (replication is only enabled if master/user have values).
-# Defined at server level
-# mysql_server_id: "1"
-# mysql_replication_role: ''
-# mysql_replication_master: ''
+proxysql_mysql_users:
+  - name: "{{  shared_mysql_user.name }}"
+    host: "%"
+    password: "{{ shared_mysql_user.password }}"
+    priv: "*.*:ALL,GRANT"
+  - name: "{{  proxysql_mysql_monitor.name }}"
+    host: "%"
+    password: "{{ proxysql_mysql_monitor.password }}"
+    priv: "sys.*:SELECT"
 
 mysql_max_binlog_size: "100M"
 mysql_binlog_format: "ROW"
 mysql_expire_logs_days: "10"
-# Same keys as `mysql_users` above.
+
+# Group Replication 
+mysql_group_repl_user: repl
+mysql_group_repl_pass: amitkverma

@@ -7,14 +7,24 @@
     login_password: "{{ mysql_master_read_only_user.password }}"
     state: dump 
     target: /tmp/{{mysql_replication_db}}.sql
+  tags: ['dump']
+
+- name: Reset Slave if it is already configured
+  shell: >
+    mysql -u root -NBe
+    'RESET MASTER;'
+  when: enable_mysql_slave_replication is defined
+  tags: ['slave']
 
 - name: Update Database Dump on Slave
   mysql_db: 
     name: "{{ mysql_replication_db }}" 
     state: import 
     target: /tmp/{{mysql_replication_db}}.sql
+  tags: ['dump']
 
 - name: Remove Dump
   file:
     state: absent
     path: /tmp/{{mysql_replication_db}}.sql
+  tags: ['dump']

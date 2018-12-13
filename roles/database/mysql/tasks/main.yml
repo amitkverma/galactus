@@ -1,29 +1,69 @@
 ---
 # Variable configuration.
 - include_tasks: variables.yml
+  tags: ['common']
 
 # Setup/install tasks.
 - include_tasks: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
+  tags: ['installation']
 
 - include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
+  tags: ['installation']
 
 - include_tasks: setup-Archlinux.yml
   when: ansible_os_family == 'Archlinux'
+  tags: ['installation']
 
 - name: Check if MySQL packages were installed.
   set_fact:
     mysql_install_packages: "{{ (rh_mysql_install_packages is defined and rh_mysql_install_packages.changed)
       or (deb_mysql_install_packages is defined and deb_mysql_install_packages.changed)
       or (arch_mysql_install_packages is defined and arch_mysql_install_packages.changed) }}"
+  tags: ['common']
+
+- name: Check if group replication uuid defined
+  fail:
+    msg: |
+      Please define group replication id
+  when: mysql_group_replication_uuid == '' and mysql_group_replication
+  tags: ['common']
+
+- name: Set bind address to self public ip
+  set_fact:
+    mysql_bind_address: "{{ (ansible_eth1 | default(ansible_lo)).ipv4.address if mysql_private_networking else ansible_eth0.ipv4.address }}"
+  when: mysql_group_replication
+  tags: ['common']
+
+- name: Check ProxySQL option compatibility
+  assert:
+    that:
+      - mysql_group_replication
+    msg: "ProxySQL requires group replication. Set `mysql_group_replication: true` to use ProxySQL."
+  when: mysql_proxysql_backend_config
+  tags: ['common']
+
 
 # Configure MySQL.
 - include_tasks: configure.yml
+  tags: ['configuration']
 - include_tasks: secure-installation.yml
+  tags: ['security']
+- include_tasks: group-replication.yml
+  when: mysql_group_replication
+  tags: ['cluster']
+- include_tasks: proxysql_backend.yml
+  when: mysql_proxysql_backend_config
+  tags: ['proxysql']
 - include_tasks: databases.yml
-  when: mysql_replication_role == 'master'
+  when: mysql_replication_role != 'slave'
+  tags: [database']
 - include_tasks: users.yml
+  tags: ['users']
 - include_tasks: mysql-dump.yml
   when: mysql_replication_role == 'slave'
+  tags: ['dump']
 - include_tasks: replication.yml
+  when: mysql_replication_role != ''
+  tags: ['slave']

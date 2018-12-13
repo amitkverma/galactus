@@ -23,10 +23,8 @@ all:
     env_host_name: dev.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
+    mysql_replication_master: '52.194.205.240'
     admin_user: driger
-    mysql_replication_master: '206.189.141.169'
-    mysql_replication_db: healthcheck
-    mysql_master_read_only_user: {  name: readOnlyCharcoal, password: amitkverma  }
     users:
       - name: "driger" # Ansible User
         groups:
@@ -43,7 +41,9 @@ all:
           - www
         keys:
           - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/scylla.pub') }}"
-
+    shared_mysql_user: { name: "charcoaleatsAdmin", password: "Striker_Axel01" , host: "%" } 
+    proxysql_mysql_monitor: { name: monitor,  password: 'amitkverma' , host: "%" }
+    shared_mysql_database: "CB_PROD_MIRROR_DEV"
 
 deepstream_server:
   hosts:
@@ -100,9 +100,17 @@ elk_stack_server:
     server_name: 'elk-stack'
 
 
+mysql_server:
+  hosts:
+    206.189.137.76:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'mysql'
+
+
 mysql_master: 
   hosts:
-    206.189.141.169:
+    142.93.214.247:
   vars:
     ansible_ssh_user: root
     server_name: 'mysql'
@@ -114,22 +122,42 @@ mysql_master:
 
 mysql_slave: 
   hosts:
-    139.59.80.225:
-      server_name: 'slave1'
-      mysql_server_id: 11
-    206.189.143.129:
-      server_name: 'slave2'
-      mysql_server_id: 12
+    54.199.221.170:
+    52.194.185.208:
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: ubuntu
     server_name: 'mysql'
     mysql_replication_role: 'slave'
-    mysql_replication_user: { name: slave_user, host: '{{ mysql_replication_master }}', password: amitkverma }
+    mysql_replication_user: { name: slaveUser, host: '%', password: 'amitkverma' } 
+    enable_mysql_slave_replication: true
 
 
-teleport_server:
+metabase:
   hosts:
-    139.59.60.111:
-    139.59.59.152:
+    142.93.220.139:
   vars:
     ansible_ssh_user: root
+    metabase_db_pass: amitkverma
+
+mysql_replication: 
+  hosts:
+    52.194.205.240:
+      primary: true
+    52.199.15.36:
+    13.231.8.202:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'mysql'
+    mysql_group_replication: true
+    mysql_group_replication_uuid: "a89aee1a-ea52-11e8-88d0-3611b45eb584"
+    mysql_proxysql_backend_config: true
+
+proxysql_server:
+  hosts:
+    54.250.194.180:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'mysql'
+    shared_multi_primary: true
+    shared_require_ssl: false
+    shared_private_networking: true

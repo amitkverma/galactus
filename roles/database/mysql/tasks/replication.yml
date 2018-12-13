@@ -1,4 +1,12 @@
 ---
+
+- name: Reset Slave if it is already configured
+  shell: >
+    mysql -u root -NBe
+    'RESET MASTER;'
+  when: enable_mysql_slave_replication is defined
+  tags: ['slave']
+
 - name: Ensure replication user exists on master.
   mysql_user:
     name: "{{ mysql_replication_user.name }}"
@@ -9,11 +17,27 @@
   when: >
     (mysql_replication_role == 'master')
     and mysql_replication_user
-    and (mysql_replication_master != '')
+    and (mysql_replication_master != '')  
+    and (enable_mysql_slave_replication is not defined) 
+  tags: ['slave']
+
+- name: Ensure replication user exists for group replication master.
+  mysql_user:
+    login_host: "{{ mysql_replication_master }}" 
+    login_user: "{{ mysql_admin_user.name }}" 
+    login_password: "{{ mysql_admin_user.password }}"
+    name: "{{ mysql_replication_user.name }}"
+    host: "{{ mysql_replication_user.host | default('%') }}"
+    password: "{{ mysql_replication_user.password }}"
+    priv: "{{ mysql_replication_user.priv | default('*.*:REPLICATION SLAVE,REPLICATION CLIENT') }}"
+    state: present
+  when: enable_mysql_slave_replication is defined
+  tags: ['slave']
 
 - name: Check slave replication status.
   mysql_replication:
     mode: getslave
+    login_host: "{{ mysql_replication_user.host }}" 
     login_user: "{{ mysql_replication_user.name }}"
     login_password: "{{ mysql_replication_user.password }}"
   ignore_errors: true
@@ -21,6 +45,19 @@
   when: >
     mysql_replication_role == 'slave'
     and (mysql_replication_master != '')
+  tags: ['slave']
+
+- name: Configure Slave for group replication DB
+  shell: >
+    mysql -u root -NBe
+    'SET @@GLOBAL.ENFORCE_GTID_CONSISTENCY = WARN;
+      SET @@GLOBAL.ENFORCE_GTID_CONSISTENCY = ON;
+      SET @@GLOBAL.GTID_MODE = OFF_PERMISSIVE;
+      SET @@GLOBAL.GTID_MODE = ON_PERMISSIVE;
+      SET @@GLOBAL.GTID_MODE = ON;'
+  when: enable_mysql_slave_replication is defined
+  tags: ['slave']
+
 
 - name: Check master replication status.
   mysql_replication: mode=getmaster
@@ -30,6 +67,7 @@
     ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql_replication_role == 'slave')
     and (mysql_replication_master != '')
+  tags: ['slave']
 
 - name: Configure replication on the slave.
   mysql_replication:
@@ -45,6 +83,7 @@
     and (mysql_replication_role == 'slave')
     and (mysql_replication_master != '')
     and mysql_replication_user
+  tags: ['slave']
 
 - name: Start replication.
   mysql_replication: mode=startslave
@@ -52,3 +91,4 @@
     ((slave.Is_Slave is defined and not slave.Is_Slave) or (slave.Is_Slave is not defined and slave is failed))
     and (mysql_replication_role == 'slave')
     and (mysql_replication_master != '')
+  tags: ['slave']
