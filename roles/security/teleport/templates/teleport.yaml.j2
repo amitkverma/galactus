@@ -51,6 +51,10 @@ ssh_service:
 {% if teleport_ssh_enabled | default(false) %}
   enabled: "yes"
   listen_addr: "{{ teleport_ssh_listen_address }}"
+
+  labels:
+    role: staging
+    type: appserver
 {% else %}
   enabled: "no"
 {% endif %}

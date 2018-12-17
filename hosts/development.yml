@@ -173,7 +173,7 @@ teleport_auth_proxy:
 
 teleport_nodes:
   hosts:
-    52.194.215.51:
+    54.92.50.198:
   vars:
     ansible_ssh_user: ubuntu
     teleport_ssh_enabled: true
