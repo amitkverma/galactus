@@ -182,3 +182,29 @@ teleport_nodes:
     teleport_auth_servers:
       - "13.231.154.6"
     teleport_auth_token: "4035023a-a53c-4053-93e0-f7b00f103495"
+
+provisioning_server:
+  hosts:
+    13.114.54.212:
+  vars:
+    ansible_ssh_user: ubuntu
+    ipaserver_hostname: ipa.charcoaleats.com
+    ipaserver_domain: charcoaleats.com
+    ipaserver_realm: CHARCOALEATS.COM
+    ipaadmin_password: amitkverma
+    ipadm_password: amitkverma
+    ipaserver_setup_dns: yes
+    ipaserver_auto_forwarders: yes
+    ipaserver_allow_zone_overlap: yes
+    ipaclient_mkhomedir: yes
+    ipaserver_no_ui_redirect: no
+
+provisioning_client:
+  hosts:
+    13.114.54.212:
+  vars:
+    ansible_ssh_user: ubuntu
+    ipaclient_domain: charcoaleats.com
+    ipaserver_realm: CHARCOALEATS.COM
+    ipaadmin_principal: admin
+    ipaadmin_password: amitkverma
