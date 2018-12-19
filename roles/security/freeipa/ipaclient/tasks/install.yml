@@ -1,5 +1,13 @@
 ---
 # tasks file for ipaclient
+
+# - name: Add domain in hosts
+#   lineinfile:
+#     dest: /etc/hosts
+#     regexp: "{{ ipaclient_hostname }}"
+#     line: "{{ ansible_all_ipv4_addresses | ipaddr('private') | first }} {{ ipaclient_hostname }}"
+#     state: present
+
 - name: Check If os is ubuntu-16 add PPA for freeipa-4.7
   apt_repository:
     validate_certs: no

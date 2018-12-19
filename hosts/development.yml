@@ -201,8 +201,7 @@ ipaservers:
 
 ipaclients:
   hosts:
-    3.112.41.105:
-    52.69.131.108:
+    54.249.5.184:
   vars:
     ansible_ssh_user: ubuntu
     ipaclient_domain: charcoaleats.com
