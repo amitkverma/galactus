@@ -5,8 +5,8 @@
 - name: Add domain in hosts
   lineinfile:
     dest: /etc/hosts
-    regexp: '172.31.22.33 {{ ipaserver_hostname }}'
-    line: '172.31.22.33 {{ ipaserver_hostname }}'
+    regexp: '172.31.26.156 {{ ipaserver_hostname }}'
+    line: '172.31.26.156 {{ ipaserver_hostname }}'
     state: present
 
 - name: Install - Ensure that IPA server packages are installed

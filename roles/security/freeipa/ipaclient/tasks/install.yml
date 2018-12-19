@@ -66,52 +66,7 @@
   # to create a OneTime Password
   # If a keytab is specified in the hostent, then the hostent will be disabled
   # if ipaclient_use_otp is set.
-  - block:
-    - fail: msg="Keytab or password is required for otp"
-      when: ipaadmin_keytab is undefined and ipaadmin_password is undefined
 
-    - name: Install - Save client ansible_python_interpreter setting
-      set_fact:
-        ipaclient_ansible_python_interpreter: "{{ ansible_python_interpreter }}"
-
-    - name: Install - Include Python2/3 import test
-      import_tasks: "{{role_path}}/tasks/python_2_3_test.yml"
-      delegate_to: "{{ ipadiscovery.servers[0] }}"
-
-    - name: Install - Ensure gssapi is installed on Ansible controller
-      package:
-        name: "{{ item }}"
-        state: present
-      with_items: "{{ gssapi_packages }}"
-
-    - name: Install - Get One-Time Password for client enrollment
-      #no_log: yes
-      ipahost:
-        state: present
-        principal: "{{ ipaadmin_principal | default('admin') }}"
-        password: "{{ ipaadmin_password | default(omit) }}"
-        keytab: "{{ ipaadmin_keytab | default(omit) }}"
-        fqdn: "{{ ipadiscovery.hostname }}"
-        lifetime: "{{ ipaclient_lifetime | default(omit) }}"
-        random: True
-        ansible_python_interpreter: "{{ ansible_python_interpreter }}"
-      register: ipahost_output
-      # If the host is already enrolled, this command will exit on error
-      # The error can be ignored
-      failed_when: ipahost_output is failed and "Password cannot be set on enrolled host" not in ipahost_output.msg
-      delegate_to: "{{ ipadiscovery.servers[0] }}"
-      delegate_facts: True
-
-    - name: Install - Store the previously obtained OTP
-      no_log: yes
-      set_fact:
-        ipaadmin_password: "{{ ipahost_output.host.randompassword if ipahost_output.host is defined }}"
-
-    - name: Install - Restore client ansible_python_interpreter setting
-      set_fact:
-        ansible_python_interpreter: "{{ ipaclient_ansible_python_interpreter }}"
-
-    when: ipaclient_use_otp | bool
 
   - block:
     - name: Install - Check if principal and keytab are set
