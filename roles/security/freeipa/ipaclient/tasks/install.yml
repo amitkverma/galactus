@@ -1,5 +1,12 @@
 ---
 # tasks file for ipaclient
+- name: Check If os is ubuntu-16 add PPA for freeipa-4.7
+  apt_repository:
+    validate_certs: no
+    repo: "deb http://cz.archive.ubuntu.com/ubuntu bionic main universe"
+    state: present
+    update_cache: yes
+  when: ( hostvars[inventory_hostname].ansible_distribution == "Ubuntu" and hostvars[inventory_hostname].ansible_distribution_major_version == "16" )
 
 - name: Install - Ensure that IPA client packages are installed
   package:

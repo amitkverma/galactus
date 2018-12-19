@@ -183,9 +183,9 @@ teleport_nodes:
       - "13.231.154.6"
     teleport_auth_token: "4035023a-a53c-4053-93e0-f7b00f103495"
 
-provisioning_server:
+ipaservers:
   hosts:
-    13.114.54.212:
+    "ipa.charcoaleats.com":
   vars:
     ansible_ssh_user: ubuntu
     ipaserver_hostname: ipa.charcoaleats.com
@@ -199,12 +199,15 @@ provisioning_server:
     ipaclient_mkhomedir: yes
     ipaserver_no_ui_redirect: no
 
-provisioning_client:
+ipaclients:
   hosts:
-    13.114.54.212:
+    3.112.41.105:
+    52.69.131.108:
   vars:
     ansible_ssh_user: ubuntu
     ipaclient_domain: charcoaleats.com
     ipaserver_realm: CHARCOALEATS.COM
     ipaadmin_principal: admin
     ipaadmin_password: amitkverma
+    ipaclient_allow_repair: yes
+    krb5_packages: krb5-k5tls
