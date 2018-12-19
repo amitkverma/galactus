@@ -185,10 +185,10 @@ teleport_nodes:
 
 ipaservers:
   hosts:
-    "ipa.charcoaleats.com":
+    "ipa-test.charcoaleats.com":
   vars:
     ansible_ssh_user: ubuntu
-    ipaserver_hostname: ipa.charcoaleats.com
+    ipaserver_hostname: ipa-test.charcoaleats.com
     ipaserver_domain: charcoaleats.com
     ipaserver_realm: CHARCOALEATS.COM
     ipaadmin_password: amitkverma
@@ -201,7 +201,8 @@ ipaservers:
 
 ipaclients:
   hosts:
-    54.249.5.184:
+    13.115.160.237:
+    # 13.231.155.209:
   vars:
     ansible_ssh_user: ubuntu
     ipaclient_domain: charcoaleats.com

@@ -348,20 +348,6 @@
       ipaclient_hostname: "{{ result_ipaserver_test.hostname }}"
       ipaclient_no_ntp: "{{ 'true' if result_ipaserver_test.ipa_python_version >= 40690 else 'false' }}"
 
-  #- name: Install - Setup client
-  #  command: >
-  #    /usr/sbin/ipa-client-install
-  #    --unattended
-  #    --on-master
-  #    --domain "{{ result_ipaserver_test.domain }}"
-  #    --realm "{{ result_ipaserver_test.realm }}"
-  #    --server "{{ result_ipaserver_test.hostname }}"
-  #    --hostname "{{ result_ipaserver_test.hostname }}"
-  #    {{ "--mkhomedir" if ipaclient_mkhomedir | bool else "" }}
-  #  #  {{ "--no-dns-sshfp" if ipaclient_no_dns_sshfp | bool else "" }}
-  #  #  {{ "--ssh-trust-dns" if ipaclient_ssh_trust_dns | bool else "" }}
-  #  #  {{ "--no-ssh" if ipaclient_no_ssh | bool else "" }}
-  #  #  {{ "--no-sshd" if ipaclient_no_sshd | bool else "" }}
 
   - name: Install - Enable IPA
     ipaserver_enable_ipa:
@@ -370,27 +356,12 @@
       setup_ca: "{{ result_ipaserver_test.setup_ca }}"
     register: result_ipaserver_enable_ipa
 
+
+  - name: Fix permission issue for crt file
+    shell: 'chmod a+x /var/lib/krb5kdc'
+
   - name: Install - Cleanup root IPA cache
     file:
       path: "/root/.ipa_cache"
       state: absent
     when: result_ipaserver_enable_ipa.changed
-
-  - name: Install - Configure firewalld
-    command: >
-      firewall-cmd
-      --permanent
-      --add-service=freeipa-ldap
-      --add-service=freeipa-ldaps
-      {{ "--add-service=dns" if ipaserver_setup_dns | bool else "" }}
-      {{ "--add-service=ntp" if not ipaclient_no_ntp | bool else "" }}
-    when: not ipaserver_no_firewalld | bool
-
-  - name: Install - Configure firewalld runtime
-    command: >
-      firewall-cmd
-      --add-service=freeipa-ldap
-      --add-service=freeipa-ldaps
-      {{ "--add-service=dns" if ipaserver_setup_dns | bool else "" }}
-      {{ "--add-service=ntp" if not ipaclient_no_ntp | bool else "" }}
-    when: not ipaserver_no_firewalld | bool
