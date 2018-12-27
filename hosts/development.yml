@@ -182,3 +182,10 @@ teleport_nodes:
     teleport_auth_servers:
       - "13.231.154.6"
     teleport_auth_token: "4035023a-a53c-4053-93e0-f7b00f103495"
+
+ansible_host:
+  hosts:
+    35.178.152.10:
+  vars:
+    ansible_ssh_user: ubuntu
+    ansible_install_method: apt
