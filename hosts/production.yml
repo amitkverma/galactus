@@ -215,3 +215,21 @@ nextCloud:
     nextcloud_tls_src_cert: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.crt"
     nextcloud_tls_src_cert_key: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.key"
     nextcloud_mysql_root_pwd: "af3cc85dead57bd6b63aee0b6f13f7491c40980b"
+
+
+redis_cache:
+  hosts:
+    13.232.171.41:
+      consul_ip: '172.31.19.148'
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'redis_cache'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [8300,8301,19999,6363,6379]
+    nginx_custom_vhost: netdata
+    redis_port: '6379'
+    monitor_application_name: 'redis_msg_bus'
+    health_check_script_enabled: true
+    redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe

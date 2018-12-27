@@ -1,0 +1,32 @@
+---
+  - import_playbook: ../variable-check.yml
+    vars:
+      playbook: redis-cache.yml
+
+  - name: Test Connection and Determine Remote User
+    hosts: redis_cache
+    gather_facts: false
+    roles:
+      - { role: connection, tags: [connection, always] }
+
+  - hosts: redis_cache
+    become: yes
+    gather_facts: false
+    pre_tasks: 
+      - name: Install python2 for Ansible
+        raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+        register: output
+        changed_when: output.stdout != ""
+      - name: Gathering Facts
+        setup:
+    roles:
+      - { role: common, tags: [common] }
+      - { role: cache/redis, tags: [redis] }
+      # - { role: monitoring/consul, tags: [consul] }
+      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: monitoring/monit, tags: [monit] }
+      - { role: extra/swapfile, tags: [swapfile] }
+      - { role: security/fail2ban, tags: [fail2ban] }
+      - { role: security/ntp, tags: [ntp] }
+      - { role: extra/sendmail, tags: [sendmail] }
+      - { role: extra/users, tags: [users] }
