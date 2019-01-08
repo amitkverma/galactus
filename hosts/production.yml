@@ -10,8 +10,8 @@ all:
     prod_consul_domain: 'charcoaleats'
     consul_server_ip: '159.89.163.216' # Consul Private IP
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
-    redis_deepstream_port: 6363
-    redis_deepstream_server: '13.232.230.45'
+    redis_deepstream_port: 6379
+    redis_deepstream_server: 'redis-cache.charcoaleats.com'
     deepstream_websocket_port: 5757
     deepstream_websocket_port_lb: 443
     deepstream_http_port: 8787
