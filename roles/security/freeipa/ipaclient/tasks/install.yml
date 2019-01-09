@@ -25,9 +25,13 @@
 - name: Install - Include Python2/3 import test
   import_tasks: "{{role_path}}/tasks/python_2_3_test.yml"
 
+- name: debug
+  debug:
+    msg: "{{  hostvars[groups['ipaservers'][0]].ipaserver_hostname  }}"
+
 - name: Install - Set ipaclient_servers
   set_fact:
-    ipaclient_servers: "{{ groups['ipaservers'] | list }}"
+    ipaclient_servers: "{{ hostvars[groups['ipaservers'][0]].ipaserver_hostname  }}"
   when: groups.ipaservers is defined and ipaclient_servers is not defined
 
 - name: Install - Set ipaclient_servers from cluster inventory
