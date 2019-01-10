@@ -1,7 +1,7 @@
 ---
   - import_playbook: ../variable-check.yml
     vars:
-      playbook: freeipa.yml
+      playbook: freeipa-server.yml
 
   - name: Test Connection and Determine Remote User
     hosts: ipaservers
@@ -21,3 +21,4 @@
         setup:
     roles:
       - { role: security/freeipa/ipaserver }
+      - { role: security/freeipa/ipasetup }

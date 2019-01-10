@@ -1,0 +1,7 @@
+---
+admin_user_group: sudo_users
+admin_group_idnumber: 1000
+admin_host_group: sudo_group
+admin_sudo_rule: sudo_all_rule
+readOnly_user_group: charcoal_user
+readOnly_group_idnumber: 2000

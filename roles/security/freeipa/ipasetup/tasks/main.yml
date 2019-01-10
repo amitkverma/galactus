@@ -1,0 +1,70 @@
+---
+- name: Install - Set ipa host
+  set_fact:
+    ipa_host: "{{ hostvars[groups['ipaservers'][0]].ipaserver_hostname  }}"
+  when: groups.ipaservers is defined
+
+- name: Install - Set ipa principal secret
+  set_fact:
+    ipa_secret: "{{ hostvars[groups['ipaservers'][0]].ipaadmin_password }}"
+  when: groups.ipaservers is defined
+
+- name: Add Admin User Group
+  ipa_group:
+    name: "{{ admin_user_group }}"
+    description: Admin User with root previlages
+    gidnumber: "{{ admin_group_idnumber }}"
+    ipa_host: "{{ ipa_host }}"
+    ipa_user: admin
+    ipa_pass: "{{ ipa_secret }}"
+
+- name: Create a hostgroup for admin users
+  ipa_hostgroup:
+    name: "{{ admin_host_group }}"
+    description: Create An admin host group
+    state: present
+    ipa_host: "{{ ipa_host }}"
+    ipa_user: admin
+    ipa_pass: "{{ ipa_secret }}"
+
+- name: Create Sudo role for admin 
+  ipa_sudorule:
+    name: "{{ admin_sudo_rule }}"
+    description: Allow admin to run every command with sudo on all server
+    cmdcategory: all
+    hostgroup:
+    - "{{ admin_host_group }}"
+    sudoopt:
+    - '!authenticate'
+    usergroup:
+    - "{{ admin_user_group }}"
+    ipa_host: "{{ ipa_host }}"
+    ipa_user: admin
+    ipa_pass: "{{ ipa_secret }}"
+
+- name: Create Admin User
+  ipa_user:
+    name: charcoalAdmin
+    state: present
+    givenname: Charcoal
+    sn: Admin
+    password: amitkverma
+    gidnumber: "{{ admin_group_idnumber }}"
+    ipa_host: "{{ ipa_host }}"
+    ipa_user: admin
+    ipa_pass: "{{ ipa_secret }}"
+
+- name: Read Only User Group
+  ipa_group:
+    name: "{{ readOnly_user_group }}"
+    description: Create a read only user group
+    gidnumber: "{{ readOnly_group_idnumber }}"
+    ipa_host: "{{ ipa_host }}"
+    ipa_user: admin
+    ipa_pass: "{{ ipa_secret }}"
+
+- name: Add host group to auto update
+  shell: "ipa automember-add --type=hostgroup {{ admin_host_group }}"
+
+- name: allow all hosts to be added in auto host group
+  shell: "ipa automember-add-condition --type=hostgroup {{ admin_host_group }} --inclusive-regex=.* --key=fqdn"
