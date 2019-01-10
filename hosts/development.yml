@@ -189,3 +189,33 @@ ansible_host:
   vars:
     ansible_ssh_user: ubuntu
     ansible_install_method: apt
+
+ipaservers:
+  hosts:
+    52.199.11.119:
+  vars:
+    ansible_ssh_user: ubuntu
+    ipaserver_hostname: ipa-test.charcoaleats.com
+    ipaserver_domain: charcoaleats.com
+    ipaserver_realm: CHARCOALEATS.COM
+    ipaadmin_password: amitkverma
+    ipadm_password: amitkverma
+    ipaserver_setup_dns: yes
+    ipaserver_auto_forwarders: yes
+    ipaserver_allow_zone_overlap: yes
+    ipaclient_mkhomedir: yes
+    ipaserver_no_ui_redirect: no
+
+ipaclients:
+  hosts:
+    3.112.37.156:
+    54.64.102.24:
+    3.112.44.62:
+  vars:
+    ansible_ssh_user: ubuntu
+    ipaclient_domain: charcoaleats.com
+    ipaserver_realm: CHARCOALEATS.COM
+    ipaadmin_principal: admin
+    ipaadmin_password: amitkverma
+    ipaclient_allow_repair: yes
+    krb5_packages: krb5-k5tls
