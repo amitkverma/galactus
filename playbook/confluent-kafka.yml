@@ -1,0 +1,38 @@
+- hosts: preflight
+  become: yes
+  gather_facts: false
+  pre_tasks: 
+    - name: Install python2 for Ansible
+      raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+      register: output
+      changed_when: output.stdout != ""
+    - name: Gathering Facts
+      setup:
+- hosts: preflight
+  tasks:
+  - import_role:
+      name: messaging/confluent.preflight
+- hosts: zookeeper
+  tasks:
+  - import_role:
+      name: messaging/confluent.zookeeper
+- hosts: broker
+  tasks:
+  - import_role:
+      name: messaging/confluent.kafka-broker
+- hosts: schema-registry
+  tasks:
+  - import_role:
+      name: messaging/confluent.schema-registry
+# - hosts: connect-distributed
+#   tasks:
+#   - import_role:
+#       name: messaging/confluent.connect-distributed
+- hosts: ksql
+  tasks:
+  - import_role:
+      name: messaging/confluent.ksql
+- hosts: kafka-rest
+  tasks:
+  - import_role:
+      name: messaging/confluent.kafka-rest
