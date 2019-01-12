@@ -219,3 +219,12 @@ ipaclients:
     ipaadmin_password: amitkverma
     ipaclient_allow_repair: yes
     krb5_packages: krb5-k5tls
+
+kafka-monitor:
+  hosts:
+    18.130.197.243:
+  vars:
+    ansible_ssh_user: ubuntu
+    java_home: "/usr/java/jdk1.8.0_131"
+    kafka_manager_zk: "3.8.92.246:2181,35.177.216.169:2181,3.8.56.192:2181"
+    kafka_manager_port: 8080
