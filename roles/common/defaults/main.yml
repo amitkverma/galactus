@@ -5,7 +5,6 @@ sshd: ssh
 
 env_groups: "{{ ['development', 'staging', 'production'] | intersect(group_names) }}"
 apt_packages_default:
-  python-software-properties: "{{ apt_package_state }}"
   python-pycurl: "{{ apt_package_state }}"
   build-essential: "{{ apt_package_state }}"
   python-mysqldb: "{{ apt_package_state }}"

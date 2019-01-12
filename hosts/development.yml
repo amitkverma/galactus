@@ -185,7 +185,7 @@ teleport_nodes:
 
 ansible_host:
   hosts:
-    35.178.152.10:
+    18.182.10.144:
   vars:
     ansible_ssh_user: ubuntu
     ansible_install_method: apt
@@ -228,3 +228,10 @@ kafka-monitor:
     java_home: "/usr/java/jdk1.8.0_131"
     kafka_manager_zk: "3.8.92.246:2181,35.177.216.169:2181,3.8.56.192:2181"
     kafka_manager_port: 8080
+
+provision_server:
+  hosts:
+    18.182.10.144:
+  vars:
+    ansible_ssh_user: ubuntu
+    ansible_install_method: apt
