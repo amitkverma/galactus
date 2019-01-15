@@ -20,7 +20,7 @@
       - name: Gathering Facts
         setup:
     roles:
-      # - { role: common, tags: [common] }
+      - { role: common, tags: [common] }
       - { role: extra/users, tags: [users] }
       - { role: applications/ansible }
       - { role: extra/git-deploy }

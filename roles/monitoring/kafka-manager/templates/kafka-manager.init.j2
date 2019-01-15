@@ -1,14 +1,20 @@
-#!/bin/bash
-#
-# Init file for Kafka MANAGER
-#
-# chkconfig: 35 85 15
-# description: A tool for managing Apache Kafka.
-# processname: kafka-manager
-# config: {{ software_install_path }}/kafka-manager/conf/application.conf
-# pidfile: /var/run/kafka-manager.pid
+#!/bin/sh
 
-. /etc/rc.d/init.d/functions
+### BEGIN INIT INFO
+# Provides:          kafka-manager
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     S
+# Default-Stop:      1
+# Short-Description: start kafka-manager
+# Description: Start ufw kafka-manager
+### END INIT INFO
+
+set -e
+
+PATH="/sbin:/bin"
+
+. /lib/lsb/init-functions
 
 KAFKA_MANAGER_USER="{{ kafka_manager_user }}"
 KAFKA_MANAGER_PORT="{{ kafka_manager_port }}"
@@ -18,7 +24,7 @@ KAFKA_MANAGER_log="/var/log/kafka-manager.log"
 PIDFILE="/var/run/kafka-manager.pid"
 LOCKFILE="/var/lock/subsys/kafka-manager"
 
-JAVA_HOME="{{ ansible_env.JAVA_HOME |d(KAFKA_MANAGER_javahome)}}"
+JAVA_HOME="{{ ansible_env.JAVA_HOME |d(kafka_manager_javahome)}}"
 
 CMD="$KAFKA_MANAGER_BASEDIR/bin/kafka-manager -Dconfig.file=$KAFKA_MANAGER_CONF -Dhttp.port=$KAFKA_MANAGER_PORT -java-home $JAVA_HOME >> $KAFKA_MANAGER_log 2>&1 & echo \$! > $PIDFILE"
 

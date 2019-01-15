@@ -1,11 +1,19 @@
 ---
-- name: git-deploy | add ssh key
+- name: git-deploy | add ssh deploy
   template:
     src: "id_rsa.deploy"
     dest: "{{ user_home_path }}/.ssh/id_rsa.deploy"
     owner: root
     group: "root"
     mode: 0644
+
+- name: git-deploy | add ssh key
+  template:
+    src: "id_rsa.deploy"
+    dest: "{{ user_home_path }}/.ssh/id_rsa.key"
+    owner: root
+    group: "root"
+    mode: 0400
 
 - name: git-deploy | Configure ssh to use ansible key
   template:
@@ -22,3 +30,6 @@
     owner: "{{ node_application_user }}"
     group: "{{ deploy_user_group }}"
     mode: 0777
+
+- include_tasks: get-repo.yml  
+  when: fetch_repo_from_remote_host

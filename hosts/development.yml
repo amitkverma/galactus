@@ -220,18 +220,31 @@ ipaclients:
     ipaclient_allow_repair: yes
     krb5_packages: krb5-k5tls
 
-kafka-monitor:
+kafka_monitor:
   hosts:
-    18.130.197.243:
+    35.180.22.170:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: scylla
     java_home: "/usr/java/jdk1.8.0_131"
-    kafka_manager_zk: "3.8.92.246:2181,35.177.216.169:2181,3.8.56.192:2181"
+    kafka_manager_zk: "10.0.1.134:2181,10.0.1.108:2181,10.0.1.196:2181"
     kafka_manager_port: 8080
+    ansible_install_method: apt
+    nginx_custom_vhost: kafkaMonitor
+    nodejs_npm_global_packages: 
+        - bower
+    fetch_repo_from_remote_host: true
+    nginx_ssl_enable: true
+    ssh_git_user: scylla
+    git_repos: 
+        - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-kafka.git"
+          path: /opt/software/charcoal-kafka
+        - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-kafka-monitor-angular.git"
+          path: /var/www/charcoal-kafka-monitor-angular
+
 
 provision_server:
   hosts:
     18.182.10.144:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: scylla
     ansible_install_method: apt
