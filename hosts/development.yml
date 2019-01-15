@@ -248,3 +248,19 @@ provision_server:
   vars:
     ansible_ssh_user: scylla
     ansible_install_method: apt
+
+vault_server:
+  hosts:
+    35.180.98.40:
+  vars:
+    ansible_ssh_user: ubuntu
+    vault_backend: file
+    vault_cluster_disable: True
+    vault_awskms: True
+    nginx_custom_vhost: vault
+    nginx_ssl_enable: false
+    vault_awskms_key_id: "f76441bb-58f8-4002-93ad-18a35e244457"
+    vault_awskms_region: "ap-northeast-1"
+    vault_awskms_access_key: "AKIAITMA2UUB7HHVW3DQ"
+    vault_awskms_secret_key: "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"
+
