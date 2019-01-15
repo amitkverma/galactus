@@ -4,12 +4,12 @@
       playbook: kafka-monitor.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: kafka-monitor
+    hosts: kafka_monitor
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: kafka-monitor
+  - hosts: kafka_monitor
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -20,6 +20,12 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: platform/java }
-      - { role: extra/java-sbt }
+      # - { role: common }
+      # - { role: extra/users }
+      # - { role: applications/ansible }
+      # - { role: platform/java }
+      # - { role: extra/java-sbt }
+      # - { role: webservers/nodejs }
       - { role: monitoring/kafka-manager }
+      # - { role: webservers/nginx }
+      # - { role: extra/git-deploy }
