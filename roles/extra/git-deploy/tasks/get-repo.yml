@@ -1,8 +1,31 @@
 ---
+- name: create directory if they don't exist
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ ssh_git_user }}"
+    group: "{{ deploy_user_group }}"
+    mode: 0775
+    recurse: yes
+    force: yes
+  with_items: "{{ git_repos }}"
+
 - name: Fetch Projects from git remote host
   git:
     repo: "{{ item.remote_url }}"
     dest: "{{ item.path }}"
     accept_hostkey: yes
     key_file: "/home/{{ ssh_git_user }}/.ssh/id_rsa.key"
+    force: yes
+  with_items: "{{ git_repos }}"
+
+- name: change permission of repo
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ ssh_git_user }}"
+    group: "{{ deploy_user_group }}"
+    mode: 0775
+    recurse: yes
+    force: yes
   with_items: "{{ git_repos }}"

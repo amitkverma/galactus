@@ -247,7 +247,7 @@ ipaservers:
     ipaserver_no_ui_redirect: no
     git_repos: 
         - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-ansible-scripts.git"
-          path: /opt/charcoal-ansible-scripts
+          path: /opt/software/charcoal-ansible-scripts
 
 ipaclients:
   hosts:
