@@ -17,30 +17,25 @@ all:
     deepstream_http_port: 8787
     pm2_user: root
     nodejs_application_port: 8888
-    node_application_user: scylla
+    ssh_git_user: aldous
     deepstream_auth_url: https://api.charcoaleats.com/open/live/authenticateUser
     git_host: gitlab.charcoalbiryani.com
     nodejs_install_npm_user: root
     env_host_name: www.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
-    admin_user: dranzer
+    admin_user: aldous
     users:
-      - name: "dranzer" # Ansible User
+      - name: "hanzo" # Admin User
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/dranzer.pub') }}"
-      - name: "cerberus" # Admin User 
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/hanzo.pub') }}"
+      - name: "aldous" # Ansible User 
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/cerberus.pub') }}"
-      - name: "scylla" # Deploy User
-        groups:
-          - www
-        keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/scylla.pub') }}"
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/aldous.pub') }}"    
 
 
 consul_server:
@@ -233,3 +228,13 @@ redis_cache:
     monitor_application_name: 'redis_msg_bus'
     health_check_script_enabled: true
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
+
+provision_server:
+  hosts:
+    35.180.71.138:
+  vars:
+    ansible_ssh_user: hanzo
+    ansible_install_method: apt
+    git_repos: 
+        - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-ansible-scripts.git"
+          path: /opt/charcoal-ansible-scripts

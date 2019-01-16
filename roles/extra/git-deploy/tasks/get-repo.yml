@@ -3,5 +3,6 @@
   git:
     repo: "{{ item.remote_url }}"
     dest: "{{ item.path }}"
+    accept_hostkey: yes
     key_file: "/home/{{ ssh_git_user }}/.ssh/id_rsa.key"
   with_items: "{{ git_repos }}"
