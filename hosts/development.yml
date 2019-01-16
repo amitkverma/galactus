@@ -222,11 +222,11 @@ ipaclients:
 
 kafka_monitor:
   hosts:
-    35.180.22.170:
+    35.180.121.190:
   vars:
-    ansible_ssh_user: scylla
+    ansible_ssh_user: ubuntu
     java_home: "/usr/java/jdk1.8.0_131"
-    kafka_manager_zk: "10.0.1.134:2181,10.0.1.108:2181,10.0.1.196:2181"
+    kafka_manager_zk: "10.0.1.71:2181,10.0.1.151:2181,10.0.1.57:2181"
     kafka_manager_port: 8080
     ansible_install_method: apt
     nginx_custom_vhost: kafkaMonitor

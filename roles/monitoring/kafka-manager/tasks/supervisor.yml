@@ -1,0 +1,22 @@
+---
+- name: Kafka Manager | Install supervisor
+  apt:
+    pkg: "{{ item }}"
+  with_items: 
+    - supervisor
+
+- name:  Kafka Manager  | Add  Kafka Manager to supervisor's watch
+  template:
+    src: "kafka-manager.conf.j2"
+    dest: "/etc/supervisor/conf.d/kafka-manager.conf"
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+
+- name:  Kafka Manager  | Read  Kafka Manager config file
+  command: "supervisorctl reread"
+
+- name:  Kafka Manager  | Read  Kafka Manager config file
+  command: "supervisorctl update"
+
