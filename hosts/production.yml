@@ -229,12 +229,37 @@ redis_cache:
     health_check_script_enabled: true
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
 
-provision_server:
+ipaservers:
   hosts:
-    35.180.71.138:
+    52.47.183.32:
   vars:
     ansible_ssh_user: hanzo
     ansible_install_method: apt
+    ipaserver_hostname: ipa.charcoaleats.com
+    ipaserver_domain: charcoaleats.com
+    ipaserver_realm: CHARCOALEATS.COM
+    ipaadmin_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
+    ipadm_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
+    ipaserver_setup_dns: yes
+    ipaserver_auto_forwarders: yes
+    ipaserver_allow_zone_overlap: yes
+    ipaclient_mkhomedir: yes
+    ipaserver_no_ui_redirect: no
     git_repos: 
         - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-ansible-scripts.git"
           path: /opt/charcoal-ansible-scripts
+
+ipaclients:
+  hosts:
+    10.0.1.61:
+    10.0.1.160:
+    10.0.0.34:
+    10.0.0.227:
+  vars:
+    ansible_ssh_user: ubuntu
+    ipaclient_domain: charcoaleats.com
+    ipaserver_realm: CHARCOALEATS.COM
+    ipaadmin_principal: admin
+    ipaadmin_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
+    ipaclient_allow_repair: yes
+    krb5_packages: krb5-k5tls
