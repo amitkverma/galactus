@@ -219,7 +219,7 @@ kafka_monitor:
   hosts:
     35.180.121.190:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: scylla
     java_home: "/usr/java/jdk1.8.0_131"
     kafka_manager_zk: "10.0.1.71:2181,10.0.1.151:2181,10.0.1.57:2181"
     kafka_manager_port: 8080

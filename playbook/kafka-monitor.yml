@@ -20,11 +20,11 @@
       - name: Gathering Facts
         setup:
     roles:
-      # - { role: common }
+      - { role: common }
       - { role: extra/users }
-      # - { role: applications/ansible }
-      # - { role: platform/java }
-      # - { role: webservers/nodejs }
-      # - { role: monitoring/kafka-manager }
-      # - { role: webservers/nginx }
+      - { role: applications/ansible }
+      - { role: platform/java }
+      - { role: webservers/nodejs }
+      - { role: monitoring/kafka-manager }
+      - { role: webservers/nginx }
       - { role: extra/git-deploy }
