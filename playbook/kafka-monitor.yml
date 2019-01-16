@@ -21,11 +21,10 @@
         setup:
     roles:
       # - { role: common }
-      # - { role: extra/users }
+      - { role: extra/users }
       # - { role: applications/ansible }
       # - { role: platform/java }
-      # - { role: extra/java-sbt }
       # - { role: webservers/nodejs }
-      - { role: monitoring/kafka-manager }
+      # - { role: monitoring/kafka-manager }
       # - { role: webservers/nginx }
-      # - { role: extra/git-deploy }
+      - { role: extra/git-deploy }

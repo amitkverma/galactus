@@ -26,17 +26,17 @@
     connection: local
     when: not kafka_manager_file_result.stat.exists
 
-  - name: install | Download kafka_manager file.
-    get_url: url={{ kafka_manager_file_url }} dest={{ software_files_path }}
-    connection: local
-    when: not kafka_manager_file_result.stat.exists
+  # - name: install | Download kafka_manager file.
+  #   get_url: url={{ kafka_manager_file_url }} dest={{ software_files_path }}
+  #   connection: local
+  #   when: not kafka_manager_file_result.stat.exists
 
-  - name: install | Copy kafka_manager file to agent.
-    unarchive:
-      remote_src: yes
-      src: "{{ kafka_manager_file_path }}"
-      dest: /tmp
-      creates: "/tmp/kafka-manager-{{ kafka_manager_version }}"
+  # - name: install | Copy kafka_manager file to agent.
+  #   unarchive:
+  #     remote_src: yes
+  #     src: "{{ kafka_manager_file_path }}"
+  #     dest: /tmp
+  #     creates: "/tmp/kafka-manager-{{ kafka_manager_version }}"
 
   #  Since build is taking alot time. Tried taking build local      
   # - name: install | Build kafka_manager.
@@ -45,24 +45,28 @@
   #    chdir: /tmp/kafka-manager-{{ kafka_manager_version }}
   #    creates: /tmp/kafka-manager-{{ kafka_manager_version }}/target/universal/{{ kafka_manager_build_file }}
       
-  - name: "install | Copy kafka_manager build file to {{ software_install_path }}"
-    unarchive:
-      src: "kafka-manager-{{ kafka_manager_version }}.zip"
-      dest: "{{ software_install_path }}"
-      owner: "{{ kafka_manager_user }}"
-      group: "{{ kafka_manager_user }}"
-      creates: "{{ software_install_path }}/kafka-manager"
-  when: not kafka_manager_build_file_result.stat.exists
+- name: "install | Copy kafka_manager file to server"
+  copy:
+    src: "kafka-manager-{{ kafka_manager_version }}.zip"
+    dest: "/tmp/kafka-manager-{{ kafka_manager_version }}.zip"
 
 - name: install | Copy kafka_manager build file to agent.
   unarchive:
     remote_src: yes
-    src: "{{ kafka_manager_build_file_path }}"
+    src: "/tmp/kafka-manager-{{ kafka_manager_version }}.zip"
     dest: "{{ software_install_path }}"
     owner: "{{ kafka_manager_user }}"
     group: "{{ kafka_manager_user }}"
-    creates: "{{ software_install_path }}/kafka-manager"
-  when: kafka_manager_build_file_result.stat.exists
+
+
+- name: Check if kafka manager exist
+  stat: 
+    path: "{{ software_install_path }}/kafka-manager"
+  register: kafka_manager_stat
+
+- name: Move content to kafka manager folder
+  command: "mv {{ software_install_path }}/kafka-manager-{{ kafka_manager_version }} {{ software_install_path }}/kafka-manager"
+  when: kafka_manager_stat.stat.exists == false
 
 - name: "install | Set kafka-manager home directory user is [{{ kafka_manager_user }}]"
   file: "dest={{ software_install_path }}/kafka-manager owner={{ kafka_manager_user }} group={{ kafka_manager_user }} recurse=yes"
