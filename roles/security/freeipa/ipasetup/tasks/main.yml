@@ -44,11 +44,23 @@
 
 - name: Create Admin User
   ipa_user:
-    name: charcoalAdmin
+    name: helcurt
     state: present
-    givenname: Charcoal
+    givenname: Helcurt
     sn: Admin
-    password: amitkverma
+    password: ff7f42ac386b80e76c4fe1dd6d6e95ba8657c1cf
+    gidnumber: "{{ admin_group_idnumber }}"
+    ipa_host: "{{ ipa_host }}"
+    ipa_user: admin
+    ipa_pass: "{{ ipa_secret }}"
+
+- name: Create Ansible User
+  ipa_user:
+    name: argus
+    state: present
+    givenname: Argus
+    sn: Admin
+    password: ad9db5944db765db2a8b1e048239de28eb9255e7
     gidnumber: "{{ admin_group_idnumber }}"
     ipa_host: "{{ ipa_host }}"
     ipa_user: admin
@@ -62,6 +74,9 @@
     ipa_host: "{{ ipa_host }}"
     ipa_user: admin
     ipa_pass: "{{ ipa_secret }}"
+
+- name: Init Admin
+  shell: 'echo "{{ ipaadmin_password }}" | kinit admin'
 
 - name: Add host group to auto update
   shell: "ipa automember-add --type=hostgroup {{ admin_host_group }}"

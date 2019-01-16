@@ -1,33 +1,25 @@
 ---
-- name: git-deploy | add ssh deploy
-  template:
-    src: "id_rsa.deploy"
-    dest: "{{ user_home_path }}/.ssh/id_rsa.deploy"
-    owner: root
-    group: "root"
-    mode: 0644
-
 - name: git-deploy | add ssh key
   template:
-    src: "id_rsa.deploy"
+    src: "id_rsa.key"
     dest: "{{ user_home_path }}/.ssh/id_rsa.key"
-    owner: root
-    group: "root"
+    owner: "{{ ssh_git_user }}"
+    group: "sudo"
     mode: 0400
 
 - name: git-deploy | Configure ssh to use ansible key
   template:
     src: "ssh_config.j2"
     dest: "{{ user_home_path }}/.ssh/config"
-    owner: root
-    group: "root"
+    owner: "{{ ssh_git_user }}"
+    group: "sudo"
     mode: 0644
 
 - name: git-deploy |  Ensure apps directory present
   file:
     path: /var/apps
     state: directory
-    owner: "{{ node_application_user }}"
+    owner: "{{ ssh_git_user }}"
     group: "{{ deploy_user_group }}"
     mode: 0777
 

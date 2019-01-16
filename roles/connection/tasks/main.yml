@@ -20,7 +20,7 @@
     command ansible {{ inventory_hostname }} -m raw -a whoami
     -u {{ dynamic_user | default(true) | ternary('root', web_user) }} {{ cli_options | default('') }} -vvvv
   environment:
-    ANSIBLE_SSH_ARGS: "{{ ssh_args_default }} {{ ansible_ssh_extra_args | default('') }}"
+    ANSIBLE_SSH_ARGS: "{{ ansible_ssh_extra_args | default('') }}"
   failed_when: false
   changed_when: false
   check_mode: no

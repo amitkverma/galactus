@@ -24,23 +24,18 @@ all:
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
     mysql_replication_master: '52.194.205.240'
-    admin_user: driger
+    admin_user: cyclops
     users:
-      - name: "driger" # Ansible User
+      - name: "lancelot" # Admin User
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/driger.pub') }}"
-      - name: "dragoon" # Admin User 
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/lancelot.pub') }}"
+      - name: "cyclops" # Ansible User 
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/dragoon.pub') }}"
-      - name: "scylla" # Deploy User
-        groups:
-          - www
-        keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/scylla.pub') }}"
+          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/cyclops.pub') }}"    
     shared_mysql_user: { name: "charcoaleatsAdmin", password: "Striker_Axel01" , host: "%" } 
     proxysql_mysql_monitor: { name: monitor,  password: 'amitkverma' , host: "%" }
     shared_mysql_database: "CB_PROD_MIRROR_DEV"

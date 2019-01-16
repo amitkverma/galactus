@@ -1,6 +1,7 @@
 {{ ansible_managed | comment }}
 
 Host {{ git_host }}
-IdentityFile {{ user_home_path }}/.ssh/id_rsa.deploy
+IdentityFile {{ user_home_path }}/.ssh/id_rsa.key
 IdentitiesOnly yes
-StrictHostKeyChecking=no
+UserKnownHostsFile /dev/null
+StrictHostKeyChecking no
