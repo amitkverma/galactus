@@ -8,6 +8,7 @@
 - name: Gather variables for monitor setup type
   include_vars: "{{ item }}"
   with_items: "{{ monitor_application_name | lower }}.yml"
+  when: consul_mode != 'server' and monitor_application_name is defined
   tags:
     - always
 

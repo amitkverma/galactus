@@ -1,0 +1,16 @@
+{
+  "node_name": "{{ consul_nodename }}",
+  "data_dir": "{{ consul_datadir }}",
+  "log_level": "{{ consul_loglevel }}",
+  "domain": "{{ consul_domain }}",
+  "datacenter": "{{ consul_datacenter }}",
+  "bind_addr": "{{ ansible_all_ipv4_addresses | ipaddr('private') | first }}",
+  "ports": {
+    "http": {{ consul_http_port }},
+    "dns": {{ consul_dns_port }}
+  },
+  "enable_syslog": {{ "true" if consul_syslog else "false" }},
+  "enable_script_checks": {{ "true" if health_check_script_enabled is defined else "false" }},
+  "retry_join": [{% for host in  consul_server_nodes %}"{{ host }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+  "rejoin_after_leave": true
+}

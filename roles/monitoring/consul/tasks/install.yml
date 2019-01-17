@@ -22,6 +22,7 @@
     state: directory
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
+    recurse: yes
   with_items:
     - "{{ consul_bindir }}"
     - "{{ consul_configdir }}"

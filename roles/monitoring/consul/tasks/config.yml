@@ -1,10 +1,20 @@
 ---
-- name: Consul | Template out config
+- name: Consul | Template out server config
   template:
-    src: "{{ consul_configuration_template_path }}"
+    src: "{{ consul_configuration_template_path_server }}"
     dest: "{{ consul_configdir }}/consul.json"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
+  when: consul_mode == 'server'
+  notify: restart consul
+
+- name: Consul | Template out client config
+  template:
+    src: "{{ consul_configuration_template_path_client }}"
+    dest: "{{ consul_configdir }}/consul.json"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+  when: consul_mode != 'server'
   notify: restart consul
 
 - name: Consul | Copy logrotate conf
