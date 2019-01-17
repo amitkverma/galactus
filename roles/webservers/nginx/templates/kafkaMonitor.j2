@@ -6,6 +6,14 @@ upstream backend {
 }
 
 server {
+	listen 3444;
+	location / {
+     	proxy_pass http://{{ kafka_rest_ip }}:8082;
+		proxy_set_header Host $host:$server_port;
+  	}
+}
+
+server {
     # nginx listens to this
     listen 80;
 

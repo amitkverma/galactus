@@ -279,6 +279,7 @@ kafka_monitor:
         - bower
     fetch_repo_from_remote_host: true
     nginx_ssl_enable: true
+    kafka_rest_ip: "10.0.1.71"
     git_repos: 
         - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-kafka.git"
           path: /opt/software/charcoal-kafka
