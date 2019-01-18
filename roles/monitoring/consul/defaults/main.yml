@@ -1,5 +1,5 @@
 ---
-consul_version: 1.2.2
+consul_version: 1.4.0
 
 consul_user: consul
 consul_group: consul
@@ -28,7 +28,8 @@ consul_ip: "{{ inventory_hostname }}"
 consul_http_port: 8500
 consul_dns_port: 8600
 
-consul_configuration_template_path: consul.json.j2
+consul_configuration_template_path_server: consul-server.json.j2
+consul_configuration_template_path_client: consul-client.json.j2
 consul_logrotate_template_path: logrotate.j2
 consul_service_template_path: consul.service.j2
 
@@ -41,14 +42,15 @@ consul_acl_down_policy: extend-cache
 consul_acl_master_token: master
 consul_acl_agent_token: agent
 
+# consul_acl_configuration_list: []
 ## ACL for discovery synchronization between servers
 # Example
 # consul_acl_configuration_list:
-  # Agent:
-  #   token_type: client
-  #   token: "{{ consul_acl_agent_token }}"
-  #   rules:
-  #     - node: ""
-  #       policy: write
-  #     - service: ""
-  #       policy: read
+#   Agent:
+#     token_type: client
+#     token: "{{ consul_acl_agent_token }}"
+#     rules:
+#       - node: ""
+#         policy: write
+#       - service: ""
+#         policy: read

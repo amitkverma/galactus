@@ -10,7 +10,7 @@
   "log_level": "{{ consul_loglevel }}",
   "domain": "{{ consul_domain }}",
   "datacenter": "{{ consul_datacenter }}",
-  "bind_addr": "{{ consul_ip }}",
+  "bind_addr": "{{ ansible_all_ipv4_addresses | ipaddr('private') | first }}",
   "advertise_addr": "{{ consul_ip }}",
   "ports": {
     "http": {{ consul_http_port }},
@@ -19,10 +19,9 @@
   "server": {{ "true" if consul_server else "false" }},
   "enable_syslog": {{ "true" if consul_syslog else "false" }},
   "enable_script_checks": {{ "true" if health_check_script_enabled is defined else "false" }},
-  "retry_join": [{% for host in consul_server_nodes %}"{{ host }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+  "retry_join": [{% for host in  ansible_all_ipv4_addresses | ipaddr('private')  %}"{{ host }}:8301"{% if not loop.last %}, {% endif %}{% endfor %}],
   "rejoin_after_leave": true,
 {% if consul_server %}
-  "bootstrap_expect": {{ consul_server_nodes|length }},
+  "bootstrap_expect": {{ ansible_all_ipv4_addresses | ipaddr('private') | length }}
 {% endif %}
-  "start_join": [{% for host in consul_server_nodes %}"{{ host }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 }

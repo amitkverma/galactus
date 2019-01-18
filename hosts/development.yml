@@ -246,7 +246,7 @@ provision_server:
 
 vault_server:
   hosts:
-    35.180.98.40:
+    35.180.36.184:
   vars:
     ansible_ssh_user: ubuntu
     vault_backend: file
@@ -259,3 +259,24 @@ vault_server:
     vault_awskms_access_key: "AKIAITMA2UUB7HHVW3DQ"
     vault_awskms_secret_key: "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"
 
+consul_server:
+  hosts:
+    35.180.255.89:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'consul-sd'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'server'
+    firewall_open_ports: [80,8300,8301,8500,8600,19999]
+    nginx_custom_vhost: consul
+    cluster_private_ips:
+      - 10.0.0.170
+
+consul_client:
+  hosts:
+    52.47.159.69:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'consul-client-paris'
+    consul_mode: 'client'
