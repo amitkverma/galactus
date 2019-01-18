@@ -275,9 +275,8 @@ consul_server:
 
 consul_client:
   hosts:
-    35.180.247.145:
     52.47.159.69:
   vars:
     ansible_ssh_user: ubuntu
-    server_name: 'consul-client'
+    server_name: 'consul-client-paris'
     consul_mode: 'client'

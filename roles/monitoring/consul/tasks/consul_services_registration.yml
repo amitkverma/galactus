@@ -14,6 +14,7 @@
   changed_when: false
   with_items:
     - "{{ consul_services_register }}"
+  when: consul_services_register is defined
 
 - name: Consul | Transfer health check file to server
   template:
@@ -32,6 +33,7 @@
     headers:
       X-Consul-Token: "{{ consul_acl_agent_token }}"
     validate_certs: no
-  when: item.state is defined and item.state == "absent"
+  when: item.state is defined and item.state == "absent" and consul_services_register is defined
   with_items:
     - "{{ consul_services_register }}"
+  when: consul_services_register is defined

@@ -49,3 +49,4 @@
     host: "{{ consul_server_nodes | first }}"
   notify: restart consul
   with_dict: "{{ consul_acl_configuration_list }}"
+  when: consul_mode == 'server'
