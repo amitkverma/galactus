@@ -21,4 +21,5 @@
         setup:
     roles:
       - { role: monitoring/consul, tags: [consul] }
+      - { role: monitoring/netdata, tags: [netdata] }
 
