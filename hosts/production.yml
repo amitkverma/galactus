@@ -285,3 +285,17 @@ kafka_monitor:
           path: /opt/software/charcoal-kafka
         - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-kafka-monitor-angular.git"
           path: /var/www/charcoal-kafka-monitor-angular
+
+gitlab_server:
+  hosts:
+    52.47.98.10:
+  vars:
+    ansible_ssh_user: ubuntu
+    gitlab_external_url: "https://gitlab.charcoaleats.com"
+    gitlab_redirect_http_to_https: "true"
+    gitlab_ssl_certificate: "/etc/ssl/charcoaleats.crt"
+    gitlab_ssl_certificate_key: "/etc/ssl/charcoaleats.key"
+    nginx_ssl_enable: true
+    gitlab_domain: "gitlab.charcoaleats.com"
+    nginx_custom_vhost: gitlab
+    gitlab_nginx_listen_https: 443
