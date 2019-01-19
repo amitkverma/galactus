@@ -33,7 +33,6 @@
     headers:
       X-Consul-Token: "{{ consul_acl_agent_token }}"
     validate_certs: no
-  when: item.state is defined and item.state == "absent" and consul_services_register is defined
+  when: item.state is defined and item.state == "absent"
   with_items:
     - "{{ consul_services_register }}"
-  when: consul_services_register is defined

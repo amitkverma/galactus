@@ -5,6 +5,17 @@
   tags:
     - always
 
+- name: Netdata | Set netdata_master_ip fact
+  set_fact:
+    netdata_master_ip: "{{ groups['netdata_server'] | first  }}"
+  when: groups.netdata_server is defined
+
+- name: Netdata | Set netdata uuid fact
+  set_fact:
+    netdata_uuid: "{{ hostvars[groups['netdata_server'][0]].netdata_uuid  }}"
+  when: groups.netdata_server is defined
+
+
 - name: update the apt cache
   apt:
     update_cache: true
