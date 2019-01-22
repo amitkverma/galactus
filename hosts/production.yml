@@ -299,3 +299,11 @@ gitlab_server:
     gitlab_domain: "gitlab.charcoaleats.com"
     nginx_custom_vhost: gitlab
     gitlab_nginx_listen_https: 443
+    gitlab_smtp_enable: true
+    gitlab_smtp_address: "email-smtp.us-east-1.amazonaws.com"
+    gitlab_smtp_port: 587
+    gitlab_smtp_user_name: 'AKIAJV5OEMFQP6VNOVWQ'
+    gitlab_smtp_password: 'ArMgH6QVdNdKmrUQrDyQEMwHUalOBC4a9gTxdu2kXHt+'
+    gitlab_smtp_domain: 'charcoaleats.com'
+
+

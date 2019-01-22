@@ -49,7 +49,7 @@ nginx['listen_https'] = {{ gitlab_nginx_listen_https }}
 # Use smtp instead of sendmail/postfix
 # More details and example configuration at
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md
-gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enable }}
+gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enable| lower }}
 gitlab_rails['smtp_address'] = '{{ gitlab_smtp_address }}'
 gitlab_rails['smtp_port'] = {{ gitlab_smtp_port }}
 gitlab_rails['smtp_user_name'] = '{{ gitlab_smtp_user_name }}'
@@ -61,6 +61,19 @@ gitlab_rails['smtp_tls'] = {{ gitlab_smtp_tls }}
 gitlab_rails['smtp_openssl_verify_mode'] = '{{ gitlab_smtp_openssl_verify_mode }}'
 gitlab_rails['smtp_ca_path'] = '{{ gitlab_smtp_ca_path }}'
 gitlab_rails['smtp_ca_file'] = '{{ gitlab_smtp_ca_file }}'
+
+{% if gitlab_omniauth_providers_enable is defined %}
+gitlab_rails['omniauth_allow_single_sign_on'] = ['saml']
+gitlab_rails['omniauth_providers'] = [
+    {
+      "name" => "gitlab",
+      "app_id" => "{{ gitlab_omniauth_providers_appId }}",
+      "app_secret" => "{{ gitlab_omniauth_providers_app_secret }}",
+      "args" => { "scope" => "api" },
+      "redirect_uri" => "http://gitlab.charcoalbiryani.com/import/gitlab/callback"
+    }
+]
+{% endif %}
 
 # 2-way SSL Client Authentication.
 {% if gitlab_nginx_ssl_verify_client %}
