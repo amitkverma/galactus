@@ -223,25 +223,6 @@ kafka_monitor:
         - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-kafka-monitor-angular.git"
           path: /var/www/charcoal-kafka-monitor-angular
 
-gitlab_server:
-  hosts:
-    52.47.98.10:
-  vars:
-    ansible_ssh_user: ubuntu
-    gitlab_external_url: "https://gitlab.charcoaleats.com"
-    gitlab_redirect_http_to_https: "true"
-    gitlab_ssl_certificate: "/etc/ssl/charcoaleats.crt"
-    gitlab_ssl_certificate_key: "/etc/ssl/charcoaleats.key"
-    nginx_ssl_enable: true
-    gitlab_domain: "gitlab.charcoaleats.com"
-    nginx_custom_vhost: gitlab
-    gitlab_nginx_listen_https: 443
-    gitlab_smtp_enable: true
-    gitlab_smtp_address: "email-smtp.us-east-1.amazonaws.com"
-    gitlab_smtp_port: 587
-    gitlab_smtp_user_name: 'AKIAJV5OEMFQP6VNOVWQ'
-    gitlab_smtp_password: 'ArMgH6QVdNdKmrUQrDyQEMwHUalOBC4a9gTxdu2kXHt+'
-    gitlab_smtp_domain: 'charcoaleats.com'
 
 # New Infra start here
 
@@ -298,3 +279,31 @@ netdata_server:
     nginx_custom_vhost: netdata
     monitor_application_name: netdata
     netdata_uuid: '507d01bd-ae4f-4216-bf61-982140600aff'
+
+gitlab_server:
+  hosts:
+    13.232.69.54:
+  vars:
+    server_name: 'gitlab-server'
+    ansible_ssh_user: ubuntu
+    gitlab_external_url: "https://gitlab.charcoaleats.com"
+    gitlab_redirect_http_to_https: "true"
+    gitlab_ssl_certificate: "/etc/ssl/charcoaleats.crt"
+    gitlab_ssl_certificate_key: "/etc/ssl/charcoaleats.key"
+    nginx_ssl_enable: true
+    gitlab_domain: "gitlab.charcoaleats.com"
+    nginx_custom_vhost: gitlab
+    gitlab_nginx_listen_https: 443
+    gitlab_smtp_enable: true
+    gitlab_smtp_address: "email-smtp.us-east-1.amazonaws.com"
+    gitlab_smtp_port: 587
+    gitlab_smtp_user_name: 'AKIAJV5OEMFQP6VNOVWQ'
+    gitlab_smtp_password: 'ArMgH6QVdNdKmrUQrDyQEMwHUalOBC4a9gTxdu2kXHt+'
+    gitlab_smtp_domain: 'charcoaleats.com'
+    gitlab_create_self_signed_cert: false
+    gitlab_tls_src_cert: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.crt"
+    gitlab_tls_src_cert_key: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.key"
+    consul_mode: 'client'
+    netdata_monitor_application: []
+    netdata_mode: 'slave'
+    monitor_application_name: gitlab

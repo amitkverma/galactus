@@ -1,0 +1,9 @@
+---
+monit_services:
+  - name: gitlab-ctl
+    type: process_by_name
+    target: gitlab-ctl
+    restart: gitlab-ctl reconfigure
+    rules:
+      - "if failed port 443 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"

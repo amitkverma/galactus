@@ -66,6 +66,10 @@
     creates={{ gitlab_ssl_certificate }}
   when: gitlab_create_self_signed_cert
 
+- name: Install given signed certificates
+  include_tasks: tasks/tls_signed.yml
+  when: gitlab_create_self_signed_cert == false and nginx_ssl_enable
+
 - name: Copy GitLab configuration file.
   template:
     src: "{{ gitlab_config_template }}"

@@ -1,0 +1,7 @@
+---
+consul_services_register:
+    - name: gitlab
+      tags: ['gitlab', 'aws']
+      port: 443
+      http: "https://gitlab.charcoaleats.com/-/readiness?token=DfTT5L1GvQkjdwT4nJfp"
+      interval: "60s"
