@@ -35,18 +35,6 @@ all:
           - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/aldous.pub') }}"    
 
 
-netdata_server:
-  hosts:
-    159.65.152.64:
-  vars:
-    ansible_ssh_user: root
-    server_name: 'netdata-server'
-    netdata_mode: 'master'
-    netdata_monitor_application: ['nginx']
-    consul_mode: 'client'
-    firewall_open_ports: [80,8300,8301,19999]
-    nginx_custom_vhost: netdata
-
 redis_msg_bus:
   hosts:
     13.232.230.45:
@@ -214,45 +202,6 @@ redis_cache:
     health_check_script_enabled: true
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
 
-ipaservers:
-  hosts:
-    52.66.88.208:
-  vars:
-    ansible_ssh_user: hanzo
-    server_name: 'provision-server'
-    monitor_application_name: 'ipa'
-    ansible_install_method: apt
-    ipaserver_hostname: ipa.charcoaleats.com
-    ipaserver_domain: charcoaleats.com
-    ipaserver_realm: CHARCOALEATS.COM
-    ipaadmin_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
-    ipadm_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
-    ipaserver_setup_dns: yes
-    ipaserver_auto_forwarders: yes
-    ipaserver_allow_zone_overlap: yes
-    ipaclient_mkhomedir: yes
-    ipaserver_no_ui_redirect: no
-    consul_mode: 'client'
-    git_repos: 
-        - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-ansible-scripts.git"
-          path: /opt/software/charcoal-ansible-scripts
-
-ipaclients:
-  hosts:
-    10.0.1.61:
-    10.0.1.160:
-    10.0.0.34:
-    10.0.0.227:
-  vars:
-    ansible_ssh_user: ubuntu
-    ipaclient_domain: charcoaleats.com
-    ipaserver_realm: CHARCOALEATS.COM
-    ipaadmin_principal: admin
-    ipaadmin_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
-    ipaclient_allow_repair: yes
-    krb5_packages: krb5-k5tls
-
-
 kafka_monitor:
   hosts:
     35.181.4.201:
@@ -294,24 +243,51 @@ gitlab_server:
     gitlab_smtp_password: 'ArMgH6QVdNdKmrUQrDyQEMwHUalOBC4a9gTxdu2kXHt+'
     gitlab_smtp_domain: 'charcoaleats.com'
 
+# New Infra start here
+
+ipaservers:
+  hosts:
+    52.66.88.208:
+  vars:
+    ansible_ssh_user: hanzo
+    server_name: 'provision-server'
+    ansible_install_method: apt
+    ipaserver_hostname: ipa.charcoaleats.com
+    ipaserver_domain: charcoaleats.com
+    ipaserver_realm: CHARCOALEATS.COM
+    ipaadmin_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
+    ipadm_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
+    ipaserver_setup_dns: yes
+    ipaserver_auto_forwarders: yes
+    ipaserver_allow_zone_overlap: yes
+    ipaclient_mkhomedir: yes
+    ipaserver_no_ui_redirect: no
+    consul_mode: 'client'
+    netdata_monitor_application: ['nginx']
+    netdata_mode: 'slave'
+    monitor_application_name: ipa
+    git_repos: 
+        - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-ansible-scripts.git"
+          path: /opt/software/charcoal-ansible-scripts
 
 consul_server:
   hosts:
-    13.233.225.205:
+    13.233.204.215:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'consul-server'
     netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx']
+    netdata_monitor_application: ['nginx', 'npt']
     consul_mode: 'server'
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
     nginx_custom_vhost: consul
+    monitor_application_name: consul
     cluster_private_ips:
       - 10.0.1.10
 
 netdata_server:
   hosts:
-    35.180.187.209:
+    52.66.210.61:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'netdata-server'
@@ -320,4 +296,5 @@ netdata_server:
     consul_mode: 'client'
     firewall_open_ports: [80,8300,8301,19999]
     nginx_custom_vhost: netdata
-    netdata_uuid: 'acccdf56-1afa-11e9-bfdd-06903a0c33e6'
+    monitor_application_name: netdata
+    netdata_uuid: '507d01bd-ae4f-4216-bf61-982140600aff'

@@ -1,0 +1,11 @@
+---
+monit_services:
+  - name: ipa
+    type: process_by_name
+    target: ipa
+    start: /usr/sbin/service ipa start 
+    stop: /usr/sbin/service ipa stop 
+    restart: /usr/sbin/service ipa restart 
+    rules:
+      - "if failed port 80 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"

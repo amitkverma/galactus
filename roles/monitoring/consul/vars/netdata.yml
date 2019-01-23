@@ -1,6 +1,7 @@
 ---
 consul_services_register:
     - name: netdata
-      tags: ['application','monitoring']
-      script: "ps -eo pid,cmd,etime |  grep /usr/sbin/netdata | grep -v 'grep'"
+      tags: ['monitoring', 'aws']
+      port: 19999
+      http: "http://localhost:19999"
       interval: "60s"
