@@ -47,3 +47,11 @@ mail_pass: amit@17031993
 
 
 deploy_user_group: www-data
+
+# IPA Configuration
+ipaclient_domain: charcoaleats.com
+ipaserver_realm: CHARCOALEATS.COM
+ipaadmin_principal: admin
+ipaadmin_password: 38bee9d7a40ac2a0df83b1bd321a4708a31f7867
+ipaclient_allow_repair: yes
+krb5_packages: krb5-k5tls

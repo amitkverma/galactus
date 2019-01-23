@@ -1,32 +1,8 @@
 ---
-consul_server_nodes: 
-  - '{{ consul_server_ip }}'
 consul_domain: '{{ prod_consul_domain }}'
 consul_datacenter: '{{ prod_consul_datacenter }}'
-
-## ACL for discovery synchronization between servers
-consul_acl_configuration_list:
-  Agent:
-    token_type: client
-    token: "{{ consul_acl_agent_token }}"
-    rules:
-      - key: ""
-        policy: write
-      - node: ""
-        policy: write
-      - service: ""
-        policy: write
-  ## ACL for anonymous UI reading
-  Anonymous Token:
-    token_type: client
-    token: anonymous
-    rules:
-      - key: ""
-        policy: read
-      - node: ""
-        policy: read
-      - service: ""
-        policy: read
+consul_acl_master_token: "06315bee-1433-4852-bd44-3665b73ea28c"
+consul_acl_agent_token: "0c75e0c0-9ffe-4dd6-bd9f-acb02ea2b0d3"
 
 # Monit
 monit_mail_enabled: true

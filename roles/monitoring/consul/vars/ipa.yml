@@ -1,0 +1,7 @@
+---
+consul_services_register:
+    - name: freeipa
+      tags: ['provision', 'aws']
+      port: 80
+      http: "http://localhost:80"
+      interval: "60s"

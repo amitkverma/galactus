@@ -23,6 +23,8 @@
       # - { role: common, tags: [common] }
       # - { role: extra/users, tags: [users] }
       # - { role: applications/ansible, tags: [ansible] }
-      - { role: extra/git-deploy, tags: [users] }
+      # - { role: extra/git-deploy, tags: [users] }
       # - { role: security/freeipa/ipaserver }
       # - { role: security/freeipa/ipasetup }
+      # - { role: monitoring/netdata, tags: [netdata] }
+      - { role: monitoring/consul, tags: [consul] }

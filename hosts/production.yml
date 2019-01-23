@@ -3,12 +3,9 @@
 all:
   vars:
     ansible_connection: ssh
-    netdata_uuid: '2c288770-9fa7-11e8-9a86-ab3f9df0a5a8'
-    netdata_master_ip: '139.59.50.202' # Netdata floating IP
     deny_default_user: 'ubuntu'
-    prod_consul_datacenter: 'do-blr'
+    prod_consul_datacenter: 'aws-mumbai'
     prod_consul_domain: 'charcoaleats'
-    consul_server_ip: '159.89.163.216' # Consul Private IP
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
     redis_deepstream_port: 6379
     redis_deepstream_server: 'redis-cache.charcoaleats.com'
@@ -37,18 +34,6 @@ all:
         keys:
           - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/aldous.pub') }}"    
 
-
-consul_server:
-  hosts:
-    159.89.163.216:
-  vars:
-    ansible_ssh_user: root
-    server_name: 'consul-sd'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx']
-    consul_mode: 'server'
-    firewall_open_ports: [80,8300,8301,8500,8600,19999]
-    nginx_custom_vhost: consul
 
 netdata_server:
   hosts:
@@ -231,9 +216,11 @@ redis_cache:
 
 ipaservers:
   hosts:
-    52.47.183.32:
+    52.66.88.208:
   vars:
     ansible_ssh_user: hanzo
+    server_name: 'provision-server'
+    monitor_application_name: 'ipa'
     ansible_install_method: apt
     ipaserver_hostname: ipa.charcoaleats.com
     ipaserver_domain: charcoaleats.com
@@ -245,6 +232,7 @@ ipaservers:
     ipaserver_allow_zone_overlap: yes
     ipaclient_mkhomedir: yes
     ipaserver_no_ui_redirect: no
+    consul_mode: 'client'
     git_repos: 
         - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-ansible-scripts.git"
           path: /opt/software/charcoal-ansible-scripts
@@ -307,3 +295,29 @@ gitlab_server:
     gitlab_smtp_domain: 'charcoaleats.com'
 
 
+consul_server:
+  hosts:
+    13.233.225.205:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'consul-server'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nginx']
+    consul_mode: 'server'
+    firewall_open_ports: [80,8300,8301,8500,8600,19999]
+    nginx_custom_vhost: consul
+    cluster_private_ips:
+      - 10.0.1.10
+
+netdata_server:
+  hosts:
+    35.180.187.209:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'netdata-server'
+    netdata_mode: 'master'
+    netdata_monitor_application: ['nginx','ntp']
+    consul_mode: 'client'
+    firewall_open_ports: [80,8300,8301,19999]
+    nginx_custom_vhost: netdata
+    netdata_uuid: 'acccdf56-1afa-11e9-bfdd-06903a0c33e6'
