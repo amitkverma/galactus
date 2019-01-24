@@ -78,3 +78,14 @@
     group: root
     mode: 0600
   notify: restart gitlab
+
+- name: Add cronjob for backup on aws
+  cron:
+    name: "Create a full backup of the GitLab repositories and SQL database every day at 4am"
+    minute: "00"
+    hour: "04"
+    weekday: "0-6"
+    job: "/usr/bin/gitlab-rake gitlab:backup:create  RAILS_ENV=production CRON=1"
+    disabled: "no"
+    cron_file: "gitlab_backup"
+    user: "root"

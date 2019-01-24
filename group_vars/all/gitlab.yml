@@ -1,0 +1,23 @@
+# gitlab backup
+gitlab_backup_enable: true
+gitlab_backup_aws_region: ap-south-1
+gitlab_backup_aws_access_key_id: AKIAIS7ENZH46462D67A
+gitlab_backup_aws_secret_access_key: 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
+gitlab_backup_aws_bucket: charcoal-gitlab-backup
+
+# gitlab mail
+gitlab_smtp_enable: true
+gitlab_smtp_address: "email-smtp.us-east-1.amazonaws.com"
+gitlab_smtp_port: 587
+gitlab_smtp_user_name: 'AKIAJV5OEMFQP6VNOVWQ'
+gitlab_smtp_password: 'ArMgH6QVdNdKmrUQrDyQEMwHUalOBC4a9gTxdu2kXHt+'
+gitlab_smtp_domain: 'charcoaleats.com'
+
+# gitlab https
+gitlab_nginx_listen_https: 443
+gitlab_create_self_signed_cert: false
+gitlab_tls_src_cert: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.crt"
+gitlab_tls_src_cert_key: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.key"
+gitlab_redirect_http_to_https: "true"
+gitlab_ssl_certificate: "/etc/ssl/charcoaleats.crt"
+gitlab_ssl_certificate_key: "/etc/ssl/charcoaleats.key"
