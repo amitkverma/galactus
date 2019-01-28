@@ -259,7 +259,7 @@ vault_server:
 
 consul_server:
   hosts:
-    35.180.255.89:
+    35.180.6.190:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'consul-sd'
@@ -269,19 +269,17 @@ consul_server:
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
     nginx_custom_vhost: consul
     cluster_private_ips:
-      - 10.0.0.170
+      - 172.31.34.138
 
 consul_client:
   hosts:
-    35.180.57.43:
+    35.180.88.185:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'consul-client-paris'
     consul_mode: 'client'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx','ntp']
     health_check_script_enabled: true
-    monitor_application_name: 'netdata'
+    monitor_application_name: 'haproxy'
 
 netdata_server:
   hosts:

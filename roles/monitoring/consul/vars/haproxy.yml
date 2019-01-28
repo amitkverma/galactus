@@ -1,15 +1,7 @@
 ---
 consul_services_register:
     - name: haproxy
-      tags: ['loadbalancer', 'deepstream' , '{{ inventory_hostname }}']
+      tags: ['loadbalancer']
       port: 60000
       http: "http://localhost:60000/health_check"
-      interval: "60s"
-    - name: netdata
-      tags: ['application','monitoring', '{{ inventory_hostname }}']
-      script: "ps -eo pid,cmd,etime |  grep /usr/sbin/netdata | grep -v 'grep'"
-      interval: "60s"
-    - name: monit
-      tags: ['application','watchdog', '{{ inventory_hostname }}']
-      script: "ps -eo pid,cmd,etime |  grep /usr/bin/monit | grep -v 'grep'"
       interval: "60s"
