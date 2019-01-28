@@ -7,10 +7,13 @@ upstream backend {
 
 server {
     # nginx listens to this
-    listen 80;
+    listen 443 ssl;
 
     # the virtual host name of this
     server_name {{ ansible_host }};
+
+    ssl_certificate             /etc/ssl/charcoaleats.crt;
+    ssl_certificate_key         /etc/ssl/charcoaleats.key;
 
     location / {
         auth_basic "Restricted Content";

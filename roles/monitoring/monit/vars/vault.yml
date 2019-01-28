@@ -1,0 +1,20 @@
+---
+monit_services:
+  - name: nginx
+    type: process_by_name
+    target: nginx
+    start: /usr/sbin/service nginx start 
+    stop: /usr/sbin/service nginx stop 
+    restart: /usr/sbin/service nginx restart 
+    rules:
+      - "if failed port 443 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"
+  - name: vault
+    type: process_by_name
+    target: vault
+    start: /usr/sbin/service consul start 
+    stop: /usr/sbin/service consul stop 
+    restart: /usr/sbin/service consul restart 
+    rules:
+      - "if failed port 8200 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"

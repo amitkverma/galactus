@@ -255,9 +255,10 @@ consul_server:
   hosts:
     13.233.204.215:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: aldous
     server_name: 'consul-server'
     netdata_mode: 'slave'
+    nginx_ssl_enable: true
     netdata_monitor_application: ['nginx', 'npt']
     consul_mode: 'server'
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
@@ -270,13 +271,14 @@ netdata_server:
   hosts:
     52.66.210.61:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: aldous
     server_name: 'netdata-server'
     netdata_mode: 'master'
     netdata_monitor_application: ['nginx','ntp']
     consul_mode: 'client'
     firewall_open_ports: [80,8300,8301,19999]
     nginx_custom_vhost: netdata
+    nginx_ssl_enable: true
     monitor_application_name: netdata
     netdata_uuid: '507d01bd-ae4f-4216-bf61-982140600aff'
 
@@ -285,7 +287,7 @@ gitlab_server:
     13.232.69.54:
   vars:
     server_name: 'gitlab-server'
-    ansible_ssh_user: hanzo
+    ansible_ssh_user: aldous
     gitlab_external_url: "https://gitlab.charcoaleats.com"
     nginx_ssl_enable: true
     gitlab_domain: "gitlab.charcoaleats.com"
@@ -294,3 +296,24 @@ gitlab_server:
     netdata_monitor_application: []
     netdata_mode: 'slave'
     monitor_application_name: gitlab
+
+vault_server:
+  hosts:
+    13.232.101.15:
+  vars:
+    server_name: 'vault-server'
+    ansible_ssh_user: aldous
+    vault_backend: file
+    vault_cluster_disable: True
+    vault_awskms: True
+    nginx_custom_vhost: vault
+    nginx_ssl_enable: true
+    vault_awskms_key_id: "f76441bb-58f8-4002-93ad-18a35e244457"
+    vault_awskms_region: "ap-northeast-1"
+    vault_awskms_access_key: "AKIAITMA2UUB7HHVW3DQ"
+    vault_awskms_secret_key: "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"
+    consul_mode: 'client'
+    netdata_monitor_application: ['nginx','ntp']
+    netdata_mode: 'slave'
+    monitor_application_name: vault
+
