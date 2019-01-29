@@ -1,0 +1,28 @@
+---
+monit_services:
+  - name: kafka-manager
+    type: process_by_name
+    target: kafka-manager
+    start: /usr/bin/supervisorctl start kafka-manager
+    stop: /usr/bin/supervisorctl stop kafka-manager
+    restart: /usr/bin/supervisorctl restart kafka-manager
+    rules:
+      - "if failed port 9000 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"
+  - name: netdata
+    type: process
+    target: /var/run/netdata/netdata.pid
+    start: /usr/sbin/service netdata start 
+    stop: /usr/sbin/service netdata stop 
+    restart: /usr/sbin/service netdata restart 
+    rules:
+      - "if 5 restarts within 5 cycles then timeout"
+  - name: consul
+    type: process_by_name
+    target: consul
+    start: /usr/sbin/service consul start 
+    stop: /usr/sbin/service consul stop 
+    restart: /usr/sbin/service consul restart 
+    rules:
+      - "if failed port 8500 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"

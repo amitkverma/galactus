@@ -16,7 +16,7 @@ all:
     nodejs_application_port: 8888
     ssh_git_user: aldous
     deepstream_auth_url: https://api.charcoaleats.com/open/live/authenticateUser
-    git_host: gitlab.charcoalbiryani.com
+    git_host: gitlab.charcoaleats.com
     nodejs_install_npm_user: root
     env_host_name: www.charcoaleats.com
     nodejs_cpo_port: 8001
@@ -202,27 +202,6 @@ redis_cache:
     health_check_script_enabled: true
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
 
-kafka_monitor:
-  hosts:
-    35.181.4.201:
-  vars:
-    ansible_ssh_user: ubuntu
-    java_home: "/usr/java/jdk1.8.0_131"
-    kafka_manager_zk: "10.0.1.71:2181,10.0.1.151:2181,10.0.1.57:2181"
-    kafka_manager_port: 8080
-    ansible_install_method: apt
-    nginx_custom_vhost: kafkaMonitor
-    nodejs_npm_global_packages: 
-        - bower
-    fetch_repo_from_remote_host: true
-    nginx_ssl_enable: true
-    kafka_rest_ip: "10.0.1.71"
-    git_repos: 
-        - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-kafka.git"
-          path: /opt/software/charcoal-kafka
-        - remote_url: "git@gitlab.charcoalbiryani.com:charcoal-biryani/charcoal-kafka-monitor-angular.git"
-          path: /var/www/charcoal-kafka-monitor-angular
-
 
 # New Infra start here
 
@@ -317,3 +296,28 @@ vault_server:
     netdata_mode: 'slave'
     monitor_application_name: vault
 
+kafka_monitor:
+  hosts:
+    35.154.179.201:
+  vars:
+    ansible_ssh_user: aldous
+    server_name: 'kafka-manager'
+    java_home: "/usr/java/jdk1.8.0_131"
+    kafka_manager_zk: "10.0.11.191:2181,10.0.12.230:2181,10.0.11.166:2181"
+    kafka_manager_port: 8080
+    ansible_install_method: apt
+    nginx_custom_vhost: kafkaMonitor
+    nodejs_npm_global_packages: 
+        - bower
+    fetch_repo_from_remote_host: true
+    nginx_ssl_enable: true
+    kafka_rest_ip: "10.0.11.191"
+    consul_mode: 'client'
+    netdata_monitor_application: ['nginx','ntp', 'monit']
+    netdata_mode: 'slave'
+    monitor_application_name: kafka-manager
+    git_repos: 
+        - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-kafka.git"
+          path: /opt/software/charcoal-kafka
+        - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-kafka-monitor-angular.git"
+          path: /var/www/charcoal-kafka-monitor-angular

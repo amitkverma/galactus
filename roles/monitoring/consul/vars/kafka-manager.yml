@@ -1,0 +1,7 @@
+---
+consul_services_register:
+    - name: kafka-manager
+      tags: ['monitoring', 'aws', 'kafka']
+      port: 9000
+      http: "http://localhost:9000"
+      interval: "60s"
