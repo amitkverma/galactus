@@ -285,3 +285,19 @@ kafka_monitor:
     kafka_manager_port: 8080
     nginx_custom_vhost: kafkaMonitor
     kafka_rest_ip: "68.183.88.69"
+
+
+prometheus_server:
+  hosts:
+    139.59.95.94:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'kafka-manager'
+    prometheus_scrape_configs:
+      - job_name: 'production-scrape'
+        metrics_path: '/api/v1/allmetrics'
+        params:
+          format: [prometheus_all_hosts]
+        honor_labels: true
+        static_configs:
+          - targets: ['159.65.152.64:19999']
