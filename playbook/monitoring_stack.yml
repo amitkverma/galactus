@@ -1,0 +1,24 @@
+---
+  - import_playbook: ../variable-check.yml
+    vars:
+      playbook: monitoring_stack.yml
+
+  - name: Test Connection and Determine Remote User
+    hosts: monitoring_stack
+    gather_facts: false
+    roles:
+      - { role: connection, tags: [connection, always] }
+
+  - hosts: monitoring_stack
+    become: yes
+    gather_facts: false
+    pre_tasks: 
+      - name: Install python2 for Ansible
+        raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+        register: output
+        changed_when: output.stdout != ""
+      - name: Gathering Facts
+        setup:
+    roles:
+      - { role: monitoring/prometheus, tags: [prometheus] }
+      - { role: monitoring/grafana, tags: [grafana] }

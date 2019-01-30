@@ -321,3 +321,31 @@ kafka_monitor:
           path: /opt/software/charcoal-kafka
         - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-kafka-monitor-angular.git"
           path: /var/www/charcoal-kafka-monitor-angular
+
+monitoring_stack:
+  hosts:
+    13.126.56.240:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'monitoring-stack'
+    prometheus_scrape_configs:
+      - job_name: 'production'
+        metrics_path: '/api/v1/allmetrics'
+        params:
+          format: [prometheus_all_hosts]
+        honor_labels: true
+        static_configs:
+          - targets: ['10.0.2.10:19999']
+    grafana_security: 
+      admin_user: admin
+      admin_password: amitkverma
+    grafana_datasources:
+      - name: netdata
+        type: prometheus
+        access: proxy
+        url: 'http://localhost:9090'
+        basicAuth: false
+    grafana_dashboards:
+      - dashboard_id: 7107
+        revision_id: 1
+        datasource: netdata
