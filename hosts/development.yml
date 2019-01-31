@@ -238,7 +238,7 @@ vault_server:
 
 consul_server:
   hosts:
-    35.180.6.190:
+    35.180.203.241:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'consul-sd'
@@ -248,17 +248,37 @@ consul_server:
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
     nginx_custom_vhost: consul
     cluster_private_ips:
-      - 172.31.34.138
+      - 10.0.0.231
 
 consul_client:
   hosts:
-    35.180.88.185:
+    35.180.36.110:
+      server_name: 'consul-client-3'
+  vars:
+    ansible_ssh_user: ubuntu
+    consul_mode: 'client'
+    health_check_script_enabled: true
+    monitor_application_name: 'test'
+
+
+consul_template:
+  hosts:
+    35.180.226.115:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'consul-client-paris'
     consul_mode: 'client'
     health_check_script_enabled: true
     monitor_application_name: 'haproxy'
+    consul_template_use_systemd: true
+    consul_template_client_file: 'haproxy.ctmpl'
+    consul_template_templates:
+      - name: 'haproxy.ctmpl'
+        dest: '/etc/haproxy/haproxy.cfg'
+        cmd: 'sudo /etc/init.d/haproxy reload || true'
+        perms: 600
+        backup: true
+        wait: '2s:6s'
 
 netdata_server:
   hosts:

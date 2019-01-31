@@ -21,5 +21,6 @@
         setup:
     roles:
       - { role: monitoring/consul, tags: [consul] }
-      - { role: monitoring/netdata, tags: [netdata] }
+      # - { role: webservers/haproxy, tags: [haproxy] }
+      # - { role: extra/consul-template, tags: [consul-template] }
 
