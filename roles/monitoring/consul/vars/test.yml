@@ -1,0 +1,7 @@
+---
+consul_services_register:
+    - name: nginx
+      tags: ['loadbalancer', 'nginx']
+      port: '80'
+      http: "http://localhost"
+      interval: "60s"
