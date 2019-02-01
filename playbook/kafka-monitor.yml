@@ -20,19 +20,21 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: common }
+      # - { role: common }
+      # - { role: extra/users }
+      # - { role: applications/ansible }
+      # - { role: platform/java }
+      # - { role: webservers/nodejs }
+      # - { role: monitoring/kafka-manager }
+      # - { role: webservers/nginx }
+      # - { role: extra/git-deploy }
+      # - { role: monitoring/consul, tags: [consul] }
+      # - { role: monitoring/netdata, tags: [netdata] }
+      # - { role: monitoring/monit, tags: [monit] }
+      # - { role: extra/swapfile, tags: [swapfile] }
+      # - { role: security/fail2ban, tags: [fail2ban] }
+      # - { role: extra/sendmail, tags: [sendmail] }
+      # - { role: security/ntp, tags: [ntp] }
       - { role: security/freeipa/ipaclient }
-      - { role: extra/users }
-      - { role: applications/ansible }
-      - { role: platform/java }
-      - { role: webservers/nodejs }
-      - { role: monitoring/kafka-manager }
-      - { role: webservers/nginx }
-      - { role: extra/git-deploy }
-      - { role: monitoring/consul, tags: [consul] }
-      - { role: monitoring/netdata, tags: [netdata] }
-      - { role: monitoring/monit, tags: [monit] }
-      - { role: extra/swapfile, tags: [swapfile] }
-      - { role: security/fail2ban, tags: [fail2ban] }
-      - { role: extra/sendmail, tags: [sendmail] }
-      - { role: security/ntp, tags: [ntp] }
+
+# IPA Client not working need to replace the box
