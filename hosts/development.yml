@@ -87,11 +87,17 @@ redis_cache:
 
 elk_stack_server:
   hosts:
-    139.59.64.86:
+    35.180.227.14:
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: ubuntu
     server_name: 'elk-stack'
-
+    nginx_custom_vhost: 'elk'
+    logstash_enabled_on_boot: true
+    logstash_install_plugins:
+      - logstash-input-beats
+    logstash_elasticsearch_hosts:
+      - http://localhost:9200
+    logstash_listen_port_beats: 5044
 
 mysql_server:
   hosts:

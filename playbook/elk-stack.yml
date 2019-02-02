@@ -1,5 +1,5 @@
 ---
-  - import_playbook: variable-check.yml
+  - import_playbook: ../variable-check.yml
     vars:
       playbook: dev.yml
 
@@ -20,7 +20,9 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: elk-stack/java }
-      - { role: elk-stack/elasticsearch }
-      - { role: elk-stack/kibana }
-      - { role: elk-stack/metricbeat }
+      # - { role: elk-stack/java }
+      # - { role: elk-stack/elasticsearch }
+      # - { role: elk-stack/kibana }
+      # - { role: elk-stack/metricbeat }
+      # - { role: webservers/nginx }
+      - { role: elk-stack/logstash }
