@@ -222,6 +222,10 @@ ipaservers:
     ipaserver_allow_zone_overlap: yes
     ipaclient_mkhomedir: yes
     ipaserver_no_ui_redirect: no
+    firewall_open_ports: [8181]
+    should_install_pm2_on_nodejs: false
+    cloud9_username: hanzo
+    cloud9_password: amitkverma
     consul_mode: 'client'
     netdata_monitor_application: ['nginx']
     netdata_mode: 'slave'
