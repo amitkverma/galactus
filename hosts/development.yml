@@ -280,7 +280,7 @@ consul_template:
     35.180.226.115:
   vars:
     ansible_ssh_user: ubuntu
-    server_name: 'consul-client-paris'
+    server_name: 'consul-client'
     consul_mode: 'client'
     health_check_script_enabled: true
     monitor_application_name: 'haproxy'
