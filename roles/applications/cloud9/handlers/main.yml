@@ -1,0 +1,21 @@
+---
+# handlers file for cloud9
+- name: place installed marker
+  file:
+    path: "{{ cloud9_installer }}/installed"
+    state: touch
+
+- name: systemctl daemon-reload
+  systemd:
+    daemon_reload: yes
+  notify:
+    - restart cloud9
+  when:
+    - ansible_virtualization_type != "docker" or cloud9_ignore_docker
+
+- name: restart cloud9
+  service:
+    name: cloud9
+    state: restarted
+  when:
+    - ansible_virtualization_type != "docker" or cloud9_ignore_docker

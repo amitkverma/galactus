@@ -40,11 +40,12 @@ all:
 
 deepstream_server:
   hosts:
-    206.189.142.62:
+    52.47.75.83:
+      server_name: 'deepstream-1'
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: ubuntu
     netdata_mode: 'slave'
-    netdata_monitor_application: ['redis']
+    netdata_monitor_application: []
     consul_mode: 'client'
     firewall_open_ports: [5757,8300,8301,19999,6363]
     nginx_custom_vhost: netdata
@@ -182,6 +183,14 @@ teleport_nodes:
       - "13.231.154.6"
     teleport_auth_token: "4035023a-a53c-4053-93e0-f7b00f103495"
 
+cloud9_server:
+  hosts:
+    35.180.250.7:
+  vars:
+    ansible_ssh_user: ubuntu
+    ansible_install_method: apt
+    should_install_pm2_on_nodejs: false
+
 ansible_host:
   hosts:
     18.182.10.144:
@@ -258,13 +267,13 @@ consul_server:
 
 consul_client:
   hosts:
-    35.180.36.110:
-      server_name: 'consul-client-3'
+    52.47.75.83:
+      server_name: 'deepstream-1'
   vars:
     ansible_ssh_user: ubuntu
     consul_mode: 'client'
     health_check_script_enabled: true
-    monitor_application_name: 'test'
+    monitor_application_name: 'deepstream'
 
 
 consul_template:

@@ -1,0 +1,77 @@
+---
+# tasks file for cloud9
+- name: install requirements
+  package:
+    name: "{{ cloud9_requirements }}"
+    state: "{{ cloud9_package_state }}"
+  register: cloud9_install_requirements
+  until: cloud9_install_requirements is succeeded
+  retries: 3
+
+- name: create group
+  group:
+    name: "{{ cloud9_group }}"
+    state: present
+
+- name: create user
+  user:
+    name: "{{ cloud9_user }}"
+    group: "{{ cloud9_group }}"
+    state: present
+
+- name: create directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ cloud9_user }}"
+    group: "{{ cloud9_group }}"
+  with_items:
+    - "{{ cloud9_workspace }}"
+    - "{{ cloud9_installer }}"
+
+- name: clone git repository
+  git:
+    repo: "https://github.com/c9/core.git"
+    dest: "{{ cloud9_installer }}"
+    version: master
+  become_user: "{{ cloud9_user }}"
+  become: yes
+
+- name: run installer
+  command: ./scripts/install-sdk.sh
+  args:
+    chdir: "{{ cloud9_installer }}"
+    creates: "{{ cloud9_installer }}/installed"
+  become_user: "{{ cloud9_user }}"
+  become: yes
+  notify:
+    - place installed marker
+
+- name: register cloud9 to sysvinit
+  template:
+    src: cloud9.j2
+    dest: /etc/init.d/cloud9
+    mode: 0750
+  when:
+    - ansible_service_mgr == "sysvinit" or ansible_service_mgr == "upstart"
+    - ansible_default_ipv4 is defined
+  notify:
+    - restart cloud9
+
+- name: register cloud9 to systemd
+  template:
+    src: cloud9.service.j2
+    dest: /etc/systemd/system/cloud9.service
+  when:
+    - ansible_service_mgr == "systemd"
+  notify:
+    - systemctl daemon-reload
+    - restart cloud9
+
+- name: start cloud9
+  service:
+    name: cloud9
+    state: started
+    enabled: yes
+  when:
+    - ansible_virtualization_type != "docker" or cloud9_ignore_docker

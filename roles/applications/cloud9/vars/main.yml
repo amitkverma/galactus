@@ -1,0 +1,44 @@
+---
+# vars file for cloud9
+_cloud9_requirements:
+  Alpine:
+    - bash
+    - g++
+    - tmux
+  Archlinux:
+    - tmux
+  CentOS:
+    - tmux
+    - glibc-static
+    - ncurses
+  Debian:
+    - curl
+    - g++
+    - tmux
+  Fedora:
+    - tmux
+    - gcc-c++
+    - ncurses
+    - ncurses-base
+    - ncurses-libs
+    - which
+  openSUSE Leap:
+    - curl
+    - gcc-c++
+    - ncurses
+    - ncurses-utils
+    - tmux
+    - which
+  openSUSE Tumbleweed:
+    - curl
+    - gcc-c++
+    - ncurses
+    - ncurses-utils
+    - tmux
+    - which
+  Ubuntu:
+    - curl
+    - g++
+    - tmux
+
+cloud9_requirements: "{{ _cloud9_requirements[ansible_distribution] | default(_cloud9_requirements['default']) }}"

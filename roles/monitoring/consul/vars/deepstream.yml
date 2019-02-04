@@ -2,14 +2,6 @@
 consul_services_register:
     - name: deepstream
       port: 5757
-      tags: ['socket','{{ inventory_hostname }}']
+      tags: ['socket','deepstream']
       http: "http://localhost:5757/health-check"
-      interval: "60s"
-    - name: netdata
-      tags: ['application','monitoring', '{{ inventory_hostname }}']
-      script: "ps -eo pid,cmd,etime |  grep /usr/sbin/netdata | grep -v 'grep'"
-      interval: "60s"
-    - name: monit
-      tags: ['application','watchdog', '{{ inventory_hostname }}']
-      script: "ps -eo pid,cmd,etime |  grep /usr/bin/monit | grep -v 'grep'"
       interval: "60s"

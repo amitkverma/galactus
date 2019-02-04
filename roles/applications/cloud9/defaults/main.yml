@@ -1,0 +1,25 @@
+---
+# defaults file for cloud9
+
+# Create this user and group and run the software under this user.
+cloud9_user: cloud9
+cloud9_group: cloud9
+
+# The webinterface requires authentication, these are the login details.
+cloud9_username: username
+cloud9_password: password
+
+# Where to place the installer and workspace.
+cloud9_installer: /home/{{ cloud9_user }}/c9sdk
+cloud9_workspace: /home/{{ cloud9_user }}/workspace
+
+# What IP address to listen on.
+cloud9_bind_address: 0.0.0.0
+
+# To update all packages installed by this roles, set `cloud9_package_state` to `latest`.
+cloud9_package_state: present
+
+# Some Docker containers do not allow managing services, rebooting and writing
+# to some locations in /etc. The role skips tasks that will typically fail in
+# Docker. With this parameter you can tell the role to -not- skip these tasks.
+cloud9_ignore_docker: yes
