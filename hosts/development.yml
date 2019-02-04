@@ -72,10 +72,9 @@ nodejs_server:
 
 redis_cache:
   hosts:
-    139.59.41.9:
-    206.189.134.69:
+    35.180.2.194:
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: ubuntu
     server_name: 'preprod-redis-msg-bus'
     netdata_mode: 'slave'
     netdata_monitor_application: ['redis']
