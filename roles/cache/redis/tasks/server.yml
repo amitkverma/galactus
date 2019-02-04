@@ -125,6 +125,16 @@
   when: ansible_os_family == "Debian"
   notify: "restart redis"
 
+- name: add health check for redis service
+  template:
+    dest: /var/local/redis_health_check.sh
+    src: redis_health_check.sh.j2
+    mode: a+x
+    owner: consul
+  when: ansible_os_family == "Debian" and health_check_script_enabled is defined
+  notify: "restart redis"
+
+
 # Flush handlers before ensuring the service is started to prevent
 # a start and then restart
 - name: flush handlers to apply config changes

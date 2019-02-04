@@ -1,0 +1,8 @@
+
+RESULT=`redis-cli -h 127.0.0.1 -p {{ redis_port }} -a {{ redis_password }} ping`
+
+if [ "$RESULT" = "PONG" ]; then
+    exit 0
+fi
+
+exit 2
