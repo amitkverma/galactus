@@ -27,28 +27,28 @@
   register: connection_status
   tags: [connection-tests]
 
-- name: Warn about change in host keys
-  fail:
-    msg: |
-      WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!
+# - name: Warn about change in host keys
+#   fail:
+#     msg: |
+#       WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!
 
-      If this change in host keys is expected (e.g., if you rebuilt the server
-      or if the Galactus sshd role made changes recently), then run the following
-      command to clear the old host key from your known_hosts.
+#       If this change in host keys is expected (e.g., if you rebuilt the server
+#       or if the Galactus sshd role made changes recently), then run the following
+#       command to clear the old host key from your known_hosts.
 
-        ssh-keygen -R {{ connection_status.stdout | regex_replace('(.|\n)*host key for (.*) has changed(.|\n)*', '\2') }}
+#         ssh-keygen -R {{ connection_status.stdout | regex_replace('(.|\n)*host key for (.*) has changed(.|\n)*', '\2') }}
 
-      Then try your Galactus playbook or SSH connection again.
+#       Then try your Galactus playbook or SSH connection again.
 
-      If the change is unexpected, cautiously consider why the host identification
-      may have changed and whether you may be victim to a man-in-the-middle attack.
+#       If the change is unexpected, cautiously consider why the host identification
+#       may have changed and whether you may be victim to a man-in-the-middle attack.
 
-      ---------------------------------------------------
-      {{ (connection_status.stdout.replace('Please contact your system administrator.\r\n', '') |
-          regex_replace ('(.|\n)*(The fingerprint for the(.|\n)*Host key verification failed.)(.|\n)*', '\2') |
-          regex_replace('(\\r\\n|\\n)', '\n\n')).replace('\"', '"') }}
-  when: "'REMOTE HOST IDENTIFICATION HAS CHANGED' in connection_status.stdout"
-  tags: [connection-tests]
+#       ---------------------------------------------------
+#       {{ (connection_status.stdout.replace('Please contact your system administrator.\r\n', '') |
+#           regex_replace ('(.|\n)*(The fingerprint for the(.|\n)*Host key verification failed.)(.|\n)*', '\2') |
+#           regex_replace('(\\r\\n|\\n)', '\n\n')).replace('\"', '"') }}
+#   when: "'REMOTE HOST IDENTIFICATION HAS CHANGED' in connection_status.stdout"
+#   tags: [connection-tests]
 
 - block:
   - name: Set remote user for each host

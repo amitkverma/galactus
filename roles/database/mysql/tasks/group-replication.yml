@@ -70,13 +70,13 @@
       START GROUP_REPLICATION;
       SET GLOBAL group_replication_bootstrap_group=OFF;"
     when: 
-      - inventory_hostname == ansible_play_hosts[0]
+      - hostvars[inventory_hostname].primary == True
       - mysql_repl_plugin_check_already.stdout_lines|length > 0 
     tags: ['cluster']
 
   - name: Start replication group in other server
     command: mysql -u root -NBe "START GROUP_REPLICATION;"
     when: 
-      - inventory_hostname != ansible_play_hosts[0]
+      - hostvars[inventory_hostname].primary == False
       - mysql_repl_plugin_check_already.stdout_lines|length > 0 
     tags: ['cluster']

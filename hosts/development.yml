@@ -21,19 +21,19 @@ all:
     env_host_name: dev.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
-    mysql_replication_master: '52.194.205.240'
+    mysql_replication_master: '10.0.9.226'
     admin_user: cyclops
     users:
       - name: "lancelot" # Admin User
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/lancelot.pub') }}"
+          - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/lancelot.pub') }}"
       - name: "cyclops" # Ansible User 
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/cyclops.pub') }}"    
+          - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/cyclops.pub') }}"    
     shared_mysql_user: { name: "charcoaleatsAdmin", password: "Striker_Axel01" , host: "%" } 
     proxysql_mysql_monitor: { name: monitor,  password: 'amitkverma' , host: "%" }
     shared_mysql_database: "CB_PROD_MIRROR_DEV"
@@ -121,8 +121,10 @@ mysql_master:
 
 mysql_slave: 
   hosts:
-    54.199.221.170:
-    52.194.185.208:
+    13.126.60.50:
+      mysql_server_id: 11
+    13.233.86.15:
+      mysql_server_id: 12
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'mysql'
@@ -140,10 +142,12 @@ metabase:
 
 mysql_replication: 
   hosts:
-    52.194.205.240:
-      primary: true
-    52.199.15.36:
-    13.231.8.202:
+    10.0.9.226:
+      primary: True
+    10.0.11.103:
+      primary: False
+    10.0.10.147:
+      primary: False
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'mysql'
@@ -153,7 +157,7 @@ mysql_replication:
 
 proxysql_server:
   hosts:
-    54.250.194.180:
+    13.233.127.110:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'mysql'
