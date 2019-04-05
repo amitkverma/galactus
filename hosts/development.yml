@@ -21,7 +21,7 @@ all:
     env_host_name: dev.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
-    mysql_replication_master: '52.194.205.240'
+    mysql_replication_master: '139.59.22.66'
     admin_user: cyclops
     users:
       - name: "lancelot" # Admin User
@@ -87,9 +87,9 @@ redis_cache:
 
 elk_stack_server:
   hosts:
-    35.180.227.14:
+    139.59.30.158:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: root
     server_name: 'elk-stack'
     nginx_custom_vhost: 'elk'
     logstash_enabled_on_boot: true
@@ -109,7 +109,7 @@ mysql_server:
 
 mysql_master: 
   hosts:
-    142.93.214.247:
+    139.59.22.66:
   vars:
     ansible_ssh_user: root
     server_name: 'mysql'
@@ -121,11 +121,11 @@ mysql_master:
 
 mysql_slave: 
   hosts:
-    54.199.221.170:
-    52.194.185.208:
+    142.93.213.16:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: root
     server_name: 'mysql'
+    mysql_server_id: 2
     mysql_replication_role: 'slave'
     mysql_replication_user: { name: slaveUser, host: '%', password: 'amitkverma' } 
     enable_mysql_slave_replication: true
