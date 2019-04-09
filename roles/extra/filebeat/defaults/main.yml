@@ -6,8 +6,8 @@ filebeat_prospectors:
   - type: log
     close_inactive: 10m
     paths:
-      - "/var/log/nginx/*.log"
-    document_type: nginx
+      - "/root/verbose.log"
+    tags: ["nginx"]
 
 filebeat_output_elasticsearch_enabled: false
 filebeat_output_elasticsearch_hosts:
