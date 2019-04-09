@@ -1,15 +1,15 @@
 ---
   - import_playbook: ../variable-check.yml
     vars:
-      playbook: dev.yml
+      playbook: nginx.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: elk_stack
+    hosts: nginx_server
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: elk_stack
+  - hosts: nginx_server
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -20,10 +20,7 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: platform/java }
-      - { role: database/elasticsearch }
-      - { role: applications/kibana }
-      - { role: extra/logstash }
-      # - { role: extra/filebeat }
       # - { role: webservers/nginx }
-      # - { role: elk-stack/logstash }
+      - { role: extra/filebeat }
+
+
