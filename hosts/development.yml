@@ -282,27 +282,40 @@ vault_server:
 
 consul_server:
   hosts:
-    35.180.203.241:
+    13.232.156.197:
   vars:
     ansible_ssh_user: ubuntu
-    server_name: 'consul-sd'
+    server_name: 'consul-server'
     netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx']
+    nginx_ssl_enable: true
+    netdata_monitor_application: ['nginx', 'npt']
     consul_mode: 'server'
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
     nginx_custom_vhost: consul
+    monitor_application_name: consul
     cluster_private_ips:
-      - 10.0.0.231
+      - 10.0.6.43
 
-consul_client:
+
+
+deepstream_server:
   hosts:
-    52.47.75.83:
-      server_name: 'deepstream-1'
+    13.126.233.159:
+        server_name: 'deepstream-node-1'
+        consul_ip : '10.0.6.249'
+    13.233.149.17:
+        server_name: 'deepstream-node-2'
+        consul_ip: '10.0.4.31'
   vars:
     ansible_ssh_user: ubuntu
+    netdata_mode: 'slave'
+    netdata_monitor_application: []
     consul_mode: 'client'
-    health_check_script_enabled: true
+    firewall_open_ports: [5757,8300,8301,19999,6363]
+    is_redis_msg_plugin_used: true
     monitor_application_name: 'deepstream'
+    deepstream_auth_enable: true
+    health_check_script_enabled: true
 
 
 consul_template:
