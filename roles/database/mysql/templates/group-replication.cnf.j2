@@ -9,6 +9,8 @@
 [mysqld]
 server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
 bind-address = "{{ (ansible_eth1 | default(ansible_lo)).ipv4.address if mysql_private_networking else ansible_eth0.ipv4.address }}"
+max_allowed_packet = 1000M
+wait_timeout = 3000
 skip_name_resolve
 
 # Logging configuration.
