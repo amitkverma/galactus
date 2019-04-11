@@ -21,8 +21,8 @@
         setup:
     roles:
     #   - { role: common, tags: [common] }
-      - { role: webservers/haproxy, tags: [haproxy] }
-      - { role: monitoring/consul, tags: [consul] }
+    #   - { role: webservers/haproxy, tags: [haproxy] }
+    #   - { role: monitoring/consul, tags: [consul] }
       - { role: extra/consul-template, tags: [consul-template] }
     #   - { role: monitoring/netdata, tags: [netdata] }
     #   - { role: monitoring/monit, tags: [monit] }
@@ -31,4 +31,5 @@
     #   - { role: security/ntp, tags: [ntp] }
     #   - { role: extra/sendmail, tags: [sendmail] }
     #   - { role: extra/users, tags: [users] }
+    #   - { role: security/freeipa/ipaclient }
 

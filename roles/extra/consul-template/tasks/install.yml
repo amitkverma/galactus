@@ -103,6 +103,14 @@
     mode: 0755
   when: consul_template_config_file is defined
 
+- name: consul-template client config file
+  template:
+    dest: "{{ consul_template_home }}/templates/{{ consul_template_client_file }}"
+    src: "{{ consul_template_client_file }}.j2"
+    mode: 0755
+  when: consul_template_client_file is defined
+
+
 - name: copy template files
   copy: src="{{ item.src }}" dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
   with_items: "{{ consul_template_template_files }}"

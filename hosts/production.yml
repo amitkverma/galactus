@@ -8,7 +8,7 @@ all:
     prod_consul_domain: 'charcoaleats'
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
     redis_deepstream_port: 6379
-    redis_deepstream_server: 'redis-cache.charcoaleats.com'
+    redis_deepstream_server: '10.0.11.149'
     deepstream_websocket_port: 5757
     deepstream_websocket_port_lb: 443
     deepstream_http_port: 8787
@@ -27,69 +27,13 @@ all:
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/hanzo.pub') }}"
+          - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/hanzo.pub') }}"
       - name: "aldous" # Ansible User 
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/aldous.pub') }}"    
+          - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/aldous.pub') }}"    
 
-
-redis_msg_bus:
-  hosts:
-    13.232.230.45:
-      consul_ip: '172.31.17.8'
-  vars:
-    ansible_ssh_user: dranzer
-    server_name: 'redis-msg-bus'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['redis']
-    consul_mode: 'client'
-    firewall_open_ports: [8300,8301,19999,6363]
-    nginx_custom_vhost: netdata
-    redis_port: '{{ redis_deepstream_port }}'
-    monitor_application_name: 'redis_msg_bus'
-    health_check_script_enabled: true
-
-deepstream_server:
-  hosts:
-    13.232.17.35:
-        server_name: 'deepstream-node-1'
-        consul_ip: '172.31.22.244'
-    13.127.75.195:
-        server_name: 'deepstream-node-2'
-        consul_ip: '172.31.1.7'
-  vars:
-    ansible_ssh_user: dranzer
-    netdata_mode: 'slave'
-    netdata_monitor_application: []
-    consul_mode: 'client'
-    firewall_open_ports: [5757,8300,8301,19999,6363]
-    is_redis_msg_plugin_used: true
-    monitor_application_name: 'deepstream'
-    deepstream_auth_enable: true
-    health_check_script_enabled: true
-
-deepstream_haproxy_lb:
-  hosts:
-    13.126.165.43:
-        consul_ip: '172.31.22.29'
-  vars:
-    ansible_ssh_user: dranzer
-    server_name: 'deepstream-loadbalancer'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['haproxy']
-    consul_mode: 'client'
-    firewall_open_ports: [443,8300,8301,19999,5757]
-    haproxy_custom_vhost: deepstream
-    deepstream_server:
-      - name: 'deepstream_s1'
-        host: '13.232.17.35'
-      - name: 'deepstream_s2'
-        host: '13.127.75.195'
-    haproxy_ssl_enable: true
-    monitor_application_name: 'haproxy'
-    health_check_script_enabled: true
 
 nodejs_server:
   hosts:
@@ -353,3 +297,65 @@ monitoring_stack:
       - dashboard_id: 7107
         revision_id: 1
         datasource: netdata
+        
+        
+redis_msg_bus:
+  hosts:
+    10.0.11.149:
+  vars:
+    ansible_ssh_user: hanzo
+    server_name: 'redis-msg-bus'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [8300,8301,19999,6363]
+    redis_port: '{{ redis_deepstream_port }}'
+    monitor_application_name: 'redis_msg_bus'
+    health_check_script_enabled: true
+
+deepstream_server:
+  hosts:
+    10.0.8.161:
+        server_name: 'deepstream-node-1'
+    10.0.11.151:
+        server_name: 'deepstream-node-2'
+  vars:
+    ansible_ssh_user: hanzo
+    netdata_mode: 'slave'
+    netdata_monitor_application: []
+    consul_mode: 'client'
+    firewall_open_ports: [5757,8300,8301,19999,6363]
+    is_redis_msg_plugin_used: true
+    monitor_application_name: 'deepstream'
+    deepstream_auth_enable: true
+    health_check_script_enabled: true
+
+deepstream_haproxy_lb:
+  hosts:
+    10.0.6.230:
+  vars:
+    ansible_ssh_user: hanzo
+    server_name: 'deepstream-loadbalancer'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['haproxy']
+    consul_mode: 'client'
+    firewall_open_ports: [443,8300,8301,19999,5757]
+    haproxy_custom_vhost: deepstream
+    deepstream_server:
+      - name: 'deepstream-node-1'
+        host: '10.0.8.161'
+      - name: 'deepstream-node-2'
+        host: '10.0.11.151'
+    haproxy_ssl_enable: True
+    monitor_application_name: 'haproxy'
+    health_check_script_enabled: true
+    consul_template_use_systemd: true
+    consul_template_config_file: 'haproxy.hcl'
+    consul_template_client_file: 'deepstream.ctmpl'
+    consul_template_templates:
+      - name: 'deepstream.ctmpl'
+        dest: '/etc/haproxy/haproxy.cfg'
+        cmd: 'sudo /etc/init.d/haproxy reload || true'
+        perms: 600cd /
+        backup: true
+        wait: '2s:6s'
