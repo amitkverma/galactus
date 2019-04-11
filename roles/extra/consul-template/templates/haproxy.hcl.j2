@@ -1,0 +1,9 @@
+template {
+  source = "/opt/consul-template/templates/{{ consul_template_client_file }}"
+  destination = "/etc/haproxy/haproxy.cfg"
+  command = "/bin/sh -c 'haproxy -D -f /etc/haproxy/haproxy.cfg -p /run/haproxy-lb.pid -sf $(cat /run/haproxy-lb.pid)'"
+  command_timeout = "60s"
+  perms = 0600
+  backup = true 
+  wait = "2s:6s"
+}

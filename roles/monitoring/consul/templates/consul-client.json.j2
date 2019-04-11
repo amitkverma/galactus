@@ -4,7 +4,7 @@
   "log_level": "{{ consul_loglevel }}",
   "domain": "{{ consul_domain }}",
   "datacenter": "{{ consul_datacenter }}",
-  "bind_addr": "{{ consul_server_nodes | first }}",
+  "bind_addr": "{{ consul_ip }}",
   "ports": {
     "http": {{ consul_http_port }},
     "dns": {{ consul_dns_port }}
