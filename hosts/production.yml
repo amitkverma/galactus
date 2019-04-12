@@ -315,10 +315,10 @@ redis_msg_bus:
 
 deepstream_server:
   hosts:
-    10.0.8.161:
+    10.0.9.99:
         server_name: 'deepstream-node-1'
-    10.0.11.151:
-        server_name: 'deepstream-node-2'
+    # 10.0.11.151:
+    #     server_name: 'deepstream-node-2'
   vars:
     ansible_ssh_user: hanzo
     netdata_mode: 'slave'
@@ -334,7 +334,7 @@ deepstream_haproxy_lb:
   hosts:
     10.0.6.230:
   vars:
-    ansible_ssh_user: hanzo
+    ansible_ssh_user: ubuntu
     server_name: 'deepstream-loadbalancer'
     netdata_mode: 'slave'
     netdata_monitor_application: ['haproxy']
@@ -343,7 +343,7 @@ deepstream_haproxy_lb:
     haproxy_custom_vhost: deepstream
     deepstream_server:
       - name: 'deepstream-node-1'
-        host: '10.0.8.161'
+        host: '10.0.9.99'
       - name: 'deepstream-node-2'
         host: '10.0.11.151'
     haproxy_ssl_enable: True
@@ -359,3 +359,30 @@ deepstream_haproxy_lb:
         perms: 600cd /
         backup: true
         wait: '2s:6s'
+
+
+elk_stack:
+  hosts:
+    13.127.87.36:
+      consul_ip: '10.0.5.59'
+  vars:
+    ansible_ssh_user: hanzo
+    server_name: 'elk-stack'
+    java_packages:
+      - openjdk-8-jdk
+    filebeat_output_logstash_hosts:
+      - "10.0.5.59:5044"
+    logstash_monitor_local_syslog: false
+    nginx_custom_vhost: 'elk'
+    logstash_enabled_on_boot: true
+    logstash_install_plugins:
+      - logstash-input-beats
+    logstash_elasticsearch_hosts:
+      - http://localhost:9200
+    logstash_listen_port_beats: 5044
+    netdata_mode: 'slave'
+    netdata_monitor_application: []
+    consul_mode: 'client'
+    monitor_application_name: 'elk'
+    health_check_script_enabled: true
+
