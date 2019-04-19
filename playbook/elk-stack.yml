@@ -27,7 +27,7 @@
     #   - { role: applications/kibana }
     #   - { role: extra/logstash }
     #   - { role: extra/filebeat }
-    #   - { role: webservers/nginx }
+      - { role: webservers/nginx }
     #   - { role: monitoring/netdata, tags: [netdata] }
     #   - { role: monitoring/monit, tags: [monit] }
     #   - { role: extra/swapfile, tags: [swapfile] }
@@ -35,4 +35,4 @@
     #   - { role: security/ntp, tags: [ntp] }
     #   - { role: extra/sendmail, tags: [sendmail] }
     #   - { role: extra/users, tags: [users] }
-      - { role: security/freeipa/ipaclient }
+    #   - { role: security/freeipa/ipaclient }

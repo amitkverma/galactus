@@ -317,8 +317,8 @@ deepstream_server:
   hosts:
     10.0.9.99:
         server_name: 'deepstream-node-1'
-    # 10.0.11.151:
-    #     server_name: 'deepstream-node-2'
+    10.0.11.151:
+        server_name: 'deepstream-node-2'
   vars:
     ansible_ssh_user: hanzo
     netdata_mode: 'slave'
@@ -385,4 +385,6 @@ elk_stack:
     consul_mode: 'client'
     monitor_application_name: 'elk'
     health_check_script_enabled: true
+    nginx_domain: 'elk.charcoaleats.com'
+    nginx_ssl_enable: true
 

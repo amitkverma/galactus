@@ -6,11 +6,17 @@ upstream backend {
 }
 
 server {
-    # nginx listens to this
-    listen 80;
+    listen          80;
+    server_name     {{ nginx_domain }};
+    return          301 https://$server_name$request_uri;
+}
 
-    # the virtual host name of this
-    server_name {{ ansible_host }};
+server {
+    listen                      443 ssl;
+    server_name                 {{ nginx_domain }};
+
+    ssl_certificate             /etc/ssl/charcoaleats.crt;
+    ssl_certificate_key         /etc/ssl/charcoaleats.key;
 
 
     location / {
