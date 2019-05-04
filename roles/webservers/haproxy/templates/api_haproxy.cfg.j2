@@ -43,6 +43,7 @@ defaults
 
 frontend haproxynode
     bind *:443 {% if haproxy_ssl_enable %} ssl crt /etc/ssl/charcoaleats.pem {% endif %}
+    
     mode http
     default_backend backendnodes
 
