@@ -221,12 +221,12 @@ vault_server:
 
 kafka_monitor:
   hosts:
-    35.154.179.201:
+    13.232.70.108:
   vars:
-    ansible_ssh_user: aldous
+    ansible_ssh_user: hanzo
     server_name: 'kafka-manager'
     java_home: "/usr/java/jdk1.8.0_131"
-    kafka_manager_zk: "10.0.11.191:2181,10.0.12.230:2181,10.0.11.166:2181"
+    kafka_manager_zk: "10.0.13.7:2181,10.0.8.126:2181,10.0.13.107:2181"
     kafka_manager_port: 8080
     ansible_install_method: apt
     nginx_custom_vhost: kafkaMonitor
@@ -234,7 +234,7 @@ kafka_monitor:
         - bower
     fetch_repo_from_remote_host: true
     nginx_ssl_enable: true
-    kafka_rest_ip: "10.0.11.191"
+    kafka_rest_ip: "10.0.13.7"
     consul_mode: 'client'
     netdata_monitor_application: ['nginx','ntp', 'monit']
     netdata_mode: 'slave'
