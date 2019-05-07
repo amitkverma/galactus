@@ -1,6 +1,6 @@
 ---
 # vars file for proxysql
-proxysql_version: 1.4.6
+proxysql_version: 2.0.3
 
 proxysql_GR_hostgroups:
   - variable: writer_hostgroup
@@ -187,7 +187,7 @@ proxysql_mysql_variables:
     variable_value: "{{ proxysql_mysql_init_connect }}"
   interfaces:
     variable: interfaces
-    variable_value: "{{ proxysql_mysql_interface }}:{{ proxysql_mysql_port }}"
+    variable_value: "{{ proxysql_mysql_interface }}:{{ proxysql_mysql_port }};{{ proxysql_mysql_connection_sock }}"
   long_query_time:
     variable: long_query_time
     variable_value: "{{ proxysql_mysql_long_query_time }}"
