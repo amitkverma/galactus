@@ -21,7 +21,7 @@ all:
     env_host_name: dev.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
-    mysql_replication_master: '139.59.22.66'
+    mysql_replication_master: '10.0.8.238'
     admin_user: cyclops
     users:
       - name: "lancelot" # Admin User
@@ -36,7 +36,7 @@ all:
           - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/cyclops.pub') }}"    
     shared_mysql_user: { name: "charcoaleatsAdmin", password: "Striker_Axel01" , host: "%" } 
     proxysql_mysql_monitor: { name: monitor,  password: 'amitkverma' , host: "%" }
-    shared_mysql_database: "CB_PROD_MIRROR_DEV"
+    shared_mysql_database: "CB_PROD_MIRROR_STAGING"
 
 nodejs_server:
   hosts:
@@ -135,7 +135,10 @@ mysql_master:
 
 mysql_slave: 
   hosts:
-    142.93.213.16:
+    13.232.240.55:
+      mysql_server_id: 11
+    52.66.104.131:
+      mysql_server_id: 12
   vars:
     ansible_ssh_user: root
     server_name: 'mysql'
@@ -154,10 +157,12 @@ metabase:
 
 mysql_replication: 
   hosts:
-    52.194.205.240:
-      primary: true
-    52.199.15.36:
-    13.231.8.202:
+    10.0.8.238:
+      primary: True
+    10.0.14.118:
+      primary: False
+    10.0.13.80:
+      primary: False
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'mysql'
@@ -167,7 +172,7 @@ mysql_replication:
 
 proxysql_server:
   hosts:
-    54.250.194.180:
+    13.233.77.220:
   vars:
     ansible_ssh_user: ubuntu
     server_name: 'mysql'

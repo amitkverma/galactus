@@ -118,8 +118,8 @@
 #     state: present
 #     load_to_runtime: true
 #     save_to_disk: true
+#   when: hostvars[item]['primary'] is not defined
 #   with_items: "{{ proxysql_mysql_backend_servers }}"
-
 
 - name: Add MySQL users
   proxysql_mysql_users:

@@ -55,19 +55,18 @@ proxysql_admin_stats_system_cpu: 60
 proxysql_admin_stats_system_memory: 60
 proxysql_admin_web_enabled: false
 proxysql_admin_web_port: 6080
-
 # ProxySQL mysql variables
 ## Check here for more information
 ##   https://github.com/sysown/proxysql/wiki/Global-variables
 
-proxysql_mysql_autocommit_false_is_transaction: false
+proxysql_mysql_autocommit_false_is_transaction: true
 proxysql_mysql_autocommit_false_not_reusable: false
 proxysql_mysql_client_found_rows: true
 proxysql_mysql_commands_stats: true
 proxysql_mysql_connect_retries_delay: 1
 proxysql_mysql_connect_retries_on_failure: 10
-proxysql_mysql_connect_timeout_server: 3000
-proxysql_mysql_connect_timeout_server_max: 10000
+proxysql_mysql_connect_timeout_server: 10000
+proxysql_mysql_connect_timeout_server_max: 30000
 proxysql_mysql_connection_delay_multiplex_ms: 0
 proxysql_mysql_connection_max_age_ms: 0
 proxysql_mysql_connpoll_reset_queue_length: 50
@@ -86,8 +85,9 @@ proxysql_mysql_free_connections_pct: 10
 proxysql_mysql_have_compress: true
 proxysql_mysql_hostgroup_manager_verbose: 1
 proxysql_mysql_init_connect: 
-proxysql_mysql_interface: 127.0.0.1
+proxysql_mysql_interface: 0.0.0.0
 proxysql_mysql_port: 6033
+proxysql_mysql_connection_sock: /tmp/proxysql.sock
 proxysql_mysql_long_query_time: 1000
 proxysql_mysql_max_allowed_packet: 4194304
 proxysql_mysql_max_connections: 2048
@@ -117,11 +117,11 @@ proxysql_mysql_monitor_slave_lag_when_null: 60
 proxysql_mysql_monitor_username: "{{ proxysql_mysql_monitor.name }}"
 proxysql_mysql_monitor_wait_timeout: true
 proxysql_mysql_monitor_writer_is_also_reader: true
-proxysql_mysql_multiplexing: true
+proxysql_mysql_multiplexing: false
 proxysql_mysql_ping_interval_server_msec: 120000
 proxysql_mysql_ping_timeout_server: 500
-proxysql_mysql_poll_timeout: 2000
-proxysql_mysql_poll_timeout_on_failure: 100
+proxysql_mysql_poll_timeout: 200000
+proxysql_mysql_poll_timeout_on_failure: 10000
 proxysql_mysql_query_cache_size_MB: 256
 proxysql_mysql_query_digests: true
 proxysql_mysql_query_digests_lowercase: false
