@@ -53,7 +53,7 @@ proxysql_admin_stats_mysql_connections: 60
 proxysql_admin_stats_mysql_query_cache: 60
 proxysql_admin_stats_system_cpu: 60
 proxysql_admin_stats_system_memory: 60
-proxysql_admin_web_enabled: true
+proxysql_admin_web_enabled: false
 proxysql_admin_web_port: 6080
 # ProxySQL mysql variables
 ## Check here for more information
