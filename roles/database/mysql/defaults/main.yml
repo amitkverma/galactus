@@ -96,3 +96,5 @@ mysql_load_test_data: false
 mysql_repl_require_ssl: false
 mysql_private_networking: false
 mysql_group_replication_uuid: ''
+
+is_mysql_group_replication_mode: false

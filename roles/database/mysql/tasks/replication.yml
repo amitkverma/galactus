@@ -47,18 +47,6 @@
     and (mysql_replication_master != '')
   tags: ['slave']
 
-- name: Configure Slave for group replication DB
-  shell: >
-    mysql -u root -NBe
-    'SET @@GLOBAL.ENFORCE_GTID_CONSISTENCY = WARN;
-      SET @@GLOBAL.ENFORCE_GTID_CONSISTENCY = ON;
-      SET @@GLOBAL.GTID_MODE = OFF_PERMISSIVE;
-      SET @@GLOBAL.GTID_MODE = ON_PERMISSIVE;
-      SET @@GLOBAL.GTID_MODE = ON;'
-  when: enable_mysql_slave_replication is defined and mysql_group_replication
-  tags: ['slave']
-
-
 - name: Check master replication status.
   mysql_replication: mode=getmaster
   delegate_to: "{{ mysql_replication_master }}"

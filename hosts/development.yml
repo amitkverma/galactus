@@ -21,7 +21,7 @@ all:
     env_host_name: dev.charcoaleats.com
     nodejs_cpo_port: 8001
     nodejs_api_port: 8888
-    mysql_replication_master: '10.0.8.238'
+    mysql_replication_master: '10.0.14.118'
     admin_user: cyclops
     users:
       - name: "lancelot" # Admin User
@@ -135,18 +135,17 @@ mysql_master:
 
 mysql_slave: 
   hosts:
-    13.232.240.55:
+    52.66.85.36:
       mysql_server_id: 11
-    52.66.104.131:
+    52.66.109.246:
       mysql_server_id: 12
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: ubuntu
     server_name: 'mysql'
-    mysql_server_id: 2
     mysql_replication_role: 'slave'
     mysql_replication_user: { name: slaveUser, host: '%', password: 'amitkverma' } 
     enable_mysql_slave_replication: true
-
+    is_mysql_group_replication_mode: true
 
 metabase:
   hosts:

@@ -56,6 +56,11 @@ binlog_ignore_db = {{ db.name }}
 {% endfor %}
 {% endif %}
 
+{% if is_mysql_group_replication_mode %}
+gtid_mode = ON
+enforce_gtid_consistency = ON
+{% endif %}
+
 {% if mysql_replication_role == 'slave' %}
 read_only
 relay-log = relay-bin

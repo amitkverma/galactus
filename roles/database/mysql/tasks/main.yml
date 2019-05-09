@@ -61,9 +61,9 @@
   tags: [database']
 - include_tasks: users.yml
   tags: ['users']
-- include_tasks: mysql-dump.yml
-  when: mysql_replication_role == 'slave'
-  tags: ['dump']
+# - include_tasks: mysql-dump.yml
+#   when: mysql_replication_role == 'slave'
+#   tags: ['dump']
 - include_tasks: replication.yml
   when: mysql_replication_role != ''
   tags: ['slave']
