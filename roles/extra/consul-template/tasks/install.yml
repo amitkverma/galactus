@@ -96,6 +96,13 @@
     group=root
     mode=0755
 
+- name: consul-template custom config file
+  template:
+    dest: "{{ consul_template_home }}/config/{{ consul_template_config_file }}"
+    src: "{{ consul_template_config_file }}.j2"
+    mode: 0755
+  when: consul_template_config_file is defined
+
 - name: consul-template client config file
   template:
     dest: "{{ consul_template_home }}/templates/{{ consul_template_client_file }}"

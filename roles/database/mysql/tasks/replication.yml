@@ -55,7 +55,7 @@
       SET @@GLOBAL.GTID_MODE = OFF_PERMISSIVE;
       SET @@GLOBAL.GTID_MODE = ON_PERMISSIVE;
       SET @@GLOBAL.GTID_MODE = ON;'
-  when: enable_mysql_slave_replication is defined
+  when: enable_mysql_slave_replication is defined and mysql_group_replication
   tags: ['slave']
 
 

@@ -4,10 +4,10 @@ all:
     deny_default_user: 'ubuntu'
     prod_consul_datacenter: 'DO-BLR'
     prod_consul_domain: 'charcoaleats'
-    consul_server_ip: '139.59.79.222' # Consul Private IP
+    consul_server_ip: '10.0.6.43' # Consul Private IP
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
     redis_deepstream_port: 6363
-    redis_deepstream_server: '159.89.172.11'
+    redis_deepstream_server: '10.0.11.61'
     deepstream_websocket_port_lb: 443
     deepstream_websocket_ip_lb: 159.89.163.173
     deepstream_http_port: 8787
@@ -38,22 +38,6 @@ all:
     proxysql_mysql_monitor: { name: monitor,  password: 'amitkverma' , host: "%" }
     shared_mysql_database: "CB_PROD_MIRROR_STAGING"
 
-deepstream_server:
-  hosts:
-    52.47.75.83:
-      server_name: 'deepstream-1'
-  vars:
-    ansible_ssh_user: ubuntu
-    netdata_mode: 'slave'
-    netdata_monitor_application: []
-    consul_mode: 'client'
-    firewall_open_ports: [5757,8300,8301,19999,6363]
-    nginx_custom_vhost: netdata
-    is_redis_msg_plugin_used: false
-    monitor_application_name: 'deepstream'
-    deepstream_auth_enable: true
-
-
 nodejs_server:
   hosts:
     206.189.142.78:
@@ -70,12 +54,12 @@ nodejs_server:
     health_check_script_enabled: true
 
 
-redis_cache:
+redis_msg_bus:
   hosts:
-    35.180.2.194:
+    10.0.11.61:
   vars:
     ansible_ssh_user: ubuntu
-    server_name: 'preprod-redis-msg-bus'
+    server_name: 'redis-msg-bus'
     netdata_mode: 'slave'
     netdata_monitor_application: ['redis']
     consul_mode: 'client'
@@ -87,9 +71,9 @@ redis_cache:
 
 elk_stack_server:
   hosts:
-    35.180.227.14:
+    139.59.30.158:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: root
     server_name: 'elk-stack'
     nginx_custom_vhost: 'elk'
     logstash_enabled_on_boot: true
@@ -98,6 +82,36 @@ elk_stack_server:
     logstash_elasticsearch_hosts:
       - http://localhost:9200
     logstash_listen_port_beats: 5044
+
+elk_stack:
+  hosts:
+    159.89.173.107:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'elk-stack'
+    java_packages:
+      - openjdk-8-jdk
+    filebeat_output_logstash_hosts:
+      - "159.89.173.107:5044"
+    logstash_monitor_local_syslog: false
+    # elasticsearch_network_host: '0.0.0.0'
+    # nginx_custom_vhost: 'elk'
+    # logstash_enabled_on_boot: true
+    # logstash_install_plugins:
+    #   - logstash-input-beats
+    # logstash_elasticsearch_hosts:
+    #   - http://localhost:9200
+    # logstash_listen_port_beats: 5044
+
+nginx_server:
+  hosts:
+    159.65.154.54:
+  vars:
+    ansible_ssh_user: root
+    server_name: 'mysql'
+    filebeat_output_logstash_hosts:
+      - "159.89.173.107:5044"
+
 
 mysql_server:
   hosts:
@@ -109,7 +123,7 @@ mysql_server:
 
 mysql_master: 
   hosts:
-    142.93.214.247:
+    139.59.22.66:
   vars:
     ansible_ssh_user: root
     server_name: 'mysql'
@@ -126,8 +140,9 @@ mysql_slave:
     52.66.104.131:
       mysql_server_id: 12
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: root
     server_name: 'mysql'
+    mysql_server_id: 2
     mysql_replication_role: 'slave'
     mysql_replication_user: { name: slaveUser, host: '%', password: 'amitkverma' } 
     enable_mysql_slave_replication: true
@@ -256,27 +271,73 @@ vault_server:
 
 consul_server:
   hosts:
-    35.180.203.241:
+    13.232.156.197:
   vars:
     ansible_ssh_user: ubuntu
-    server_name: 'consul-sd'
+    server_name: 'consul-server'
     netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx']
+    nginx_ssl_enable: true
+    netdata_monitor_application: ['nginx', 'npt']
     consul_mode: 'server'
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
     nginx_custom_vhost: consul
+    monitor_application_name: consul
     cluster_private_ips:
-      - 10.0.0.231
+      - 10.0.6.43
 
-consul_client:
+
+
+deepstream_server:
   hosts:
-    52.47.75.83:
-      server_name: 'deepstream-1'
+    10.0.12.235:
+        server_name: 'deepstream-node-1'
+    10.0.9.217:
+        server_name: 'deepstream-node-2'
+    10.0.12.221:
+        server_name: 'deepstream-node-3'
+    10.0.13.226:
+        server_name: 'deepstream-node-4'
   vars:
     ansible_ssh_user: ubuntu
+    netdata_mode: 'slave'
+    netdata_monitor_application: []
     consul_mode: 'client'
-    health_check_script_enabled: true
+    firewall_open_ports: [5757,8300,8301,19999,6363]
+    is_redis_msg_plugin_used: true
     monitor_application_name: 'deepstream'
+    deepstream_auth_enable: true
+    health_check_script_enabled: true
+
+deepstream_haproxy_lb:
+  hosts:
+    10.0.3.49:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'deepstream-loadbalancer'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['haproxy']
+    consul_mode: 'client'
+    firewall_open_ports: [443,8300,8301,19999,5757]
+    haproxy_custom_vhost: deepstream
+    deepstream_server:
+      - name: 'deepstream_s1'
+        host: '10.0.12.235'
+      - name: 'deepstream_s2'
+        host: '10.0.9.217'
+    haproxy_ssl_enable: True
+    monitor_application_name: 'haproxy'
+    health_check_script_enabled: true
+    consul_template_use_systemd: true
+    consul_template_config_file: 'haproxy.hcl'
+    consul_template_client_file: 'deepstream.ctmpl'
+    consul_template_templates:
+      - name: 'deepstream.ctmpl'
+        dest: '/etc/haproxy/haproxy.cfg'
+        cmd: 'sudo /etc/init.d/haproxy reload || true'
+        perms: 600cd /
+        backup: true
+        wait: '2s:6s'
+
 
 
 consul_template:

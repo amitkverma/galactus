@@ -1,15 +1,15 @@
 ---
   - import_playbook: ../variable-check.yml
     vars:
-      playbook: dev.yml
+      playbook: elk_stack.yml
 
   - name: Test Connection and Determine Remote User
-    hosts: elk_stack_server
+    hosts: elk_stack
     gather_facts: false
     roles:
       - { role: connection, tags: [connection, always] }
 
-  - hosts: elk_stack_server
+  - hosts: elk_stack
     become: yes
     gather_facts: false
     pre_tasks: 
@@ -20,9 +20,19 @@
       - name: Gathering Facts
         setup:
     roles:
-      # - { role: elk-stack/java }
-      # - { role: elk-stack/elasticsearch }
-      # - { role: elk-stack/kibana }
-      # - { role: elk-stack/metricbeat }
-      # - { role: webservers/nginx }
-      - { role: elk-stack/logstash }
+    #   - { role: common, tags: [common] }
+    #   - { role: monitoring/consul, tags: [consul] }
+    #   - { role: platform/java }
+    #   - { role: database/elasticsearch }
+    #   - { role: applications/kibana }
+    #   - { role: extra/logstash }
+    #   - { role: extra/filebeat }
+      - { role: webservers/nginx }
+    #   - { role: monitoring/netdata, tags: [netdata] }
+    #   - { role: monitoring/monit, tags: [monit] }
+    #   - { role: extra/swapfile, tags: [swapfile] }
+    #   - { role: security/fail2ban, tags: [fail2ban] }
+    #   - { role: security/ntp, tags: [ntp] }
+    #   - { role: extra/sendmail, tags: [sendmail] }
+    #   - { role: extra/users, tags: [users] }
+    #   - { role: security/freeipa/ipaclient }

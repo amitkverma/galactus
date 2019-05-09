@@ -1,0 +1,17 @@
+---
+consul_services_register:
+    - name: elasticsearch
+      tags: ['elk', 'elasticsearch']
+      port: 9200
+      http: "http://localhost:9200"
+      interval: "60s"
+    - name: kibana
+      tags: ['elk', 'kibana']
+      port: 5601
+      http: "http://localhost:5601/status"
+      interval: "60s"
+    - name: logstash
+      tags: ['elk', 'logstash']
+      port: 9600
+      http: "http://localhost:9600"
+      interval: "60s"

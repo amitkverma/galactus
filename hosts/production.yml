@@ -8,7 +8,7 @@ all:
     prod_consul_domain: 'charcoaleats'
     redis_password: 473d67d08db4314ef0366d2504e37e9f44168abe
     redis_deepstream_port: 6379
-    redis_deepstream_server: 'redis-cache.charcoaleats.com'
+    redis_deepstream_server: '10.0.11.149'
     deepstream_websocket_port: 5757
     deepstream_websocket_port_lb: 443
     deepstream_http_port: 8787
@@ -27,69 +27,13 @@ all:
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/hanzo.pub') }}"
+          - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/hanzo.pub') }}"
       - name: "aldous" # Ansible User 
         groups:
           - sudo
         keys:
-          - "{{ lookup('file', '/Users/amitverma/Projects/side-projects/galactus/pub_keys/aldous.pub') }}"    
+          - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/aldous.pub') }}"    
 
-
-redis_msg_bus:
-  hosts:
-    13.232.230.45:
-      consul_ip: '172.31.17.8'
-  vars:
-    ansible_ssh_user: dranzer
-    server_name: 'redis-msg-bus'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['redis']
-    consul_mode: 'client'
-    firewall_open_ports: [8300,8301,19999,6363]
-    nginx_custom_vhost: netdata
-    redis_port: '{{ redis_deepstream_port }}'
-    monitor_application_name: 'redis_msg_bus'
-    health_check_script_enabled: true
-
-deepstream_server:
-  hosts:
-    13.232.17.35:
-        server_name: 'deepstream-node-1'
-        consul_ip: '172.31.22.244'
-    13.127.75.195:
-        server_name: 'deepstream-node-2'
-        consul_ip: '172.31.1.7'
-  vars:
-    ansible_ssh_user: dranzer
-    netdata_mode: 'slave'
-    netdata_monitor_application: []
-    consul_mode: 'client'
-    firewall_open_ports: [5757,8300,8301,19999,6363]
-    is_redis_msg_plugin_used: true
-    monitor_application_name: 'deepstream'
-    deepstream_auth_enable: true
-    health_check_script_enabled: true
-
-deepstream_haproxy_lb:
-  hosts:
-    13.126.165.43:
-        consul_ip: '172.31.22.29'
-  vars:
-    ansible_ssh_user: dranzer
-    server_name: 'deepstream-loadbalancer'
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['haproxy']
-    consul_mode: 'client'
-    firewall_open_ports: [443,8300,8301,19999,5757]
-    haproxy_custom_vhost: deepstream
-    deepstream_server:
-      - name: 'deepstream_s1'
-        host: '13.232.17.35'
-      - name: 'deepstream_s2'
-        host: '13.127.75.195'
-    haproxy_ssl_enable: true
-    monitor_application_name: 'haproxy'
-    health_check_script_enabled: true
 
 nodejs_server:
   hosts:
@@ -114,31 +58,6 @@ nodejs_server:
     monitor_application_name: 'nodejs'
     health_check_script_enabled: true
 
-api_haproxy_lb:
-  hosts:
-    13.126.200.25:
-      server_name: 'lb-api-primary'
-      consul_ip: '172.31.10.115'
-    13.126.252.174:
-      server_name: 'lb-api-backup'
-      consul_ip: '172.31.27.91'
-  vars:
-    ansible_ssh_user: cerberus
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['haproxy']
-    consul_mode: 'client'
-    firewall_open_ports: [443,8300,8301,19999]
-    haproxy_custom_vhost: api
-    node_server:
-      - name: 'node_s1'
-        host: '52.66.198.22'
-      - name: 'node_s2'
-        host: '13.126.84.246'
-      - name: 'node_s3'
-        host: '52.66.238.194'
-    haproxy_ssl_enable: true
-    monitor_application_name: 'haproxy'
-    health_check_script_enabled: true
 
 contly_server:
   hosts:
@@ -302,12 +221,12 @@ vault_server:
 
 kafka_monitor:
   hosts:
-    35.154.179.201:
+    13.232.70.108:
   vars:
-    ansible_ssh_user: aldous
+    ansible_ssh_user: hanzo
     server_name: 'kafka-manager'
     java_home: "/usr/java/jdk1.8.0_131"
-    kafka_manager_zk: "10.0.11.191:2181,10.0.12.230:2181,10.0.11.166:2181"
+    kafka_manager_zk: "10.0.13.7:2181,10.0.8.126:2181,10.0.13.107:2181"
     kafka_manager_port: 8080
     ansible_install_method: apt
     nginx_custom_vhost: kafkaMonitor
@@ -315,7 +234,7 @@ kafka_monitor:
         - bower
     fetch_repo_from_remote_host: true
     nginx_ssl_enable: true
-    kafka_rest_ip: "10.0.11.191"
+    kafka_rest_ip: "10.0.13.7"
     consul_mode: 'client'
     netdata_monitor_application: ['nginx','ntp', 'monit']
     netdata_mode: 'slave'
@@ -353,3 +272,147 @@ monitoring_stack:
       - dashboard_id: 7107
         revision_id: 1
         datasource: netdata
+        
+        
+redis_msg_bus:
+  hosts:
+    10.0.11.149:
+  vars:
+    ansible_ssh_user: hanzo
+    server_name: 'redis-msg-bus'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['redis']
+    consul_mode: 'client'
+    firewall_open_ports: [8300,8301,19999,6363]
+    redis_port: '{{ redis_deepstream_port }}'
+    monitor_application_name: 'redis_msg_bus'
+    health_check_script_enabled: true
+
+deepstream_server:
+  hosts:
+    10.0.9.99:
+        server_name: 'deepstream-node-1'
+    10.0.11.151:
+        server_name: 'deepstream-node-2'
+  vars:
+    ansible_ssh_user: hanzo
+    netdata_mode: 'slave'
+    netdata_monitor_application: []
+    consul_mode: 'client'
+    firewall_open_ports: [5757,8300,8301,19999,6363]
+    is_redis_msg_plugin_used: true
+    monitor_application_name: 'deepstream'
+    deepstream_auth_enable: true
+    health_check_script_enabled: true
+
+deepstream_haproxy_lb:
+  hosts:
+    10.0.6.230:
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'deepstream-loadbalancer'
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['haproxy']
+    consul_mode: 'client'
+    firewall_open_ports: [443,8300,8301,19999,5757]
+    haproxy_custom_vhost: deepstream
+    deepstream_server:
+      - name: 'deepstream-node-1'
+        host: '10.0.9.99'
+      - name: 'deepstream-node-2'
+        host: '10.0.11.151'
+    haproxy_ssl_enable: True
+    monitor_application_name: 'haproxy'
+    health_check_script_enabled: true
+    consul_template_use_systemd: true
+    consul_template_config_file: 'haproxy.hcl'
+    consul_template_client_file: 'deepstream.ctmpl'
+    consul_template_templates:
+      - name: 'deepstream.ctmpl'
+        dest: '/etc/haproxy/haproxy.cfg'
+        cmd: 'sudo /etc/init.d/haproxy reload || true'
+        perms: 600cd /
+        backup: true
+        wait: '2s:6s'
+
+
+elk_stack:
+  hosts:
+    13.127.87.36:
+      consul_ip: '10.0.5.59'
+  vars:
+    ansible_ssh_user: hanzo
+    server_name: 'elk-stack'
+    java_packages:
+      - openjdk-8-jdk
+    filebeat_output_logstash_hosts:
+      - "10.0.5.59:5044"
+    logstash_monitor_local_syslog: false
+    nginx_custom_vhost: 'elk'
+    logstash_enabled_on_boot: true
+    logstash_install_plugins:
+      - logstash-input-beats
+    logstash_elasticsearch_hosts:
+      - http://localhost:9200
+    logstash_listen_port_beats: 5044
+    netdata_mode: 'slave'
+    netdata_monitor_application: []
+    consul_mode: 'client'
+    monitor_application_name: 'elk'
+    health_check_script_enabled: true
+    nginx_domain: 'elk.charcoaleats.com'
+    nginx_ssl_enable: true
+
+
+api_haproxy_lb:
+  hosts:
+    10.0.3.120:
+      server_name: 'lb-api-primary'
+  vars:
+    ansible_ssh_user: ubuntu
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['haproxy']
+    consul_mode: 'client'
+    firewall_open_ports: [443,8300,8301,19999]
+    haproxy_custom_vhost: api
+    node_server:
+      - name: 'node_s1'
+        host: '10.0.13.238'
+      - name: 'node_s2'
+        host: '10.0.14.62'
+      - name: 'node_s3'
+        host: '10.0.15.26'
+    haproxy_ssl_enable: true
+    monitor_application_name: 'haproxy'
+    health_check_script_enabled: true
+    consul_template_use_systemd: true
+    consul_template_config_file: 'haproxy.hcl'
+    consul_template_client_file: 'haproxy.ctmpl'
+    consul_template_templates:
+      - name: 'haproxy.ctmpl'
+        dest: '/etc/haproxy/haproxy.cfg'
+        cmd: 'sudo /etc/init.d/haproxy reload || true'
+        perms: 600cd /
+        backup: true
+        wait: '2s:6s'
+
+
+nodejs_server:
+  hosts:
+    10.0.13.238:
+      server_name: 'application-server-1'
+    10.0.15.26:
+      server_name: 'application-server-2'
+    10.0.14.62:
+      server_name: 'application-server-3'
+  vars:
+    ansible_ssh_user: hanzo
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nodejs']
+    consul_mode: 'client'
+    firewall_open_ports: [8888,8300,8301,19999]
+    monitor_application_name: 'nodejs'
+    health_check_script_enabled: true
+    git_repos: 
+      - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-dashboard-api.git"
+        path: /opt/software/charcoal-api

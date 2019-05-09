@@ -130,7 +130,6 @@
     dest: /var/local/redis_health_check.sh
     src: redis_health_check.sh.j2
     mode: a+x
-    owner: consul
   when: ansible_os_family == "Debian" and health_check_script_enabled is defined
   notify: "restart redis"
 

@@ -1,0 +1,46 @@
+---
+monit_services:
+  - name: elasticsearch
+    type: process_by_name
+    target: elasticsearch
+    start: /usr/sbin/service elasticsearch start 
+    stop: /usr/sbin/service elasticsearch stop 
+    restart: /usr/sbin/service elasticsearch restart 
+    rules:
+      - "if failed port 9200 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"
+  - name: logstash
+    type: process_by_name
+    target: logstash
+    start: /usr/sbin/service logstash start 
+    stop: /usr/sbin/service logstash stop 
+    restart: /usr/sbin/service logstash restart 
+    rules:
+      - "if failed port 9600 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"
+  - name: kibana
+    type: process_by_name
+    target: kibana
+    start: /usr/sbin/service kibana start 
+    stop: /usr/sbin/service kibana stop 
+    restart: /usr/sbin/service kibana restart 
+    rules:
+      - "if failed port 5601 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"
+  - name: netdata
+    type: process
+    target: /var/run/netdata/netdata.pid
+    start: /usr/sbin/service netdata start 
+    stop: /usr/sbin/service netdata stop 
+    restart: /usr/sbin/service netdata restart 
+    rules:
+      - "if 5 restarts within 5 cycles then timeout"
+  - name: consul
+    type: process_by_name
+    target: consul
+    start: /usr/sbin/service consul start 
+    stop: /usr/sbin/service consul stop 
+    restart: /usr/sbin/service consul restart 
+    rules:
+      - "if failed port 8500 protocol http then restart"
+      - "if 5 restarts within 5 cycles then timeout"
