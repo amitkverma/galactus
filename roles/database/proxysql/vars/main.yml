@@ -383,3 +383,6 @@ proxysql_mysql_variables:
   wait_timeout:
     variable: wait_timeout
     variable_value: "{{ proxysql_mysql_wait_timeout }}"
+  wait_timeout:
+    variable: reset_connection_algorithm
+    variable_value: "{{ proxysql_mysql_reset_connection_algorithm }}"
