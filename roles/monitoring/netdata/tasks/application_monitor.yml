@@ -1,15 +1,42 @@
 ---
 
-- name: Add Monit plugin in netdata
+- name: Add fail2ban plugins in netdata
   copy:
-    src: plugins/monit.conf
+    src: plugins/fail2ban.conf
+    dest: /etc/netdata/python.d/fail2ban.conf
+    owner: netdata
+    group: netdata
+    mode: 0644
+  when: "'fail2ban' in netdata_monitor_application"
+
+- name: Add fail2ban charts in netdata
+  copy:
+    src: charts/fail2ban.chart.py
+    dest: /etc/netdata/python.d/fail2ban.chart.py
+    owner: netdata
+    group: netdata
+    mode: 0644
+  when: "'fail2ban' in netdata_monitor_application"
+
+- name: Add Monit plugin in netdata
+  template:
+    src: plugins/monit.conf.j2
     dest: /etc/netdata/python.d/monit.conf
+    mode: 0644
+  when: "'monit' in netdata_monitor_application"
+  notify: restart netdata
+
+- name: Add Monit charts in netdata
+  copy:
+    src: charts/monit.chart.py
+    dest: /etc/netdata/python.d/monit.chart.py
     owner: netdata
     group: netdata
     mode: 0644
   when: "'monit' in netdata_monitor_application"
 
-- name: Add NTP plugin in netdata
+
+- name: Add ntpd plugins in netdata
   copy:
     src: plugins/ntpd.conf
     dest: /etc/netdata/python.d/ntpd.conf
@@ -17,6 +44,70 @@
     group: netdata
     mode: 0644
   when: "'ntp' in netdata_monitor_application"
+
+- name: Add ntpd charts in netdata
+  copy:
+    src: charts/ntpd.chart.py
+    dest: /etc/netdata/python.d/ntpd.chart.py
+    owner: netdata
+    group: netdata
+    mode: 0644
+  when: "'ntp' in netdata_monitor_application"
+
+
+- name: Add Mysql plugin in netdata
+  template:
+    src: plugins/mysql.conf.j2
+    dest: /etc/netdata/python.d/mysql.conf
+    mode: 0644
+  when: "'mysql' in netdata_monitor_application"
+  notify: restart netdata
+
+
+- name: Add Mysql charts in netdata
+  copy:
+    src: charts/mysql.chart.py
+    dest: /etc/netdata/python.d/mysql.chart.py
+    owner: netdata
+    group: netdata
+    mode: 0644
+  when: "'mysql' in netdata_monitor_application"
+
+- name: Add Proxysql plugin in netdata
+  template:
+    src: plugins/proxysql.conf.j2
+    dest: /etc/netdata/python.d/proxysql.conf
+    mode: 0644
+  when: "'proxysql' in netdata_monitor_application"
+  notify: restart netdata
+
+- name: Add Proxysql charts in netdata
+  copy:
+    src: charts/proxysql.chart.py
+    dest: /etc/netdata/python.d/proxysql.chart.py
+    owner: netdata
+    group: netdata
+    mode: 0644
+  when: "'proxysql' in netdata_monitor_application"
+
+
+- name: Add haproxy plugin in netdata
+  template:
+    src: plugins/haproxy.conf.j2
+    dest: /etc/netdata/python.d/haproxy.conf
+    mode: 0644
+  when: "'haproxy' in netdata_monitor_application"
+  notify: restart netdata
+
+- name: Add haproxy charts in netdata
+  copy:
+    src: charts/haproxy.chart.py
+    dest: /etc/netdata/python.d/haproxy.chart.py
+    owner: netdata
+    group: netdata
+    mode: 0644
+  when: "'haproxy' in netdata_monitor_application"
+
 
 - name: Add Nginx plugin in netdata
   copy:
@@ -40,32 +131,6 @@
   when: "'nginx' in netdata_monitor_application"
   notify: restart netdata
 
-- name: Add HaProxy plugin in netdata
-  copy:
-    src: plugins/haproxy.conf
-    dest: /etc/netdata/python.d/haproxy.conf
-    owner: netdata
-    group: netdata
-    mode: 0644
-  when: "'haproxy' in netdata_monitor_application"
-
-- name: Add Haproxy Monitoring in netdata
-  blockinfile: 
-    path: /etc/netdata/python.d/haproxy.conf
-    block: |
-      job_name:
-          name: haproxy           
-          update_every: 1         
-          priority: 60000         
-          retries: 60             
-          autodetection_retry: 0  
-      via_url:
-          user : '{{ haproxy_stat_auth_user }}'
-          pass : '{{ haproxy_stat_auth_pwd }}'
-          url : 'http://127.0.0.1:18999/haproxy_stats;csv;norefresh'
-
-  when: "'haproxy' in netdata_monitor_application"
-  notify: restart netdata
 
 - name: Add redis plugin in netdata
   copy:

@@ -20,4 +20,9 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: database/mysql }
+    #   - { role: database/mysql }
+      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: extra/sendmail, tags: [sendmail] }
+      - { role: monitoring/monit, tags: [monit] }
+      - { role: security/fail2ban, tags: [fail2ban] }
+      - { role: security/ntp, tags: [ntp] }

@@ -13,12 +13,11 @@ set mailserver {{ monit_mailserver_host }} port {{ monit_mailserver_port }}
 set alert {{ address }}
 {% endfor -%}
 
-{% if monit_alert_mail_format is defined -%}
+{% if monit_alert_mail_message is defined -%}
 set mail-format {
-{% for key in ['from', 'reply-to', 'subject', 'message'] -%}
-{% if monit_alert_mail_format[key] is defined %}
-  {{ key }}: {{ monit_alert_mail_format[key] }}
-{% endif %}
-{% endfor -%}
+   from: {{ monit_alert_mail_from }}
+   reply-to: developer@charcoaleats.com
+   subject: $SERVICE $EVENT at $DATE
+   message: {{ monit_alert_mail_message }}
 }
 {% endif -%}

@@ -35,29 +35,6 @@ all:
           - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/aldous.pub') }}"    
 
 
-nodejs_server:
-  hosts:
-    52.66.198.22:
-      server_name: 'application-server-1'
-      consul_ip: '172.31.30.230'
-    13.126.84.246:
-      server_name: 'application-server-2'
-      consul_ip: '172.31.27.168'
-    52.66.238.194:
-      server_name: 'application-server-3'
-      consul_ip: '172.31.4.148'
-    13.232.125.183:
-      server_name: 'worker-server'
-      consul_ip: '172.31.24.177'
-  vars:
-    ansible_ssh_user: dranzer
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['nodejs']
-    consul_mode: 'client'
-    firewall_open_ports: [8888,8300,8301,19999]
-    monitor_application_name: 'nodejs'
-    health_check_script_enabled: true
-
 
 contly_server:
   hosts:
@@ -366,7 +343,7 @@ elk_stack:
 
 api_haproxy_lb:
   hosts:
-    10.0.3.120:
+    10.0.2.156:
       server_name: 'lb-api-primary'
   vars:
     ansible_ssh_user: ubuntu
@@ -377,11 +354,9 @@ api_haproxy_lb:
     haproxy_custom_vhost: api
     node_server:
       - name: 'node_s1'
-        host: '10.0.13.238'
+        host: '10.0.10.48'
       - name: 'node_s2'
-        host: '10.0.14.62'
-      - name: 'node_s3'
-        host: '10.0.15.26'
+        host: '10.0.9.37'
     haproxy_ssl_enable: true
     monitor_application_name: 'haproxy'
     health_check_script_enabled: true
@@ -399,14 +374,12 @@ api_haproxy_lb:
 
 nodejs_server:
   hosts:
-    10.0.13.238:
+    10.0.10.48:
       server_name: 'application-server-1'
-    10.0.15.26:
+    10.0.9.37:
       server_name: 'application-server-2'
-    10.0.14.62:
-      server_name: 'application-server-3'
   vars:
-    ansible_ssh_user: hanzo
+    ansible_ssh_user: ubuntu
     netdata_mode: 'slave'
     netdata_monitor_application: ['nodejs']
     consul_mode: 'client'

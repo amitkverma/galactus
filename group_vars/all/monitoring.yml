@@ -36,6 +36,7 @@ monit_mailserver_password: BHfzkWd8bdYsa440CyHMbyPJeQi2x1RTd3auXO+wUcjk
 monit_mailserver_ssl_version: tlsv1
 monit_mailserver_timeout: 30
 monit_alert_addresses:
+  - amit@charcoaleats.com
   - developer@charcoaleats.com
 monit_alert_mail_from: alert@charcoaleats.com
 monit_alert_mail_subject: alert

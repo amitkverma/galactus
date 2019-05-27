@@ -21,3 +21,8 @@
         setup:
     roles:
       - { role: database/proxysql }
+    #   - { role: monitoring/monit, tags: [monit] }
+    #   - { role: monitoring/netdata, tags: [netdata] }
+    #   - { role: security/fail2ban, tags: [fail2ban] }
+    #   - { role: security/ntp, tags: [ntp] }
+    #   - { role: extra/sendmail, tags: [sendmail] }

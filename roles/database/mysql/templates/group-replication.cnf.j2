@@ -66,8 +66,8 @@ loose-group_replication_group_seeds = "{{ public_host_ips | zip_longest([], fill
 loose-group_replication_allow_local_disjoint_gtids_join=ON
 ## Single or Multi-primary mode? Uncomment these two lines
 ## for multi-primary mode, where any host can accept writes
-# loose-group_replication_single_primary_mode = OFF
-# loose-group_replication_enforce_update_everywhere_checks = ON
+loose-group_replication_single_primary_mode = OFF
+loose-group_replication_enforce_update_everywhere_checks = ON
 report_host = "{{ (ansible_eth1 | default(ansible_lo)).ipv4.address if mysql_private_networking else ansible_eth0.ipv4.address }}"
 loose-group_replication_local_address = "{{ (ansible_eth1 | default(ansible_lo)).ipv4.address if mysql_private_networking else ansible_eth0.ipv4.address }}:33061"
 

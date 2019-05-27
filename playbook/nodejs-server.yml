@@ -25,11 +25,11 @@
     #   - { role: webservers/nodejs, tags: [nodejs] }
     #   - { role: extra/git-deploy, tags: [nodejs] }
     #   - { role: monitoring/consul, tags: [consul] }
-    #   - { role: monitoring/netdata, tags: [netdata] }
-    #   - { role: monitoring/monit, tags: [monit] }
+      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: monitoring/monit, tags: [monit] }
     #   - { role: extra/swapfile, tags: [swapfile] }
     #   - { role: security/fail2ban, tags: [fail2ban] }
-      - { role: security/ntp, tags: [ntp] }
+    #   - { role: security/ntp, tags: [ntp] }
     #   - { role: security/ufw, tags: [ufw] }
-    #   - { role: extra/sendmail, tags: [sendmail] }
+      - { role: extra/sendmail, tags: [sendmail] }
 

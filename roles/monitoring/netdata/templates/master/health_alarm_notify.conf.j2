@@ -130,7 +130,7 @@ aws=""
 # In these examples, the first recipient receives all the alarms
 # while the second one receives only the critical ones:
 #
-#  email      : "user1@example.com user2@example.com|critical"
+#  email      : "ace@domain.com |critical"
 #  pushover   : "2987343...9437837 8756278...2362736|critical"
 #  telegram   : "111827421 112746832|critical"
 #  slack      : "alarms disasters|critical"
@@ -162,13 +162,13 @@ aws=""
 # EMAIL_SENDER="User Name <user@domain>"
 # EMAIL_SENDER="'User Name' <user@domain>"
 # EMAIL_SENDER="\"User Name\" <user@domain>"
-EMAIL_SENDER="{{ netdata_alert_sender_mail }}"
+EMAIL_SENDER="Charcoal Netdata Alert <{{ netdata_alert_sender_mail }}>"
 
 # enable/disable sending emails
 SEND_EMAIL="YES"
 
 # if a role recipient is not configured, an email will be send to:
-DEFAULT_RECIPIENT_EMAIL="{{ netdata_alert_email_recipient }}"
+DEFAULT_RECIPIENT_EMAIL="{{ monit_alert_addresses | join(' ') }}|critical"
 # to receive only critical alarms, set it to "root|critical"
 
 # Optionally specify the encoding to list in the Content-Type header.

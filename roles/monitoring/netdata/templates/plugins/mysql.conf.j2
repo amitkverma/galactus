@@ -179,32 +179,32 @@ mycnf2_root:
 
 socket1_root:
   name     : 'local'
-  user     : "monitor"
-  pass     : "amitkverma"
+  user     : "{{ proxysql_mysql_monitor.name }}"
+  pass     : "{{ proxysql_mysql_monitor.password }}"
   socket   : '/var/run/mysqld/mysqld.sock'
 
 socket2_root:
   name     : 'local'
-  user     : "monitor"
-  pass     : "amitkverma"
+  user     : "{{ proxysql_mysql_monitor.name }}"
+  pass     : "{{ proxysql_mysql_monitor.password }}"
   socket   : '/var/run/mysqld/mysql.sock'
 
 socket3_root:
   name     : 'local'
-  user     : "monitor"
-  pass     : "amitkverma"
+  user     : "{{ proxysql_mysql_monitor.name }}"
+  pass     : "{{ proxysql_mysql_monitor.password }}"
   socket   : '/var/lib/mysql/mysql.sock'
 
 socket4_root:
   name     : 'local'
-  user     : "monitor"
-  pass     : "amitkverma"
+  user     : "{{ proxysql_mysql_monitor.name }}"
+  pass     : "{{ proxysql_mysql_monitor.password }}"
   socket   : '/tmp/mysql.sock'
 
 tcp_root:
   name     : 'local'
-  user     : "monitor"
-  pass     : "amitkverma"
+  user     : "{{ proxysql_mysql_monitor.name }}"
+  pass     : "{{ proxysql_mysql_monitor.password }}"
   host     : 'localhost'
   port     : '3306'
   # keep in mind port might be ignored by mysql, if host = 'localhost'
@@ -212,15 +212,15 @@ tcp_root:
 
 tcpipv4_root:
   name     : 'local'
-  user     : "monitor"
-  pass     : "amitkverma"
+  user     : "{{ proxysql_mysql_monitor.name }}"
+  pass     : "{{ proxysql_mysql_monitor.password }}"
   host     : '127.0.0.1'
   port     : '3306'
 
 tcpipv6_root:
   name     : 'local'
-  user     : "monitor"
-  pass     : "amitkverma"
+  user     : "{{ proxysql_mysql_monitor.name }}"
+  pass     : "{{ proxysql_mysql_monitor.password }}"
   host     : '::1'
   port     : '3306'
 

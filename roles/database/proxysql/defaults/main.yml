@@ -53,7 +53,7 @@ proxysql_admin_stats_mysql_connections: 60
 proxysql_admin_stats_mysql_query_cache: 60
 proxysql_admin_stats_system_cpu: 60
 proxysql_admin_stats_system_memory: 60
-proxysql_admin_web_enabled: false
+proxysql_admin_web_enabled: true
 proxysql_admin_web_port: 6080
 # ProxySQL mysql variables
 ## Check here for more information
@@ -81,7 +81,7 @@ proxysql_mysql_enforce_autocommit_on_reads: false
 proxysql_mysql_eventslog_filename: 
 proxysql_mysql_eventslog_filesize: 104857600
 proxysql_mysql_forward_autocommit: false
-proxysql_mysql_free_connections_pct: 40
+proxysql_mysql_free_connections_pct: 400
 proxysql_mysql_have_compress: true
 proxysql_mysql_hostgroup_manager_verbose: 1
 proxysql_mysql_init_connect: 
@@ -90,7 +90,7 @@ proxysql_mysql_port: 6033
 proxysql_mysql_connection_sock: /tmp/proxysql.sock
 proxysql_mysql_long_query_time: 1000
 proxysql_mysql_max_allowed_packet: 4194304
-proxysql_mysql_max_connections: 2048
+proxysql_mysql_max_connections: 10000
 proxysql_mysql_max_stmts_cache: 10000
 proxysql_mysql_max_stmts_per_connection: 2000
 proxysql_mysql_max_transaction_time: 14400000
