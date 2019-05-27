@@ -32,7 +32,7 @@
 
 - name: Set bind address to self public ip
   set_fact:
-    mysql_bind_address: "{{ (ansible_eth1 | default(ansible_lo)).ipv4.address if mysql_private_networking else ansible_eth0.ipv4.address }}"
+    mysql_bind_address: "{{ (ansible_eth1 is defined | default(ansible_lo)).ipv4.address if mysql_private_networking else ansible_default_ipv4.address }}"
   when: mysql_group_replication
   tags: ['common']
 
@@ -61,9 +61,9 @@
   tags: [database']
 - include_tasks: users.yml
   tags: ['users']
-# - include_tasks: mysql-dump.yml
-#   when: mysql_replication_role == 'slave'
-#   tags: ['dump']
+- include_tasks: mysql-dump.yml
+  when: mysql_replication_role == 'slave'
+  tags: ['dump']
 - include_tasks: replication.yml
   when: mysql_replication_role != ''
   tags: ['slave']

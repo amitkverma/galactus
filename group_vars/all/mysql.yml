@@ -3,12 +3,12 @@
 # or sudo access
 mysql_user_home: /root
 mysql_user_name: root
-mysql_user_password: amitkverma
+mysql_user_password: 1e80bca44a05ae0d864bc35a1def38787002090a
 
 # The default root user installed by mysql - almost always root
 mysql_root_home: /root
 mysql_root_username: root
-mysql_root_password: amitkverma
+mysql_root_password: 1e80bca44a05ae0d864bc35a1def38787002090a
 
 # Slow query log settings.
 mysql_slow_query_log_enabled: yes
@@ -25,8 +25,8 @@ mysql_log: ""
 
 # Relication Configuration
 mysql_replication_db: "{{ shared_mysql_database }}"
-mysql_master_read_only_user: {  name: readOnlyCharcoal, password: amitkverma  }
-mysql_admin_user: { name: mysqlSqlAdmin, password: amitkverma }
+mysql_master_read_only_user: {  name: readOnlyCharcoal, password: "dFCfv2eR7HHbShNt4FK#CD"  }
+mysql_admin_user: { name: faramis, password: "*35pc6XxP@6sR4Hu5C5_j!+M" }
 # Databases.
 mysql_databases: 
   - name: "{{ shared_mysql_database }}"

@@ -33,6 +33,12 @@ all:
           - sudo
         keys:
           - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/aldous.pub') }}"    
+    # Mysql configs
+    mysql_replication_master: '10.0.10.193'
+    shared_mysql_user: { name: "granger", password: "hsEaYZAfRzt?RPPyq!y@2dx&" , host: "%" } 
+    proxysql_mysql_monitor: { name: monitor,  password: 'F89QLe^&4^Dm?dZgNRZ=eR*Nt' , host: "%" }
+    shared_mysql_database: "CB_PROD_MIRROR_STAGING"
+
 
 
 
@@ -389,3 +395,39 @@ nodejs_server:
     git_repos: 
       - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-dashboard-api.git"
         path: /opt/software/charcoal-api
+
+
+# Mysql Group Replication Servers
+
+mysql_replication: 
+  hosts:
+    10.0.10.193:
+      primary: True
+      server_name: 'mysql-server-gr-p'
+    10.0.15.109:
+      primary: False
+      server_name: 'mysql-server-gr-s1'
+    10.0.12.57:
+      primary: False
+      server_name: 'mysql-server-gr-s2'
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'mysql'
+    mysql_group_replication: true
+    mysql_group_replication_uuid: "419fa19a-8059-11e9-b3d7-02fa3598e1b2"
+    mysql_proxysql_backend_config: true
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['mysql']
+
+
+mysql_slave: 
+  hosts:
+    13.127.8.44:
+      mysql_server_id: 11
+  vars:
+    ansible_ssh_user: ubuntu
+    server_name: 'mysql'
+    mysql_replication_role: 'slave'
+    mysql_replication_user: { name: slaveUser, host: '%', password: 'ev4@?nenc&?DGFGh46a@PBp' } 
+    enable_mysql_slave_replication: true
+    is_mysql_group_replication_mode: true
