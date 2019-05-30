@@ -62,7 +62,7 @@ enforce_gtid_consistency = ON
 {% endif %}
 
 {% if mysql_replication_role == 'slave' %}
-read_only
+read_only = 1
 relay-log = relay-bin
 relay-log-index = relay-bin.index
 {% endif %}

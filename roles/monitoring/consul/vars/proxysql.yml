@@ -1,0 +1,7 @@
+---
+consul_services_register:
+    - name: proxysql
+      tags: ['mysql']
+      port: 3306
+      script: "mysqladmin ping --host=127.0.0.1 --port=6032 --user=admin --password=admin"
+      interval: "60s"

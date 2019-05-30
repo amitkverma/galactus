@@ -1,17 +1,17 @@
 ---
 monit_services:
-  - name: haproxy
+  - name: mysql
     type: process_by_name
-    target: haproxy
-    start: /usr/sbin/service haproxy start 
-    stop: /usr/sbin/service haproxy stop 
-    restart: /usr/sbin/service haproxy restart 
+    target: mysql
+    start: /usr/sbin/service mysql start 
+    stop: /usr/sbin/service mysql stop 
+    restart: /usr/sbin/service mysql restart 
     rules:
-      - "if failed port {{ deepstream_websocket_port_lb }} protocol http then restart"
+      - "if failed port 3306 then restart"
       - "if 5 restarts within 5 cycles then timeout"
   - name: netdata
-    type: process
-    target: /var/run/netdata/netdata.pid
+    type: process_by_name
+    target: netdata
     start: /usr/sbin/service netdata start 
     stop: /usr/sbin/service netdata stop 
     restart: /usr/sbin/service netdata restart 

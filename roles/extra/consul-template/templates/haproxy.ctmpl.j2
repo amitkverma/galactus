@@ -49,10 +49,10 @@ backend backendnodes
     option forwardfor
     http-request set-header X-Forwarded-Port %[dst_port]
     http-request add-header X-Forwarded-Proto https if { ssl_fc }
+    compression algo gzip
     {% raw %}
-    {{range service "nginx"}}
+    {{range service "nodejs"}}
     server {{ .Node }} {{ .Address }}:{{ .Port }} check port {{ .Port }} observe layer7{{ end }}
-    server localhost 127.0.0.1:8090 maxconn 500 backup 
     {% endraw %}
 
 listen stats

@@ -34,10 +34,10 @@ all:
         keys:
           - "{{ lookup('file', '/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/aldous.pub') }}"    
     # Mysql configs
-    mysql_replication_master: '10.0.10.193'
+    mysql_replication_master: '10.0.9.180'
     shared_mysql_user: { name: "granger", password: "hsEaYZAfRzt?RPPyq!y@2dx&" , host: "%" } 
     proxysql_mysql_monitor: { name: monitor,  password: 'F89QLe^&4^Dm?dZgNRZ=eR*Nt' , host: "%" }
-    shared_mysql_database: "CB_PROD_MIRROR_STAGING"
+    shared_mysql_database: "CHARCOAL_PRODUCTION_DB"
 
 
 
@@ -156,7 +156,7 @@ netdata_server:
   hosts:
     52.66.210.61:
   vars:
-    ansible_ssh_user: aldous
+    ansible_ssh_user: hanzo
     server_name: 'netdata-server'
     netdata_mode: 'master'
     netdata_monitor_application: ['nginx','ntp']
@@ -349,20 +349,20 @@ elk_stack:
 
 api_haproxy_lb:
   hosts:
-    10.0.2.156:
-      server_name: 'lb-api-primary'
+    10.0.5.139:
+      server_name: 'api-primary'
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: hanzo
     netdata_mode: 'slave'
-    netdata_monitor_application: ['haproxy']
+    netdata_monitor_application: ['haproxy', 'monit', 'ntp', 'fail2ban']
     consul_mode: 'client'
     firewall_open_ports: [443,8300,8301,19999]
     haproxy_custom_vhost: api
     node_server:
-      - name: 'node_s1'
-        host: '10.0.10.48'
-      - name: 'node_s2'
-        host: '10.0.9.37'
+      - name: 'application-server-1'
+        host: '10.0.11.56'
+      - name: 'application-server-2'
+        host: '10.0.13.16'
     haproxy_ssl_enable: true
     monitor_application_name: 'haproxy'
     health_check_script_enabled: true
@@ -380,14 +380,16 @@ api_haproxy_lb:
 
 nodejs_server:
   hosts:
-    10.0.10.48:
+    10.0.11.56:
       server_name: 'application-server-1'
-    10.0.9.37:
+    10.0.13.16:
       server_name: 'application-server-2'
+    10.0.13.238:
+      server_name: 'worker-server'
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: hanzo
     netdata_mode: 'slave'
-    netdata_monitor_application: ['nodejs']
+    netdata_monitor_application: ['nodejs', 'monit', 'ntp', 'fail2ban']
     consul_mode: 'client'
     firewall_open_ports: [8888,8300,8301,19999]
     monitor_application_name: 'nodejs'
@@ -397,37 +399,70 @@ nodejs_server:
         path: /opt/software/charcoal-api
 
 
-# Mysql Group Replication Servers
+# Mysql Server Group
+
+proxysql_server:
+  hosts:
+    10.0.1.228:
+      server_name: 'proxysql'
+  vars:
+    ansible_ssh_user: hanzo
+    shared_multi_primary: true
+    shared_require_ssl: false
+    shared_private_networking: true
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['proxysql', 'monit', 'ntp', 'fail2ban']
+    monitor_application_name: proxysql
+    consul_mode: 'client'
+    monitor_application_name: 'proxysql'
+    health_check_script_enabled: true
 
 mysql_replication: 
   hosts:
-    10.0.10.193:
+    10.0.9.180:
       primary: True
       server_name: 'mysql-server-gr-p'
-    10.0.15.109:
+    10.0.11.25:
       primary: False
       server_name: 'mysql-server-gr-s1'
-    10.0.12.57:
+    10.0.12.189:
       primary: False
       server_name: 'mysql-server-gr-s2'
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: hanzo
     server_name: 'mysql'
     mysql_group_replication: true
     mysql_group_replication_uuid: "419fa19a-8059-11e9-b3d7-02fa3598e1b2"
     mysql_proxysql_backend_config: true
     netdata_mode: 'slave'
-    netdata_monitor_application: ['mysql']
+    netdata_monitor_application: ['mysql','monit', 'ntp','fail2ban']
+    consul_mode: 'client'
+    monitor_application_name: 'mysql'
+    health_check_script_enabled: true
 
 
 mysql_slave: 
   hosts:
-    13.127.8.44:
+    10.0.4.158:
       mysql_server_id: 11
+      server_name: 'mysql-report-server'
+    10.0.0.174:
+      mysql_server_id: 12
+      server_name: 'mysql-slave'
   vars:
-    ansible_ssh_user: ubuntu
-    server_name: 'mysql'
+    ansible_ssh_user: hanzo
     mysql_replication_role: 'slave'
-    mysql_replication_user: { name: slaveUser, host: '%', password: 'ev4@?nenc&?DGFGh46a@PBp' } 
+    mysql_replication_user: { name: slaveUser, host: '%', password: 'amitkverma' } 
     enable_mysql_slave_replication: true
     is_mysql_group_replication_mode: true
+    nginx_custom_vhost: 'report'
+    site_name: 'report.charcoaleats.com'
+    nginx_ssl_enable: true
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['mysql','monit', 'ntp','fail2ban']
+    consul_mode: 'client'
+    monitor_application_name: 'mysql'
+    health_check_script_enabled: true
+    
+    
+    

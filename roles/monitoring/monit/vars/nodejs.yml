@@ -7,7 +7,7 @@ monit_services:
     stop: /usr/sbin/service pm2 stop 
     restart: /usr/bin/service pm2 restart 
     rules:
-      - "if failed port {{ nodejs_application_port }} protocol http then restart"
+      - "if failed port {{ nodejs_api_port }} protocol http then restart"
       - "if 5 restarts within 5 cycles then timeout"
   - name: netdata
     type: process
@@ -16,6 +16,7 @@ monit_services:
     stop: /usr/sbin/service netdata stop 
     restart: /usr/sbin/service netdata restart 
     rules:
+      - "if failed port 19999 then restart"
       - "if 5 restarts within 5 cycles then timeout"
   - name: consul
     type: process_by_name

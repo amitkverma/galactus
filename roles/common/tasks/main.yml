@@ -67,3 +67,6 @@
   - name: timezone - reconfigure tzdata
     command: dpkg-reconfigure --frontend noninteractive tzdata
     when: common_timezone_config.changed
+
+  - include_tasks: sysctl.yml
+    when: system_configure_high_traffic is defined

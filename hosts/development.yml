@@ -178,7 +178,7 @@ mysql_replication:
 
 proxysql_server:
   hosts:
-    10.0.1.39:
+    10.0.9.78:
       server_name: 'proxysql'
   vars:
     ansible_ssh_user: ubuntu

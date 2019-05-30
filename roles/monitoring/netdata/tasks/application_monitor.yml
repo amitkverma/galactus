@@ -108,7 +108,6 @@
     mode: 0644
   when: "'haproxy' in netdata_monitor_application"
 
-
 - name: Add Nginx plugin in netdata
   copy:
     src: plugins/nginx.conf
