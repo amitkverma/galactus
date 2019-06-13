@@ -129,7 +129,8 @@ ipaservers:
     cloud9_username: hanzo
     cloud9_password: amitkverma
     consul_mode: 'client'
-    netdata_monitor_application: ['nginx']
+    netdata_monitor_application: ['ntp','monit','fail2ban']
+    monit_application_name: ['consul','netdata']
     netdata_mode: 'slave'
     monitor_application_name: ipa
     git_repos: 
@@ -140,11 +141,12 @@ consul_server:
   hosts:
     13.233.204.215:
   vars:
-    ansible_ssh_user: aldous
+    ansible_ssh_user: hanzo
     server_name: 'consul-server'
     netdata_mode: 'slave'
     nginx_ssl_enable: true
-    netdata_monitor_application: ['nginx', 'npt']
+    netdata_monitor_application: ['nginx','ntp','monit','fail2ban']
+    monit_application_name: ['nginx','consul','netdata']
     consul_mode: 'server'
     firewall_open_ports: [80,8300,8301,8500,8600,19999]
     nginx_custom_vhost: consul
@@ -154,12 +156,13 @@ consul_server:
 
 netdata_server:
   hosts:
-    52.66.210.61:
+    10.0.2.10:
   vars:
     ansible_ssh_user: hanzo
     server_name: 'netdata-server'
     netdata_mode: 'master'
-    netdata_monitor_application: ['nginx','ntp']
+    netdata_monitor_application: ['nginx','ntp','monit','fail2ban']
+    monit_application_name: ['consul', 'netdata', 'nginx']
     consul_mode: 'client'
     firewall_open_ports: [80,8300,8301,19999]
     nginx_custom_vhost: netdata
@@ -169,25 +172,26 @@ netdata_server:
 
 gitlab_server:
   hosts:
-    13.232.69.54:
+    10.0.3.10:
   vars:
     server_name: 'gitlab-server'
-    ansible_ssh_user: aldous
+    ansible_ssh_user: hanzo
     gitlab_external_url: "https://gitlab.charcoaleats.com"
     nginx_ssl_enable: true
     gitlab_domain: "gitlab.charcoaleats.com"
     nginx_custom_vhost: gitlab
     consul_mode: 'client'
-    netdata_monitor_application: []
+    netdata_monitor_application: ['ntp','monit','fail2ban']
+    monit_application_name: ['consul', 'netdata', 'gitlab']
     netdata_mode: 'slave'
     monitor_application_name: gitlab
 
 vault_server:
   hosts:
-    13.232.101.15:
+    10.0.0.147:
   vars:
     server_name: 'vault-server'
-    ansible_ssh_user: aldous
+    ansible_ssh_user: hanzo
     vault_backend: file
     vault_cluster_disable: True
     vault_awskms: True
@@ -198,7 +202,8 @@ vault_server:
     vault_awskms_access_key: "AKIAITMA2UUB7HHVW3DQ"
     vault_awskms_secret_key: "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"
     consul_mode: 'client'
-    netdata_monitor_application: ['nginx','ntp']
+    netdata_monitor_application: ['nginx','ntp','monit','fail2ban']
+    monit_application_name: ['consul', 'netdata', 'vault', 'nginx']
     netdata_mode: 'slave'
     monitor_application_name: vault
 
@@ -264,11 +269,13 @@ redis_msg_bus:
     ansible_ssh_user: hanzo
     server_name: 'redis-msg-bus'
     netdata_mode: 'slave'
-    netdata_monitor_application: ['redis']
+    netdata_monitor_application: ['redis', 'monit', 'ntp', 'fail2ban']
+    monit_application_name: ['consul', 'netdata', 'redis_msg_bus']
+    monitor_application_name: 'redis_msg_bus'
+    netdata_monitor_application: []
     consul_mode: 'client'
     firewall_open_ports: [8300,8301,19999,6363]
     redis_port: '{{ redis_deepstream_port }}'
-    monitor_application_name: 'redis_msg_bus'
     health_check_script_enabled: true
 
 deepstream_server:
@@ -280,11 +287,12 @@ deepstream_server:
   vars:
     ansible_ssh_user: hanzo
     netdata_mode: 'slave'
-    netdata_monitor_application: []
     consul_mode: 'client'
+    netdata_monitor_application: [ 'monit', 'ntp', 'fail2ban']
+    monit_application_name: ['consul', 'netdata', 'deepstream']
+    monitor_application_name: 'deepstream'
     firewall_open_ports: [5757,8300,8301,19999,6363]
     is_redis_msg_plugin_used: true
-    monitor_application_name: 'deepstream'
     deepstream_auth_enable: true
     health_check_script_enabled: true
 
@@ -292,10 +300,11 @@ deepstream_haproxy_lb:
   hosts:
     10.0.6.230:
   vars:
-    ansible_ssh_user: ubuntu
+    ansible_ssh_user: hanzo
     server_name: 'deepstream-loadbalancer'
     netdata_mode: 'slave'
-    netdata_monitor_application: ['haproxy']
+    netdata_monitor_application: ['haproxy', 'monit', 'ntp', 'fail2ban']
+    monit_application_name: ['consul', 'netdata', 'haproxy']
     consul_mode: 'client'
     firewall_open_ports: [443,8300,8301,19999,5757]
     haproxy_custom_vhost: deepstream
@@ -355,6 +364,8 @@ api_haproxy_lb:
     ansible_ssh_user: hanzo
     netdata_mode: 'slave'
     netdata_monitor_application: ['haproxy', 'monit', 'ntp', 'fail2ban']
+    monit_application_name: ['consul', 'netdata', 'haproxy']
+    monitor_application_name: 'haproxy'
     consul_mode: 'client'
     firewall_open_ports: [443,8300,8301,19999]
     haproxy_custom_vhost: api
@@ -364,7 +375,6 @@ api_haproxy_lb:
       - name: 'application-server-2'
         host: '10.0.13.16'
     haproxy_ssl_enable: true
-    monitor_application_name: 'haproxy'
     health_check_script_enabled: true
     consul_template_use_systemd: true
     consul_template_config_file: 'haproxy.hcl'
@@ -384,6 +394,21 @@ nodejs_server:
       server_name: 'application-server-1'
     10.0.13.16:
       server_name: 'application-server-2'
+  vars:
+    ansible_ssh_user: hanzo
+    netdata_mode: 'slave'
+    netdata_monitor_application: ['nodejs', 'monit', 'ntp', 'fail2ban']
+    consul_mode: 'client'
+    firewall_open_ports: [8888,8300,8301,19999]
+    monit_application_name: ['consul', 'netdata', 'nodejs']
+    monitor_application_name: 'nodejs'
+    health_check_script_enabled: true
+    git_repos: 
+      - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-dashboard-api.git"
+        path: /opt/software/charcoal-api
+
+worker_node_server:
+  hosts:
     10.0.13.238:
       server_name: 'worker-server'
   vars:
@@ -392,7 +417,8 @@ nodejs_server:
     netdata_monitor_application: ['nodejs', 'monit', 'ntp', 'fail2ban']
     consul_mode: 'client'
     firewall_open_ports: [8888,8300,8301,19999]
-    monitor_application_name: 'nodejs'
+    monit_application_name: ['consul', 'netdata', 'nodejs']
+    monitor_application_name: 'worker'
     health_check_script_enabled: true
     git_repos: 
       - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-dashboard-api.git"
@@ -412,6 +438,7 @@ proxysql_server:
     shared_private_networking: true
     netdata_mode: 'slave'
     netdata_monitor_application: ['proxysql', 'monit', 'ntp', 'fail2ban']
+    monit_application_name: ['consul', 'netdata', 'proxysql']
     monitor_application_name: proxysql
     consul_mode: 'client'
     monitor_application_name: 'proxysql'
@@ -436,6 +463,7 @@ mysql_replication:
     mysql_proxysql_backend_config: true
     netdata_mode: 'slave'
     netdata_monitor_application: ['mysql','monit', 'ntp','fail2ban']
+    monit_application_name: ['consul', 'netdata', 'mysql']
     consul_mode: 'client'
     monitor_application_name: 'mysql'
     health_check_script_enabled: true
@@ -460,6 +488,7 @@ mysql_slave:
     nginx_ssl_enable: true
     netdata_mode: 'slave'
     netdata_monitor_application: ['mysql','monit', 'ntp','fail2ban']
+    monit_application_name: ['consul', 'netdata', 'mysql']
     consul_mode: 'client'
     monitor_application_name: 'mysql'
     health_check_script_enabled: true

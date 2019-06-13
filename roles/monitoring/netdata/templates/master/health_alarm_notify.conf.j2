@@ -168,7 +168,7 @@ EMAIL_SENDER="Charcoal Netdata Alert <{{ netdata_alert_sender_mail }}>"
 SEND_EMAIL="YES"
 
 # if a role recipient is not configured, an email will be send to:
-DEFAULT_RECIPIENT_EMAIL="{{ monit_alert_addresses | join(' ') }}|critical"
+DEFAULT_RECIPIENT_EMAIL="{{ netdata_alert_addresses | join(' ') }}|critical"
 # to receive only critical alarms, set it to "root|critical"
 
 # Optionally specify the encoding to list in the Content-Type header.

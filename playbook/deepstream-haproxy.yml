@@ -20,16 +20,16 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: common, tags: [common] }
-      - { role: webservers/haproxy, tags: [haproxy] }
-      - { role: monitoring/consul, tags: [consul] }
-      - { role: extra/consul-template, tags: [consul-template] }
+    #   - { role: common, tags: [common] }
+    #   - { role: webservers/haproxy, tags: [haproxy] }
+    #   - { role: monitoring/consul, tags: [consul] }
+    #   - { role: extra/consul-template, tags: [consul-template] }
       - { role: monitoring/netdata, tags: [netdata] }
       - { role: monitoring/monit, tags: [monit] }
-      - { role: extra/swapfile, tags: [swapfile] }
-      - { role: security/fail2ban, tags: [fail2ban] }
-      - { role: security/ntp, tags: [ntp] }
-      - { role: extra/sendmail, tags: [sendmail] }
-      - { role: extra/users, tags: [users] }
-      - { role: security/freeipa/ipaclient }
+    #   - { role: extra/swapfile, tags: [swapfile] }
+    #   - { role: security/fail2ban, tags: [fail2ban] }
+    #   - { role: security/ntp, tags: [ntp] }
+    #   - { role: extra/sendmail, tags: [sendmail] }
+    #   - { role: extra/users, tags: [users] }
+    #   - { role: security/freeipa/ipaclient }
 

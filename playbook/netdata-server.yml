@@ -22,8 +22,8 @@
     roles:
       # - { role: common, tags: [common] }
       # - { role: monitoring/consul, tags: [consul] }
-      - { role: monitoring/netdata, tags: [netdata] }
-      # - { role: monitoring/monit, tags: [monit] }
+      # - { role: monitoring/netdata, tags: [netdata] }
+      - { role: monitoring/monit, tags: [monit] }
       # - { role: extra/swapfile, tags: [swapfile] }
       # - { role: extra/users, tags: [users] }
       # - { role: extra/sendmail, tags: [sendmail] }

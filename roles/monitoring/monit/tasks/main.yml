@@ -1,10 +1,21 @@
 ---
+
 - name: Gather variables for monit setup type
-  include_vars: "{{ item }}"
-  with_items: "{{ monitor_application_name | lower }}.yml"
-  when: monitor_application_name is defined
-  tags:
-    - always
+  include_vars: 
+    name: "monit_conf"
+    file: "{{ item }}.yml"
+  with_items: "{{ monit_application_name }}"
+  register: default_configs
+  when: monit_application_name is defined
+
+- name: Setting variables monit_services
+  set_fact:
+    monit_services: "{{ default_configs.results | map(attribute='ansible_facts') | map(attribute='monit_conf') | map(attribute='monit_services') | map(attribute='0') | list }}"
+  with_items: "{{ monit_application_name }}"
+
+- name: duration
+  debug:
+    msg: "{{ monit_services }}"
 
 - include: debian/pkg.yml
   tags: monit_pkg

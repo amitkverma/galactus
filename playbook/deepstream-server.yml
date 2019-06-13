@@ -20,15 +20,15 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: common, tags: [common] }
-      - { role: socket/deepstream, tags: [deepstream] }
-      - { role: monitoring/consul, tags: [consul] }
+    #   - { role: common, tags: [common] }
+    #   - { role: socket/deepstream, tags: [deepstream] }
+    #   - { role: monitoring/consul, tags: [consul] }
       - { role: monitoring/netdata, tags: [netdata] }
       - { role: monitoring/monit, tags: [monit] }
-      - { role: extra/swapfile, tags: [swapfile] }
-      - { role: security/fail2ban, tags: [fail2ban] }
-      - { role: security/ntp, tags: [ntp] }
-      - { role: extra/sendmail, tags: [sendmail] }
-      - { role: extra/users, tags: [users] }
-      - { role: security/freeipa/ipaclient }
+    #   - { role: extra/swapfile, tags: [swapfile] }
+    #   - { role: security/fail2ban, tags: [fail2ban] }
+    #   - { role: security/ntp, tags: [ntp] }
+    #   - { role: extra/sendmail, tags: [sendmail] }
+    #   - { role: extra/users, tags: [users] }
+    #   - { role: security/freeipa/ipaclient }
 

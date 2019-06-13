@@ -21,11 +21,11 @@
         setup:
     roles:
     #   - { role: common, tags: [common] }
-      - { role: webservers/haproxy, tags: [haproxy] }
-      - { role: monitoring/consul, tags: [consul] }
-      - { role: extra/consul-template, tags: [consul-template] }
-    #   - { role: monitoring/netdata, tags: [netdata] }
-    #   - { role: monitoring/monit, tags: [monit] }
+    #   - { role: webservers/haproxy, tags: [haproxy] }
+    #   - { role: monitoring/consul, tags: [consul] }
+    #   - { role: extra/consul-template, tags: [consul-template] }
+      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: monitoring/monit, tags: [monit] }
     #   - { role: extra/swapfile, tags: [swapfile] }
     #   - { role: security/fail2ban, tags: [fail2ban] }
     #   - { role: security/ntp, tags: [ntp] }

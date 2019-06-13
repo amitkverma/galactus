@@ -1,0 +1,7 @@
+---
+consul_services_register:
+    - name: worker
+      tags: ['worker']
+      port: '{{ nodejs_api_port }}'
+      http: "http://localhost:{{ nodejs_api_port }}/health_check"
+      interval: "60s"

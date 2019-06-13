@@ -7,5 +7,5 @@ monit_services:
     stop: /usr/sbin/service redis stop 
     restart: /usr/sbin/service redis restart 
     rules:
-      - "if failed port {{ redis_deepstream_port }} protocol http then restart"
+      - "if failed port 6379 protocol http then restart"
       - "if 5 restarts within 5 cycles then timeout"

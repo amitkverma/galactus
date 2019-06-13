@@ -20,10 +20,10 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: common, tags: [common] }
-      - { role: monitoring/consul, tags: [consul] }
-      # - { role: monitoring/netdata, tags: [netdata] }
-      # - { role: monitoring/monit, tags: [monit] }
+      # - { role: common, tags: [common] }
+      # - { role: monitoring/consul, tags: [consul] }
+      - { role: monitoring/netdata, tags: [netdata] }
+      - { role: monitoring/monit, tags: [monit] }
       # - { role: extra/swapfile, tags: [swapfile] }
       # - { role: extra/sendmail, tags: [sendmail] }
       # - { role: security/fail2ban, tags: [fail2ban] }

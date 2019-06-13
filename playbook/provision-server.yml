@@ -20,14 +20,15 @@
       - name: Gathering Facts
         setup:
     roles:
-      - { role: common, tags: [common] }
-      - { role: extra/users, tags: [users] }
-      - { role: applications/ansible, tags: [ansible] }
-      - { role: extra/git-deploy, tags: [users] }
+    #   - { role: common, tags: [common] }
+    #   - { role: extra/users, tags: [users] }
+    #   - { role: applications/ansible, tags: [ansible] }
+    #   - { role: extra/git-deploy, tags: [users] }
       - { role: monitoring/netdata, tags: [netdata] }
-      - { role: monitoring/consul, tags: [consul] }
-      - { role: extra/swapfile, tags: [swapfile] }
-      - { role: security/fail2ban, tags: [fail2ban] }
-      - { role: security/ntp, tags: [ntp] }
-      - { role: security/freeipa/ipaserver }
-      - { role: security/freeipa/ipasetup }
+      - { role: monitoring/monit, tags: [monit] }
+    #   - { role: monitoring/consul, tags: [consul] }
+    #   - { role: extra/swapfile, tags: [swapfile] }
+    #   - { role: security/fail2ban, tags: [fail2ban] }
+    #   - { role: security/ntp, tags: [ntp] }
+    #   - { role: security/freeipa/ipaserver }
+    #   - { role: security/freeipa/ipasetup }

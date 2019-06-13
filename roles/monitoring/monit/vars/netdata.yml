@@ -7,5 +7,5 @@ monit_services:
     stop: /usr/sbin/service netdata stop 
     restart: /usr/sbin/service netdata restart 
     rules:
-      - "if failed port 19999 protocol http then restart"
-      - "if 5 restarts within 5 cycles then timeout"
+        - "if failed port 19999 then restart"
+        - "if 5 restarts within 5 cycles then timeout"
