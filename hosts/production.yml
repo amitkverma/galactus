@@ -55,22 +55,6 @@ contly_server:
     monitor_application_name: 'nodejs'
     health_check_script_enabled: true
 
-
-elk_stack_server:
-  hosts:
-    206.189.138.104:
-      server_name: 'elk_stack-server'
-  vars:
-    ansible_ssh_user: cerberus
-    netdata_mode: 'slave'
-    netdata_monitor_application: ['nginx']
-    consul_mode: 'client'
-    firewall_open_ports: [22,80,443, 9200, 9300,5044,8200]
-    monitor_application_name: 'nodejs'
-    health_check_script_enabled: true
-    nginx_custom_vhost: elk
-    nginx_ssl_enable: true
-
 nextCloud:
   hosts:
     142.93.218.187:
@@ -82,8 +66,8 @@ nextCloud:
     nextcloud_admin_pwd: "charcoal007"
     nextcloud_db_pwd: "f7f01ff233e206f578cfece290ab5225ee0d049b"
     nextcloud_tls_cert_method: "signed"
-    nextcloud_tls_src_cert: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.crt"
-    nextcloud_tls_src_cert_key: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.key"
+    nextcloud_tls_src_cert: "/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/charcoaleats.crt"
+    nextcloud_tls_src_cert_key: "/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/charcoaleats.key"
     nextcloud_mysql_root_pwd: "af3cc85dead57bd6b63aee0b6f13f7491c40980b"
 
 
@@ -330,7 +314,7 @@ deepstream_haproxy_lb:
 
 elk_stack:
   hosts:
-    13.127.87.36:
+    10.0.5.59:
       consul_ip: '10.0.5.59'
   vars:
     ansible_ssh_user: hanzo

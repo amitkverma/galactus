@@ -23,11 +23,11 @@
       # - { role: common, tags: [common] }
       # - { role: monitoring/consul, tags: [consul] }
       # - { role: monitoring/netdata, tags: [netdata] }
-      - { role: monitoring/monit, tags: [monit] }
+      # - { role: monitoring/monit, tags: [monit] }
       # - { role: extra/swapfile, tags: [swapfile] }
       # - { role: extra/users, tags: [users] }
       # - { role: extra/sendmail, tags: [sendmail] }
       # - { role: security/fail2ban, tags: [fail2ban] }
-      # - { role: webservers/nginx, tags: [nginx] }
+      - { role: webservers/nginx, tags: [nginx] }
       # - { role: security/ntp, tags: [ntp] }
       # - { role: security/freeipa/ipaclient }
