@@ -7,17 +7,17 @@ gitlab_backup_aws_bucket: charcoal-gitlab-backup
 
 # gitlab mail
 gitlab_smtp_enable: true
-gitlab_smtp_address: "email-smtp.us-east-1.amazonaws.com"
+gitlab_smtp_address: "smtp.sendgrid.net"
 gitlab_smtp_port: 587
-gitlab_smtp_user_name: 'AKIAJV5OEMFQP6VNOVWQ'
-gitlab_smtp_password: 'ArMgH6QVdNdKmrUQrDyQEMwHUalOBC4a9gTxdu2kXHt+'
+gitlab_smtp_user_name: 'apikey'
+gitlab_smtp_password: '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'
 gitlab_smtp_domain: 'charcoaleats.com'
 
 # gitlab https
 gitlab_nginx_listen_https: 443
 gitlab_create_self_signed_cert: false
-gitlab_tls_src_cert: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.crt"
-gitlab_tls_src_cert_key: "/Users/amitverma/Projects/side-projects/galactus/pub_keys/charcoaleats.key"
+gitlab_tls_src_cert: "/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/charcoaleats.crt"
+gitlab_tls_src_cert_key: "/home/cloud9/workspace/charcoal-ansible-scripts/pub_keys/charcoaleats.key"
 gitlab_redirect_http_to_https: "true"
 gitlab_ssl_certificate: "/etc/ssl/charcoaleats.crt"
 gitlab_ssl_certificate_key: "/etc/ssl/charcoaleats.key"

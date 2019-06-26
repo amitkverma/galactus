@@ -390,6 +390,14 @@ nodejs_server:
     git_repos: 
       - remote_url: "git@gitlab.charcoaleats.com:charcoaleats/charcoal-dashboard-api.git"
         path: /opt/software/charcoal-api
+    filebeat_output_logstash_hosts:
+      - "10.0.5.59:5044"
+    filebeat_prospectors:
+      - type: log
+        close_inactive: 10m
+        paths:
+          - "/opt/software/current/logs/verbose/*-charcoal-eats.log"
+        tags: ["application"]
 
 worker_node_server:
   hosts:
